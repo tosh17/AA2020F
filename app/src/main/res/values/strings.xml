@@ -1,0 +1,14 @@
+<resources>
+    <string name="app_name">AA2020</string>
+    <string name="text_back">Back</string>
+    <string name="text_title">Avengers:\nEnd Game</string>
+    <string name="text_tag">Action, Adventure, Fantasy</string>
+    <string name="text_reviews">125 Reviews</string>
+    <string name="text_storyline">Storyline</string>
+    <string name="text_story">After the devastating events of Avengers: Infinity War, the universe is in ruins. With the help of remaining allies, the Avengers assemble once more in order to reverse Thanos\' actions and restore balance to the universe.</string>
+    <string name="text_cast">Cast</string>
+    <string name="text_move1">Robert Downey Jr.</string>
+    <string name="text_move2">Chris Evans</string>
+    <string name="text_move3">Mark Ruffalo</string>
+    <string name="text_move4">Chris Hemsworth</string>
+</resources>
