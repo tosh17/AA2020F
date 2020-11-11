@@ -1,20 +1,22 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="purple_200">#FFBB86FC</color>
-    <color name="purple_500">#FF6200EE</color>
-    <color name="purple_700">#FF3700B3</color>
-    <color name="teal_200">#FF03DAC5</color>
-    <color name="teal_700">#FF018786</color>
-    <color name="black">#FF000000</color>
-    <color name="white">#FFFFFFFF</color>
+    <color name="primary">#191926</color>
+    <color name="black">#191926</color>
+    <color name="black_0_5">#80FFFFFF</color>
+    <color name="white">#FFFFFF</color>
+    <color name="white_dark">#ECECEC</color>
+    <color name="pink">#FF3365</color>
+    <color name="pink_dark">#FF3466</color>
+    <color name="gray">#6D6D80</color>
+    <color name="light_grey">#D8D8D8</color>
 
-    <color name="bg_primary">#191926</color>
-    <color name="text_back">#80FFFFFF</color>
-    <color name="text_white">#FFFFFF</color>
-    <color name="text_title">#ECECEC</color>
-    <color name="text_tag">#FF3466</color>
-    <color name="star_enable">#FF3466</color>
-    <color name="star_disable">#6D6D80</color>
-    <color name="text_reviews">#6D6D80</color>
-    <color name="text_movie">#D8D8D8</color>
+    <color name="bg_primary">@color/primary</color>
+    <color name="text_back">@color/black_0_5</color>
+    <color name="text_white">@color/white</color>
+    <color name="text_title">@color/white_dark</color>
+    <color name="text_tag">@color/pink_dark</color>
+    <color name="star_enable">@color/pink</color>
+    <color name="star_disable">@color/gray</color>
+    <color name="text_reviews">@color/gray</color>
+    <color name="text_movie">@color/light_grey</color>
 </resources>

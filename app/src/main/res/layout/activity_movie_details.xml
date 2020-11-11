@@ -10,7 +10,7 @@
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:paddingBottom="32dp"
      >
 
@@ -33,9 +33,7 @@
             android:layout_width="0dp"
             android:layout_height="298dp"
             android:scaleType="centerCrop"
-
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.84"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:srcCompat="@drawable/orig" />
@@ -49,58 +47,77 @@
             app:layout_constraintStart_toStartOf="parent"
             app:srcCompat="@drawable/mask" />
 
-        <TextView
-            android:id="@+id/text_back"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
-            android:layout_marginTop="56dp"
-            android:text="@string/text_back"
-            android:textColor="@color/text_back"
-            android:textSize="16sp"
-            app:layout_constraintStart_toStartOf="@+id/guideline_left"
-            app:layout_constraintTop_toTopOf="parent" />
-
         <ImageView
             android:id="@+id/image_back"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginEnd="8dp"
+            app:tint="@color/text_back"
             app:layout_constraintBottom_toBottomOf="@+id/text_back"
             app:layout_constraintStart_toStartOf="@id/guideline_left"
             app:layout_constraintTop_toTopOf="@+id/text_back"
             app:srcCompat="@drawable/ic_back" />
 
         <TextView
-            android:id="@+id/text_title"
+            android:id="@+id/text_back"
             android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="10dp"
+            android:layout_marginTop="56dp"
+            android:text="@string/text_back"
+            android:textColor="@color/text_back"
+            android:textSize="16sp"
+            app:layout_constraintStart_toEndOf="@+id/image_back"
+            app:layout_constraintTop_toTopOf="parent" />
+
+
+        <TextView
+            android:id="@+id/text_title"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:text="@string/text_title"
             android:textColor="@color/text_title"
             android:textSize="@dimen/text_title"
             android:textStyle="bold"
             app:layout_constraintBottom_toBottomOf="@+id/image_bg_mask"
+            app:layout_constraintEnd_toStartOf="@+id/guideline_right"
             app:layout_constraintStart_toStartOf="@+id/guideline_left"
             app:layout_constraintTop_toBottomOf="@+id/image_bg_mask" />
 
         <ImageView
             android:id="@+id/image_age"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:elevation="5dp"
             app:layout_constraintBottom_toTopOf="@+id/text_title"
             app:layout_constraintStart_toStartOf="@+id/guideline_left"
-            app:srcCompat="@drawable/age" />
+            app:srcCompat="@drawable/age_form"
+            tools:ignore="ContentDescription" />
+
+
+        <TextView
+            android:id="@+id/text_age"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="13+"
+            android:elevation="5dp"
+            android:textStyle="bold"
+            android:textColor="@color/white"
+            android:textSize="12sp"
+            app:layout_constraintEnd_toEndOf="@+id/image_age"
+            app:layout_constraintStart_toStartOf="@+id/image_age"
+            app:layout_constraintTop_toTopOf="@+id/image_age"
+            app:layout_constraintBottom_toBottomOf="@+id/image_age"/>
 
         <TextView
             android:id="@+id/text_tag"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="4dp"
-            android:layout_marginEnd="16dp"
             android:text="@string/text_tag"
             android:textColor="@color/text_tag"
             android:textSize="@dimen/text_subtitle"
-            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/guideline_right"
             app:layout_constraintStart_toStartOf="@+id/guideline_left"
             app:layout_constraintTop_toBottomOf="@+id/text_title" />
 
@@ -108,9 +125,10 @@
             android:id="@+id/image_star1"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
             app:layout_constraintStart_toStartOf="@+id/guideline_left"
-            app:layout_constraintTop_toBottomOf="@+id/text_tag"
+            app:layout_constraintTop_toTopOf="@+id/text_reviews"
+            app:layout_constraintBottom_toBottomOf="@+id/text_reviews"
+            app:tint="@color/star_enable"
             app:srcCompat="@drawable/ic_star" />
 
         <ImageView
@@ -120,6 +138,7 @@
             android:layout_marginStart="4dp"
             app:layout_constraintStart_toEndOf="@+id/image_star1"
             app:layout_constraintTop_toTopOf="@+id/image_star1"
+            app:tint="@color/star_enable"
             app:srcCompat="@drawable/ic_star" />
 
         <ImageView
@@ -129,6 +148,7 @@
             android:layout_marginStart="4dp"
             app:layout_constraintStart_toEndOf="@+id/image_star2"
             app:layout_constraintTop_toTopOf="@+id/image_star2"
+            app:tint="@color/star_enable"
             app:srcCompat="@drawable/ic_star" />
 
         <ImageView
@@ -138,6 +158,7 @@
             android:layout_marginStart="4dp"
             app:layout_constraintStart_toEndOf="@+id/image_star3"
             app:layout_constraintTop_toTopOf="@+id/image_star3"
+            app:tint="@color/star_enable"
             app:srcCompat="@drawable/ic_star" />
 
         <ImageView
@@ -152,26 +173,29 @@
 
         <TextView
             android:id="@+id/text_reviews"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
+            android:layout_marginTop="4dp"
             android:text="@string/text_reviews"
             android:textColor="@color/text_reviews"
             android:textSize="14sp"
             android:textStyle="bold"
-            app:layout_constraintBottom_toBottomOf="@+id/image_star5"
+
+            app:layout_constraintEnd_toStartOf="@+id/guideline_right"
             app:layout_constraintStart_toEndOf="@+id/image_star5"
-            app:layout_constraintTop_toTopOf="@+id/image_star5" />
+            app:layout_constraintTop_toBottomOf="@+id/text_tag" />
 
         <TextView
             android:id="@+id/text_storyline"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="24dp"
             android:text="@string/text_storyline"
             android:textColor="@color/text_title"
             android:textSize="14sp"
             android:textStyle="bold"
+            app:layout_constraintEnd_toStartOf="@+id/guideline_right"
             app:layout_constraintStart_toStartOf="@+id/guideline_left"
             app:layout_constraintTop_toBottomOf="@+id/image_star1" />
 
@@ -190,13 +214,14 @@
 
         <TextView
             android:id="@+id/text_cast"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="24dp"
             android:text="@string/text_cast"
-            android:textColor="@color/text_title"
+            android:textColor="@color/light_grey"
             android:textSize="14sp"
             android:textStyle="bold"
+            app:layout_constraintEnd_toStartOf="@+id/guideline_right"
             app:layout_constraintStart_toStartOf="@+id/guideline_left"
             app:layout_constraintTop_toBottomOf="@+id/text_story" />
 
@@ -210,7 +235,8 @@
             app:layout_constraintEnd_toStartOf="@+id/image_movie2"
             app:layout_constraintStart_toStartOf="@+id/guideline_left"
             app:layout_constraintTop_toBottomOf="@+id/text_cast"
-            app:srcCompat="@drawable/movie1" />
+            app:srcCompat="@drawable/movie1"
+            tools:ignore="ContentDescription" />
 
         <ImageView
             android:id="@+id/image_movie2"
@@ -222,7 +248,8 @@
             app:layout_constraintEnd_toStartOf="@+id/image_movie3"
             app:layout_constraintStart_toEndOf="@+id/image_movie1"
             app:layout_constraintTop_toTopOf="@+id/image_movie1"
-            app:srcCompat="@drawable/movie2" />
+            app:srcCompat="@drawable/movie2"
+            tools:ignore="ContentDescription" />
 
         <ImageView
             android:id="@+id/image_movie3"
@@ -234,7 +261,8 @@
             app:layout_constraintEnd_toStartOf="@+id/image_movie4"
             app:layout_constraintStart_toEndOf="@+id/image_movie2"
             app:layout_constraintTop_toTopOf="@+id/image_movie2"
-            app:srcCompat="@drawable/movie3" />
+            app:srcCompat="@drawable/movie3"
+            tools:ignore="ContentDescription" />
 
         <ImageView
             android:id="@+id/image_movie4"
@@ -245,7 +273,8 @@
             app:layout_constraintEnd_toEndOf="@id/guideline_right"
             app:layout_constraintStart_toEndOf="@+id/image_movie3"
             app:layout_constraintTop_toTopOf="@+id/image_movie3"
-            app:srcCompat="@drawable/movie4" />
+            app:srcCompat="@drawable/movie4"
+            tools:ignore="ContentDescription" />
 
         <TextView
             android:id="@+id/text_move1"
@@ -280,10 +309,9 @@
             android:shadowDx="0"
             android:shadowDy="0"
             android:shadowRadius="4"
-            android:text="@string/text_move3"
             android:textColor="#D8D8D8"
+            android:text="@string/text_move3"
             android:textSize="@dimen/small_text"
-
             app:layout_constraintEnd_toEndOf="@+id/image_movie3"
             app:layout_constraintStart_toStartOf="@+id/image_movie3"
             app:layout_constraintTop_toTopOf="@+id/text_move1" />
