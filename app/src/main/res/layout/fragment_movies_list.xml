@@ -116,7 +116,7 @@
                 android:layout_marginBottom="2dp"
                 android:text="@string/movie_list_mivie_type"
                 android:textColor="@color/text_tag"
-                android:textSize="@dimen/small_text"
+                android:textSize="@dimen/mini_text"
                 app:layout_constraintBottom_toTopOf="@+id/text_reviews"
                 app:layout_constraintEnd_toStartOf="@+id/guideline2"
                 app:layout_constraintStart_toStartOf="@+id/guideline_left" />
@@ -181,7 +181,7 @@
                 android:text="@string/movie_list_review"
                 android:textAllCaps="true"
                 android:textColor="@color/text_reviews"
-                android:textSize="@dimen/small_text"
+                android:textSize="@dimen/mini_text"
                 android:textStyle="bold"
                 app:layout_constraintBottom_toBottomOf="@+id/image_bg"
                 app:layout_constraintEnd_toStartOf="@+id/guideline2"
@@ -208,7 +208,7 @@
                 android:text="@string/movie_list_movie_time"
                 android:textAllCaps="true"
                 android:textColor="@color/text_time"
-                android:textSize="@dimen/small_text"
+                android:textSize="@dimen/mini_text"
                 android:textStyle="bold"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="@+id/text_movie_name" />
