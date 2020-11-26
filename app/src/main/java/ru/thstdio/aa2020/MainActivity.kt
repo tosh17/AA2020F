@@ -9,17 +9,18 @@ class MainActivity : AppCompatActivity(), Navigation {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-        listFragment.setNavigation(this)
-        supportFragmentManager.beginTransaction()
-            .apply {
-                add(R.id.fragments_container, listFragment)
-                commit()
-            }
+        if (savedInstanceState == null) {
+            supportFragmentManager.beginTransaction()
+                .apply {
+                    add(R.id.fragments_container, listFragment)
+                    commit()
+                }
+        }
+
     }
 
     override fun openDetail() {
         val fragment = FragmentMoviesDetails.newInstance()
-        fragment.setNavigation(this)
         supportFragmentManager.beginTransaction()
             .apply {
                 add(R.id.fragments_container, fragment, fragment.javaClass.name)

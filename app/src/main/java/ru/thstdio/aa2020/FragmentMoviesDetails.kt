@@ -4,11 +4,10 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.fragment.app.Fragment
 import ru.thstdio.aa2020.databinding.FragmentMoviesDetailsBinding
 
-class FragmentMoviesDetails : Fragment(), HasNavigation {
-    var router: Navigation? = null
+class FragmentMoviesDetails : FragmentNavigation() {
+
     private lateinit var binding: FragmentMoviesDetailsBinding
 
     companion object {
@@ -29,7 +28,5 @@ class FragmentMoviesDetails : Fragment(), HasNavigation {
 
     }
 
-    override fun setNavigation(navigation: Navigation) {
-        router = navigation
-    }
+
 }
