@@ -11,22 +11,17 @@ class MainActivity : AppCompatActivity(), Navigation {
         setContentView(R.layout.activity_main)
         if (savedInstanceState == null) {
             supportFragmentManager.beginTransaction()
-                .apply {
-                    add(R.id.fragments_container, listFragment)
-                    commit()
-                }
+                .add(R.id.fragment_container_view, listFragment)
+                .commit()
         }
-
     }
 
     override fun openDetail() {
         val fragment = FragmentMoviesDetails.newInstance()
         supportFragmentManager.beginTransaction()
-            .apply {
-                add(R.id.fragments_container, fragment, fragment.javaClass.name)
-                addToBackStack(fragment.javaClass.name)
-                commit()
-            }
+            .add(R.id.fragment_container_view, fragment, fragment.javaClass.name)
+            .addToBackStack(fragment.javaClass.name)
+            .commit()
     }
 
     override fun back() {

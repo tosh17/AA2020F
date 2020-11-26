@@ -71,16 +71,14 @@
             app:layout_constraintTop_toTopOf="parent" />
 
 
-        <FrameLayout
+        <View
             android:id="@+id/area_back"
             android:layout_width="0dp"
             android:layout_height="0dp"
             app:layout_constraintBottom_toBottomOf="@+id/text_back"
             app:layout_constraintEnd_toEndOf="@+id/text_back"
             app:layout_constraintStart_toStartOf="@+id/image_back"
-            app:layout_constraintTop_toTopOf="@+id/text_back">
-
-        </FrameLayout>
+            app:layout_constraintTop_toTopOf="@+id/text_back" />
 
         <TextView
             android:id="@+id/text_title"

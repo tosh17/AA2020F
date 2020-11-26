@@ -72,7 +72,7 @@
                 app:layout_constraintTop_toTopOf="@+id/image_bg"
                 app:srcCompat="@drawable/ic_mask"
                 tools:ignore="ContentDescription"
-                tools:visibility="gone" />
+               />
 
             <ImageView
                 android:id="@+id/image_age"

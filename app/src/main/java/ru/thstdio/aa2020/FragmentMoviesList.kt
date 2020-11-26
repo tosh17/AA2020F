@@ -1,26 +1,17 @@
 package ru.thstdio.aa2020
 
 import android.os.Bundle
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
+import by.kirich1409.viewbindingdelegate.viewBinding
 import ru.thstdio.aa2020.databinding.FragmentMoviesListBinding
 
-class FragmentMoviesList : FragmentNavigation() {
+class FragmentMoviesList : FragmentNavigation(R.layout.fragment_movies_list) {
+    private val binding: FragmentMoviesListBinding by viewBinding()
 
-    private lateinit var binding: FragmentMoviesListBinding
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
-        val view = inflater.inflate(R.layout.fragment_movies_list, container, false)
-        binding = FragmentMoviesListBinding.bind(view)
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
         binding.movieItem.setOnClickListener {
             router?.openDetail()
         }
-        return view
     }
-
-
 }
