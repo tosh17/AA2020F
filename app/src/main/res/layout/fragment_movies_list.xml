@@ -24,13 +24,14 @@
 
         <TextView
             android:id="@+id/text_title"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
             android:text="@string/movie_list_text_title"
             android:textColor="@color/text_white"
             android:textStyle="bold"
             app:layout_constraintBottom_toBottomOf="@+id/image_title"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@+id/image_title"
             app:layout_constraintTop_toTopOf="@+id/image_title" />
 
@@ -202,7 +203,7 @@
 
             <TextView
                 android:id="@+id/text_movie_time"
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="8dp"
                 android:text="@string/movie_list_movie_time"
@@ -211,6 +212,7 @@
                 android:textSize="@dimen/mini_text"
                 android:textStyle="bold"
                 app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toStartOf="@+id/guideline2"
                 app:layout_constraintStart_toStartOf="@+id/text_movie_name" />
 
             <androidx.constraintlayout.widget.Guideline
