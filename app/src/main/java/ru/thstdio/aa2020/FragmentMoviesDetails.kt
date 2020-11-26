@@ -21,7 +21,7 @@ class FragmentMoviesDetails : FragmentNavigation() {
     ): View? {
         val view = inflater.inflate(R.layout.fragment_movies_details, container, false)
         binding = FragmentMoviesDetailsBinding.bind(view)
-        binding.textBack.setOnClickListener {
+        binding.areaBack.setOnClickListener {
             router?.back()
         }
         return view
