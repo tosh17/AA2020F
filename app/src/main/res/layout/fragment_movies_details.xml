@@ -5,14 +5,13 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/bg_primary"
-    tools:context=".MovieDetailsActivity"
->
+
+    >
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:paddingBottom="32dp"
-     >
+        android:paddingBottom="32dp">
 
         <androidx.constraintlayout.widget.Guideline
             android:id="@+id/guideline_left"
@@ -52,11 +51,11 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginEnd="8dp"
-            app:tint="@color/text_back"
             app:layout_constraintBottom_toBottomOf="@+id/text_back"
             app:layout_constraintStart_toStartOf="@id/guideline_left"
             app:layout_constraintTop_toTopOf="@+id/text_back"
-            app:srcCompat="@drawable/ic_back" />
+            app:srcCompat="@drawable/ic_back"
+            app:tint="@color/text_back" />
 
         <TextView
             android:id="@+id/text_back"
@@ -99,15 +98,15 @@
             android:id="@+id/text_age"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/text_age"
             android:elevation="5dp"
-            android:textStyle="bold"
+            android:text="@string/text_age"
             android:textColor="@color/white"
             android:textSize="12sp"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toBottomOf="@+id/image_age"
             app:layout_constraintEnd_toEndOf="@+id/image_age"
             app:layout_constraintStart_toStartOf="@+id/image_age"
-            app:layout_constraintTop_toTopOf="@+id/image_age"
-            app:layout_constraintBottom_toBottomOf="@+id/image_age"/>
+            app:layout_constraintTop_toTopOf="@+id/image_age" />
 
         <TextView
             android:id="@+id/text_tag"
@@ -125,11 +124,11 @@
             android:id="@+id/image_star1"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            app:layout_constraintBottom_toBottomOf="@+id/text_reviews"
             app:layout_constraintStart_toStartOf="@+id/guideline_left"
             app:layout_constraintTop_toTopOf="@+id/text_reviews"
-            app:layout_constraintBottom_toBottomOf="@+id/text_reviews"
-            app:tint="@color/star_enable"
-            app:srcCompat="@drawable/ic_star" />
+            app:srcCompat="@drawable/ic_star"
+            app:tint="@color/star_enable" />
 
         <ImageView
             android:id="@+id/image_star2"
@@ -138,8 +137,8 @@
             android:layout_marginStart="4dp"
             app:layout_constraintStart_toEndOf="@+id/image_star1"
             app:layout_constraintTop_toTopOf="@+id/image_star1"
-            app:tint="@color/star_enable"
-            app:srcCompat="@drawable/ic_star" />
+            app:srcCompat="@drawable/ic_star"
+            app:tint="@color/star_enable" />
 
         <ImageView
             android:id="@+id/image_star3"
@@ -148,8 +147,8 @@
             android:layout_marginStart="4dp"
             app:layout_constraintStart_toEndOf="@+id/image_star2"
             app:layout_constraintTop_toTopOf="@+id/image_star2"
-            app:tint="@color/star_enable"
-            app:srcCompat="@drawable/ic_star" />
+            app:srcCompat="@drawable/ic_star"
+            app:tint="@color/star_enable" />
 
         <ImageView
             android:id="@+id/image_star4"
@@ -158,8 +157,8 @@
             android:layout_marginStart="4dp"
             app:layout_constraintStart_toEndOf="@+id/image_star3"
             app:layout_constraintTop_toTopOf="@+id/image_star3"
-            app:tint="@color/star_enable"
-            app:srcCompat="@drawable/ic_star" />
+            app:srcCompat="@drawable/ic_star"
+            app:tint="@color/star_enable" />
 
         <ImageView
             android:id="@+id/image_star5"
@@ -309,8 +308,8 @@
             android:shadowDx="0"
             android:shadowDy="0"
             android:shadowRadius="4"
-            android:textColor="#D8D8D8"
             android:text="@string/text_move3"
+            android:textColor="#D8D8D8"
             android:textSize="@dimen/small_text"
             app:layout_constraintEnd_toEndOf="@+id/image_movie3"
             app:layout_constraintStart_toStartOf="@+id/image_movie3"

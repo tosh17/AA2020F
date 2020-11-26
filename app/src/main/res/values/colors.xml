@@ -7,6 +7,7 @@
     <color name="white_dark">#ECECEC</color>
     <color name="pink">#FF3365</color>
     <color name="pink_dark">#FF3466</color>
+    <color name="dark_gray">#565665</color>
     <color name="gray">#6D6D80</color>
     <color name="light_grey">#D8D8D8</color>
 
@@ -18,5 +19,6 @@
     <color name="star_enable">@color/pink</color>
     <color name="star_disable">@color/gray</color>
     <color name="text_reviews">@color/gray</color>
+    <color name="text_time">@color/dark_gray</color>
     <color name="text_movie">@color/light_grey</color>
 </resources>

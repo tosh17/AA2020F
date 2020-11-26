@@ -12,4 +12,10 @@
     <string name="text_move3">Mark Ruffalo</string>
     <string name="text_move4">Chris Hemsworth</string>
     <string name="text_age">13+</string>
+    <string name="movie_list_text_title">Movies list</string>
+    <string name="movie_list_mivie_type">Action, Adventure, Drama</string>
+    <string name="movie_list_review">125 Reviews</string>
+    <string name="movie_list_movie_name">Avengers: End Game</string>
+    <string name="movie_list_movie_time">137 min</string>
+    <string name="movie_list_age">13+</string>
 </resources>
