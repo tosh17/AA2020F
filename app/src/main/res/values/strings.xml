@@ -18,4 +18,6 @@
     <string name="movie_list_movie_name">Avengers: End Game</string>
     <string name="movie_list_movie_time">137 min</string>
     <string name="movie_list_age">13+</string>
+    <string name="review_string">%d REVIEWS</string>
+    <string name="time_string">%d MIN</string>
 </resources>
