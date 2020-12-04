@@ -14,6 +14,7 @@ import ru.thstdio.aa2020.R
 import ru.thstdio.aa2020.databinding.FragmentMoviesDetailsBinding
 import ru.thstdio.aa2020.dto.CinemaDto
 import ru.thstdio.aa2020.dto.loadActorsList
+import ru.thstdio.aa2020.dto.loadCinemasList
 
 
 class FragmentMoviesDetails : FragmentNavigation(R.layout.fragment_movies_details) {
@@ -21,10 +22,10 @@ class FragmentMoviesDetails : FragmentNavigation(R.layout.fragment_movies_detail
     private val binding: FragmentMoviesDetailsBinding by viewBinding()
 
     companion object {
-        private val ActorArg = "Actor"
-        fun newInstance(cinema: CinemaDto): FragmentMoviesDetails {
+        private val CinemaArg = "Cinema_ID"
+        fun newInstance(cinema: Int): FragmentMoviesDetails {
             val fragment = FragmentMoviesDetails()
-            fragment.arguments = bundleOf(ActorArg to cinema)
+            fragment.arguments = bundleOf(CinemaArg to cinema)
             return fragment
         }
     }
@@ -35,8 +36,8 @@ class FragmentMoviesDetails : FragmentNavigation(R.layout.fragment_movies_detail
             router?.back()
         }
         arguments?.let {
-            val actor = it[ActorArg] as CinemaDto
-            bindView(actor)
+            val actorId = it[CinemaArg] as Int
+            bindView(loadCinemasList()[actorId])
         }
     }
 

@@ -16,10 +16,10 @@ class FragmentMoviesList : FragmentNavigation(R.layout.fragment_movies_list) {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        binding.recyclerView.run {
-            layoutManager = GridLayoutManager(context, 2, RecyclerView.VERTICAL, false)
-            adapter = CinemaListAdapter(loadCinemasList(), requireActivity() as Navigation)
+        binding.recyclerView.layoutManager =
+            GridLayoutManager(context, 2, RecyclerView.VERTICAL, false)
+        binding.recyclerView.adapter =
+            CinemaListAdapter(loadCinemasList(), requireActivity() as Navigation)
 
-        }
     }
 }
