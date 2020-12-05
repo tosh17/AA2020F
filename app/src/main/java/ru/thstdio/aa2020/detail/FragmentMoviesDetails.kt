@@ -37,7 +37,7 @@ class FragmentMoviesDetails : FragmentNavigation(R.layout.fragment_movies_detail
         }
         arguments?.let {
             val actorId = it[CinemaArg] as Int
-            bindView(loadCinemasList()[actorId])
+            bindView(loadCinemasList()[actorId - 1])
         }
     }
 
