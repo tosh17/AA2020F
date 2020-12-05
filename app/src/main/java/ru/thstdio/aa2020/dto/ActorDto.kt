@@ -1,3 +1,5 @@
 package ru.thstdio.aa2020.dto
 
-data class ActorDto(val name: String, val imgId: Int)
+import androidx.annotation.DrawableRes
+
+data class ActorDto(val name: String, @DrawableRes val imgId: Int)

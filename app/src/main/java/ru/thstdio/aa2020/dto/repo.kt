@@ -2,7 +2,7 @@ package ru.thstdio.aa2020.dto
 
 import ru.thstdio.aa2020.R
 
-fun loadCinemasList() = listOf(
+fun loadCinemasList(): List<CinemaDto> = listOf(
     CinemaDto(
         id = 1,
         name = "Avengers: End Game",
@@ -47,7 +47,7 @@ fun loadCinemasList() = listOf(
     )
 )
 
-fun loadActorsList() = listOf(
+fun loadActorsList(): List<ActorDto> = listOf(
     ActorDto(name = "Robert Downey Jr.", imgId = R.drawable.movie1),
     ActorDto(name = "Chris Evans", imgId = R.drawable.movie2),
     ActorDto(name = "Mark Ruffalo", imgId = R.drawable.movie3),

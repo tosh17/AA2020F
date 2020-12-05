@@ -130,55 +130,15 @@
             app:layout_constraintStart_toStartOf="@+id/guideline_left"
             app:layout_constraintTop_toBottomOf="@+id/text_title" />
 
-        <ImageView
-            android:id="@+id/image_star1"
+        <ru.thstdio.aa2020.view.rating.RatingView
+            android:id="@+id/rating"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             app:layout_constraintBottom_toBottomOf="@+id/text_reviews"
             app:layout_constraintStart_toStartOf="@+id/guideline_left"
             app:layout_constraintTop_toTopOf="@+id/text_reviews"
-            app:srcCompat="@drawable/ic_star"
-            app:tint="@color/star_enable" />
+            tools:rating="3" />
 
-        <ImageView
-            android:id="@+id/image_star2"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="4dp"
-            app:layout_constraintStart_toEndOf="@+id/image_star1"
-            app:layout_constraintTop_toTopOf="@+id/image_star1"
-            app:srcCompat="@drawable/ic_star"
-            app:tint="@color/star_enable" />
-
-        <ImageView
-            android:id="@+id/image_star3"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="4dp"
-            app:layout_constraintStart_toEndOf="@+id/image_star2"
-            app:layout_constraintTop_toTopOf="@+id/image_star2"
-            app:srcCompat="@drawable/ic_star"
-            app:tint="@color/star_enable" />
-
-        <ImageView
-            android:id="@+id/image_star4"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="4dp"
-            app:layout_constraintStart_toEndOf="@+id/image_star3"
-            app:layout_constraintTop_toTopOf="@+id/image_star3"
-            app:srcCompat="@drawable/ic_star"
-            app:tint="@color/star_enable" />
-
-        <ImageView
-            android:id="@+id/image_star5"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="4dp"
-            app:layout_constraintStart_toEndOf="@+id/image_star4"
-            app:layout_constraintTop_toTopOf="@+id/image_star4"
-            app:srcCompat="@drawable/ic_star"
-            app:tint="@color/star_disable" />
 
         <TextView
             android:id="@+id/text_reviews"
@@ -190,9 +150,8 @@
             android:textColor="@color/text_reviews"
             android:textSize="14sp"
             android:textStyle="bold"
-
             app:layout_constraintEnd_toStartOf="@+id/guideline_right"
-            app:layout_constraintStart_toEndOf="@+id/image_star5"
+            app:layout_constraintStart_toEndOf="@+id/rating"
             app:layout_constraintTop_toBottomOf="@+id/text_tag" />
 
         <TextView
@@ -206,7 +165,7 @@
             android:textStyle="bold"
             app:layout_constraintEnd_toStartOf="@+id/guideline_right"
             app:layout_constraintStart_toStartOf="@+id/guideline_left"
-            app:layout_constraintTop_toBottomOf="@+id/image_star1" />
+            app:layout_constraintTop_toBottomOf="@+id/rating" />
 
         <TextView
             android:id="@+id/text_story"

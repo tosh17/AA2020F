@@ -25,7 +25,6 @@
         tools:ignore="ContentDescription" />
 
     <ImageView
-        android:id="@+id/image_mask"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:scaleType="fitXY"
@@ -84,56 +83,13 @@
         app:layout_constraintEnd_toStartOf="@+id/guideline2"
         app:layout_constraintStart_toStartOf="@+id/guideline_left" />
 
-    <ImageView
-        android:id="@+id/image_star1"
+    <ru.thstdio.aa2020.view.rating.RatingView
+        android:id="@+id/rating"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         app:layout_constraintBottom_toBottomOf="@+id/text_reviews"
         app:layout_constraintStart_toStartOf="@+id/guideline_left"
-        app:layout_constraintTop_toTopOf="@+id/text_reviews"
-        app:srcCompat="@drawable/ic_star"
-        app:tint="@color/star_enable"
-        tools:ignore="ContentDescription" />
-
-    <ImageView
-        android:id="@+id/image_star2"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        app:layout_constraintStart_toEndOf="@+id/image_star1"
-        app:layout_constraintTop_toTopOf="@+id/image_star1"
-        app:srcCompat="@drawable/ic_star"
-        app:tint="@color/star_enable"
-        tools:ignore="ContentDescription" />
-
-    <ImageView
-        android:id="@+id/image_star3"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        app:layout_constraintStart_toEndOf="@+id/image_star2"
-        app:layout_constraintTop_toTopOf="@+id/image_star1"
-        app:srcCompat="@drawable/ic_star"
-        app:tint="@color/star_enable"
-        tools:ignore="ContentDescription" />
-
-    <ImageView
-        android:id="@+id/image_star4"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        app:layout_constraintStart_toEndOf="@+id/image_star3"
-        app:layout_constraintTop_toTopOf="@+id/image_star1"
-        app:srcCompat="@drawable/ic_star"
-        app:tint="@color/star_enable"
-        tools:ignore="ContentDescription" />
-
-    <ImageView
-        android:id="@+id/image_star5"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        app:layout_constraintStart_toEndOf="@+id/image_star4"
-        app:layout_constraintTop_toTopOf="@+id/image_star1"
-        app:srcCompat="@drawable/ic_star"
-        app:tint="@color/star_disable"
-        tools:ignore="ContentDescription" />
+        app:layout_constraintTop_toTopOf="@+id/text_reviews" />
 
     <TextView
         android:id="@+id/text_reviews"
@@ -148,7 +104,7 @@
         android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="@+id/image_bg"
         app:layout_constraintEnd_toStartOf="@+id/guideline2"
-        app:layout_constraintStart_toEndOf="@+id/image_star5" />
+        app:layout_constraintStart_toEndOf="@+id/rating" />
 
     <TextView
         android:id="@+id/text_movie_name"
