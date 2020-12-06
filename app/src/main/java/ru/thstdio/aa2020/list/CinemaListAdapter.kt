@@ -22,7 +22,6 @@ class CinemaListAdapter(
 
     override fun onBindViewHolder(holder: CinemaListHolder, position: Int) {
         holder.onBindView(cinemas[position])
-
     }
 
     override fun getItemCount() = cinemas.size
@@ -31,8 +30,6 @@ class CinemaListAdapter(
 class CinemaListHolder(private val view: View, private val onClick: (CinemaDto) -> Unit) :
     RecyclerView.ViewHolder(view) {
     private val binding = ViewHolderCinemaBinding.bind(view)
-    private val context
-        get() = view.context
 
     fun onBindView(cinema: CinemaDto) {
         setName(cinema.name)
@@ -71,15 +68,17 @@ class CinemaListHolder(private val view: View, private val onClick: (CinemaDto) 
     }
 
     private fun setReviewCount(reviews: Int) {
-        binding.textReviews.text = context.getString(R.string.review_string, reviews)
+        binding.textReviews.text =
+            binding.textReviews.context.getString(R.string.review_string, reviews)
     }
 
     private fun setTime(time: Int) {
-        binding.textMovieTime.text = context.getString(R.string.time_string, time)
+        binding.textMovieTime.text =
+            binding.textMovieTime.context.getString(R.string.time_string, time)
     }
 
     private fun setOnClick(function: () -> Unit) {
-        view.setOnClickListener { function.invoke() }
+        binding.root.setOnClickListener { function.invoke() }
     }
 
 }

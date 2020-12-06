@@ -2,14 +2,14 @@ package ru.thstdio.aa2020.view.rating
 
 import android.content.Context
 import android.util.AttributeSet
+import android.widget.FrameLayout
 import android.widget.ImageView
 import androidx.annotation.ColorInt
-import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.content.ContextCompat
 import ru.thstdio.aa2020.R
 import ru.thstdio.aa2020.databinding.ViewRatingBinding
 
-class RatingView : ConstraintLayout {
+class RatingView : FrameLayout {
 
 
     constructor(context: Context) : super(context) {
@@ -40,16 +40,15 @@ class RatingView : ConstraintLayout {
         a.recycle()
     }
 
-    private val stars: List<ImageView> by lazy {
-        if (binding != null) listOf(
-            binding!!.imageStar1,
-            binding!!.imageStar2,
-            binding!!.imageStar3,
-            binding!!.imageStar4,
-            binding!!.imageStar5
-        ) else listOf()
+    private val stars: List<ImageView>
+        get() = listOfNotNull(
+            binding?.imageStar1,
+            binding?.imageStar2,
+            binding?.imageStar3,
+            binding?.imageStar4,
+            binding?.imageStar5
+        )
 
-    }
 
     fun setRating(count: Int) {
         @ColorInt val activeColor: Int = ContextCompat.getColor(context, R.color.star_enable)
