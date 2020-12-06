@@ -1,9 +1,22 @@
 package ru.thstdio.aa2020.dto
 
 import ru.thstdio.aa2020.R
+import kotlin.random.Random
 
-fun loadCinemasList(): List<CinemaDto> = listOf(
-    CinemaDto(
+fun loadCinemasList(): List<CinemaDto> {
+    val r = Random(123)
+    return List<CinemaDto>(r.nextInt(10000)) { index -> getCinema(r.nextInt(4) + 1) }
+}
+
+fun loadActorsList(): List<ActorDto> = listOf(
+    ActorDto(name = "Robert Downey Jr.", imgId = R.drawable.movie1),
+    ActorDto(name = "Chris Evans", imgId = R.drawable.movie2),
+    ActorDto(name = "Mark Ruffalo", imgId = R.drawable.movie3),
+    ActorDto(name = "Chris Hemsworth", imgId = R.drawable.movie4)
+)
+
+fun getCinema(id: Int): CinemaDto = when (id) {
+    1 -> CinemaDto(
         id = 1,
         name = "Avengers: End Game",
         genre = "Action, Adventure, Drama",
@@ -13,8 +26,8 @@ fun loadCinemasList(): List<CinemaDto> = listOf(
         rating = 4,
         like = false,
         reviews = 127
-    ),
-    CinemaDto(
+    )
+    2 -> CinemaDto(
         id = 2,
         name = "Tenet",
         genre = "Action, Sci-Fi, Thriller",
@@ -24,7 +37,8 @@ fun loadCinemasList(): List<CinemaDto> = listOf(
         rating = 5,
         like = true,
         reviews = 98
-    ), CinemaDto(
+    )
+    3 -> CinemaDto(
         id = 3,
         name = "Black Widow",
         genre = "Action, Adventure, Sci-Fi",
@@ -34,7 +48,8 @@ fun loadCinemasList(): List<CinemaDto> = listOf(
         rating = 4,
         like = false,
         reviews = 38
-    ), CinemaDto(
+    )
+    else -> CinemaDto(
         id = 4,
         name = "Wonder Woman 1984",
         genre = "Action, Adventure, Fantasy",
@@ -45,11 +60,5 @@ fun loadCinemasList(): List<CinemaDto> = listOf(
         like = false,
         reviews = 74
     )
-)
 
-fun loadActorsList(): List<ActorDto> = listOf(
-    ActorDto(name = "Robert Downey Jr.", imgId = R.drawable.movie1),
-    ActorDto(name = "Chris Evans", imgId = R.drawable.movie2),
-    ActorDto(name = "Mark Ruffalo", imgId = R.drawable.movie3),
-    ActorDto(name = "Chris Hemsworth", imgId = R.drawable.movie4)
-)
+}

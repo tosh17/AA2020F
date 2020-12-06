@@ -5,33 +5,36 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.annotation.DrawableRes
 import androidx.recyclerview.widget.RecyclerView
-import ru.thstdio.aa2020.Navigation
 import ru.thstdio.aa2020.R
 import ru.thstdio.aa2020.databinding.ViewHolderCinemaBinding
 import ru.thstdio.aa2020.dto.CinemaDto
 
-class CinemaListAdapter(private val cinemas: List<CinemaDto>, private val router: Navigation) :
+class CinemaListAdapter(
+    private val cinemas: List<CinemaDto>,
+    private val router: (CinemaDto) -> Unit
+) :
     RecyclerView.Adapter<CinemaListHolder>() {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CinemaListHolder {
         val view =
             LayoutInflater.from(parent.context).inflate(R.layout.view_holder_cinema, parent, false)
-        return CinemaListHolder(view)
+        return CinemaListHolder(view, router)
     }
 
     override fun onBindViewHolder(holder: CinemaListHolder, position: Int) {
-        holder.onBindView(cinemas[position], router)
+        holder.onBindView(cinemas[position])
 
     }
 
     override fun getItemCount() = cinemas.size
 }
 
-class CinemaListHolder(private val view: View) : RecyclerView.ViewHolder(view) {
+class CinemaListHolder(private val view: View, private val onClick: (CinemaDto) -> Unit) :
+    RecyclerView.ViewHolder(view) {
     private val binding = ViewHolderCinemaBinding.bind(view)
     private val context
         get() = view.context
 
-    fun onBindView(cinema: CinemaDto, router: Navigation) {
+    fun onBindView(cinema: CinemaDto) {
         setName(cinema.name)
         setGenre(cinema.genre)
         setPoster(cinema.posterId)
@@ -40,7 +43,7 @@ class CinemaListHolder(private val view: View) : RecyclerView.ViewHolder(view) {
         setReviewCount(cinema.reviews)
         setTime(cinema.time)
         setAge(cinema.age)
-        setOnClick { router.openDetail(cinema.id) }
+        setOnClick { onClick(cinema) }
     }
 
     private fun setName(name: String) {
@@ -78,4 +81,5 @@ class CinemaListHolder(private val view: View) : RecyclerView.ViewHolder(view) {
     private fun setOnClick(function: () -> Unit) {
         view.setOnClickListener { function.invoke() }
     }
+
 }

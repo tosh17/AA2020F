@@ -5,7 +5,6 @@ import android.graphics.ColorMatrixColorFilter
 import android.os.Bundle
 import android.view.View
 import androidx.annotation.DrawableRes
-import androidx.core.os.bundleOf
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import by.kirich1409.viewbindingdelegate.viewBinding
@@ -13,8 +12,8 @@ import ru.thstdio.aa2020.FragmentNavigation
 import ru.thstdio.aa2020.R
 import ru.thstdio.aa2020.databinding.FragmentMoviesDetailsBinding
 import ru.thstdio.aa2020.dto.CinemaDto
+import ru.thstdio.aa2020.dto.getCinema
 import ru.thstdio.aa2020.dto.loadActorsList
-import ru.thstdio.aa2020.dto.loadCinemasList
 
 
 class FragmentMoviesDetails : FragmentNavigation(R.layout.fragment_movies_details) {
@@ -25,7 +24,9 @@ class FragmentMoviesDetails : FragmentNavigation(R.layout.fragment_movies_detail
         private const val CinemaArg = "Cinema_ID"
         fun newInstance(cinema: Int): FragmentMoviesDetails {
             val fragment = FragmentMoviesDetails()
-            fragment.arguments = bundleOf(CinemaArg to cinema)
+            val bundle = Bundle()
+            bundle.putInt(CinemaArg, cinema)
+            fragment.arguments = bundle
             return fragment
         }
     }
@@ -35,9 +36,9 @@ class FragmentMoviesDetails : FragmentNavigation(R.layout.fragment_movies_detail
         binding.areaBack.setOnClickListener {
             router?.back()
         }
-        arguments?.let {
-            val actorId = it[CinemaArg] as Int
-            bindView(loadCinemasList()[actorId - 1])
+        arguments?.let { arg ->
+            val cinemaId = arg.getInt(CinemaArg)
+            bindView(getCinema(cinemaId))
         }
     }
 

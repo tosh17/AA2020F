@@ -54,9 +54,9 @@ class RatingView : ConstraintLayout {
     fun setRating(count: Int) {
         @ColorInt val activeColor: Int = ContextCompat.getColor(context, R.color.star_enable)
         @ColorInt val disableColor: Int = ContextCompat.getColor(context, R.color.star_disable)
-        val getColor: (Int) -> Int = { if (it <= count) activeColor else disableColor }
         stars.forEachIndexed { index, starView ->
-            starView.setColorFilter(getColor(index + 1))
+            val color = if (index < count) activeColor else disableColor
+            starView.setColorFilter(color)
         }
     }
 }
