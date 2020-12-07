@@ -2,6 +2,8 @@ package ru.thstdio.aa2020
 
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
+import ru.thstdio.aa2020.detail.FragmentMoviesDetails
+import ru.thstdio.aa2020.list.FragmentMoviesList
 
 class MainActivity : AppCompatActivity(), Navigation {
 
@@ -16,8 +18,8 @@ class MainActivity : AppCompatActivity(), Navigation {
         }
     }
 
-    override fun openDetail() {
-        val fragment = FragmentMoviesDetails.newInstance()
+    override fun openDetail(id: Int) {
+        val fragment = FragmentMoviesDetails.newInstance(id)
         supportFragmentManager.beginTransaction()
             .add(R.id.fragment_container_view, fragment, fragment.javaClass.name)
             .addToBackStack(fragment.javaClass.name)

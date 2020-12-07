@@ -130,55 +130,15 @@
             app:layout_constraintStart_toStartOf="@+id/guideline_left"
             app:layout_constraintTop_toBottomOf="@+id/text_title" />
 
-        <ImageView
-            android:id="@+id/image_star1"
+        <ru.thstdio.aa2020.view.rating.RatingView
+            android:id="@+id/rating"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             app:layout_constraintBottom_toBottomOf="@+id/text_reviews"
             app:layout_constraintStart_toStartOf="@+id/guideline_left"
             app:layout_constraintTop_toTopOf="@+id/text_reviews"
-            app:srcCompat="@drawable/ic_star"
-            app:tint="@color/star_enable" />
+            tools:rating="3" />
 
-        <ImageView
-            android:id="@+id/image_star2"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="4dp"
-            app:layout_constraintStart_toEndOf="@+id/image_star1"
-            app:layout_constraintTop_toTopOf="@+id/image_star1"
-            app:srcCompat="@drawable/ic_star"
-            app:tint="@color/star_enable" />
-
-        <ImageView
-            android:id="@+id/image_star3"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="4dp"
-            app:layout_constraintStart_toEndOf="@+id/image_star2"
-            app:layout_constraintTop_toTopOf="@+id/image_star2"
-            app:srcCompat="@drawable/ic_star"
-            app:tint="@color/star_enable" />
-
-        <ImageView
-            android:id="@+id/image_star4"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="4dp"
-            app:layout_constraintStart_toEndOf="@+id/image_star3"
-            app:layout_constraintTop_toTopOf="@+id/image_star3"
-            app:srcCompat="@drawable/ic_star"
-            app:tint="@color/star_enable" />
-
-        <ImageView
-            android:id="@+id/image_star5"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="4dp"
-            app:layout_constraintStart_toEndOf="@+id/image_star4"
-            app:layout_constraintTop_toTopOf="@+id/image_star4"
-            app:srcCompat="@drawable/ic_star"
-            app:tint="@color/star_disable" />
 
         <TextView
             android:id="@+id/text_reviews"
@@ -190,9 +150,8 @@
             android:textColor="@color/text_reviews"
             android:textSize="14sp"
             android:textStyle="bold"
-
             app:layout_constraintEnd_toStartOf="@+id/guideline_right"
-            app:layout_constraintStart_toEndOf="@+id/image_star5"
+            app:layout_constraintStart_toEndOf="@+id/rating"
             app:layout_constraintTop_toBottomOf="@+id/text_tag" />
 
         <TextView
@@ -206,7 +165,7 @@
             android:textStyle="bold"
             app:layout_constraintEnd_toStartOf="@+id/guideline_right"
             app:layout_constraintStart_toStartOf="@+id/guideline_left"
-            app:layout_constraintTop_toBottomOf="@+id/image_star1" />
+            app:layout_constraintTop_toBottomOf="@+id/rating" />
 
         <TextView
             android:id="@+id/text_story"
@@ -234,107 +193,19 @@
             app:layout_constraintStart_toStartOf="@+id/guideline_left"
             app:layout_constraintTop_toBottomOf="@+id/text_story" />
 
-        <ImageView
-            android:id="@+id/image_movie1"
-            android:layout_width="0dp"
-            android:layout_height="0dp"
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recycler_view"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
-            android:layout_marginEnd="4dp"
-            app:layout_constraintDimensionRatio="1:1"
-            app:layout_constraintEnd_toStartOf="@+id/image_movie2"
+            app:layout_constraintEnd_toStartOf="@+id/guideline_right"
             app:layout_constraintStart_toStartOf="@+id/guideline_left"
             app:layout_constraintTop_toBottomOf="@+id/text_cast"
-            app:srcCompat="@drawable/movie1"
-            tools:ignore="ContentDescription" />
+            tools:itemCount="4"
+            tools:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+            tools:listitem="@layout/view_holder_actor"
+            tools:orientation="horizontal" />
 
-        <ImageView
-            android:id="@+id/image_movie2"
-            android:layout_width="0dp"
-            android:layout_height="0dp"
-            android:layout_marginStart="4dp"
-            android:layout_marginEnd="4dp"
-            app:layout_constraintDimensionRatio="h,1:1"
-            app:layout_constraintEnd_toStartOf="@+id/image_movie3"
-            app:layout_constraintStart_toEndOf="@+id/image_movie1"
-            app:layout_constraintTop_toTopOf="@+id/image_movie1"
-            app:srcCompat="@drawable/movie2"
-            tools:ignore="ContentDescription" />
-
-        <ImageView
-            android:id="@+id/image_movie3"
-            android:layout_width="0dp"
-            android:layout_height="0dp"
-            android:layout_marginStart="4dp"
-            android:layout_marginEnd="4dp"
-            app:layout_constraintDimensionRatio="1:1"
-            app:layout_constraintEnd_toStartOf="@+id/image_movie4"
-            app:layout_constraintStart_toEndOf="@+id/image_movie2"
-            app:layout_constraintTop_toTopOf="@+id/image_movie2"
-            app:srcCompat="@drawable/movie3"
-            tools:ignore="ContentDescription" />
-
-        <ImageView
-            android:id="@+id/image_movie4"
-            android:layout_width="0dp"
-            android:layout_height="0dp"
-            android:layout_marginStart="4dp"
-            app:layout_constraintDimensionRatio="1:1"
-            app:layout_constraintEnd_toEndOf="@id/guideline_right"
-            app:layout_constraintStart_toEndOf="@+id/image_movie3"
-            app:layout_constraintTop_toTopOf="@+id/image_movie3"
-            app:srcCompat="@drawable/movie4"
-            tools:ignore="ContentDescription" />
-
-        <TextView
-            android:id="@+id/text_move1"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            android:text="@string/text_move1"
-            android:textColor="@color/text_movie"
-            android:textSize="@dimen/small_text"
-            android:textStyle="bold"
-            app:layout_constraintEnd_toEndOf="@+id/image_movie1"
-            app:layout_constraintStart_toStartOf="@+id/guideline_left"
-            app:layout_constraintTop_toBottomOf="@+id/image_movie1" />
-
-        <TextView
-            android:id="@+id/text_move2"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:text="@string/text_move2"
-            android:textColor="@color/text_movie"
-            android:textSize="@dimen/small_text"
-            android:textStyle="bold"
-            app:layout_constraintEnd_toEndOf="@+id/image_movie2"
-            app:layout_constraintStart_toStartOf="@+id/image_movie2"
-            app:layout_constraintTop_toTopOf="@+id/text_move1" />
-
-        <TextView
-            android:id="@+id/text_move3"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:shadowColor="#000000"
-            android:shadowDx="0"
-            android:shadowDy="0"
-            android:shadowRadius="4"
-            android:text="@string/text_move3"
-            android:textColor="#D8D8D8"
-            android:textSize="@dimen/small_text"
-            app:layout_constraintEnd_toEndOf="@+id/image_movie3"
-            app:layout_constraintStart_toStartOf="@+id/image_movie3"
-            app:layout_constraintTop_toTopOf="@+id/text_move1" />
-
-        <TextView
-            android:id="@+id/text_move4"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:text="@string/text_move4"
-            android:textColor="@color/text_movie"
-            android:textSize="@dimen/small_text"
-            android:textStyle="bold"
-            app:layout_constraintEnd_toEndOf="@+id/image_movie4"
-            app:layout_constraintStart_toStartOf="@+id/image_movie4"
-            app:layout_constraintTop_toTopOf="@+id/text_move1" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 </ScrollView>

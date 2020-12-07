@@ -6,7 +6,7 @@ import androidx.fragment.app.Fragment
 
 abstract class FragmentNavigation @ContentView constructor(@LayoutRes contentLayoutId: Int) :
     Fragment(contentLayoutId) {
-    protected val router: Navigation?
+    protected val router: Navigation
         get() = (requireActivity() as Navigation)
 
 }

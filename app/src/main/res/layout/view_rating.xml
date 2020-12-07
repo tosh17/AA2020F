@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content">
+
+    <ImageView
+        android:id="@+id/image_star1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:srcCompat="@drawable/ic_star"
+        app:tint="@color/star_enable"
+        tools:ignore="ContentDescription" />
+
+    <ImageView
+        android:id="@+id/image_star2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="2dp"
+        app:srcCompat="@drawable/ic_star"
+        app:tint="@color/star_enable"
+        tools:ignore="ContentDescription" />
+
+    <ImageView
+        android:id="@+id/image_star3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="2dp"
+        app:srcCompat="@drawable/ic_star"
+        app:tint="@color/star_enable"
+        tools:ignore="ContentDescription" />
+
+    <ImageView
+        android:id="@+id/image_star4"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="2dp"
+        app:srcCompat="@drawable/ic_star"
+        app:tint="@color/star_enable"
+        tools:ignore="ContentDescription" />
+
+    <ImageView
+        android:id="@+id/image_star5"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="2dp"
+        app:srcCompat="@drawable/ic_star"
+        app:tint="@color/star_disable"
+        tools:ignore="ContentDescription" />
+</LinearLayout>
