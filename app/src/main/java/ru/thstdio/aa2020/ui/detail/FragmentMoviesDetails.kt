@@ -66,6 +66,7 @@ class FragmentMoviesDetails : FragmentNavigation(R.layout.fragment_movies_detail
             binding.recyclerView.adapter = ActorAdapter(cinema.actors)
         } else {
             binding.textCast.isVisible = false
+            binding.recyclerView.isVisible = false
         }
     }
 
