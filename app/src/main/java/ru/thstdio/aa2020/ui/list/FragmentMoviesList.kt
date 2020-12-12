@@ -30,16 +30,13 @@ class FragmentMoviesList : FragmentNavigation(R.layout.fragment_movies_list) {
 
     }
 
-    fun loadMoviesList() {
+    private fun loadMoviesList() {
         scope.launch {
-            val listMoview = loadMovies(requireContext())
+            val listMovies = loadMovies(requireContext())
             withContext(Dispatchers.Main) {
                 binding.recyclerView.adapter =
-                    CinemaListAdapter(listMoview) { cinema -> router.openDetail(cinema.id) }
+                    CinemaListAdapter(listMovies) { cinema -> router.openDetail(cinema.id) }
             }
-
-
         }
-
     }
 }
