@@ -36,8 +36,8 @@ class CinemaListHolder(private val view: View, private val onClick: (Movie) -> U
         setName(cinema.title)
         setGenre(cinema.genres)
         setPoster(cinema.poster)
-        setLike((cinema.id + cinema.runtime) % 2 == 0)
-        setRating(cinema.ratings.toInt() / 2)
+        setLike(cinema.ratings > 8)
+        setRating(cinema.ratings)
         setReviewCount(cinema.numberOfRatings)
         setTime(cinema.runtime)
         setAge(cinema.minimumAge)
@@ -66,7 +66,7 @@ class CinemaListHolder(private val view: View, private val onClick: (Movie) -> U
         binding.imageLike.setImageResource(if (isLike) R.drawable.ic_like_on else R.drawable.ic_like_off)
     }
 
-    private fun setRating(ratingCount: Int) {
+    private fun setRating(ratingCount: Float) {
         binding.rating.setRating(ratingCount)
     }
 

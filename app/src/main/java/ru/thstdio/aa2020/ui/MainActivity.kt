@@ -8,7 +8,7 @@ import ru.thstdio.aa2020.ui.list.FragmentMoviesList
 
 class MainActivity : AppCompatActivity(), Navigation {
 
-    private val listFragment = FragmentMoviesList()
+    private val listFragment = FragmentMoviesList.newInstance()
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
@@ -19,7 +19,7 @@ class MainActivity : AppCompatActivity(), Navigation {
         }
     }
 
-    override fun openDetail(id: Int) {
+    override fun openDetail(id: Long) {
         val fragment = FragmentMoviesDetails.newInstance(id)
         supportFragmentManager.beginTransaction()
             .add(R.id.fragment_container_view, fragment, fragment.javaClass.name)

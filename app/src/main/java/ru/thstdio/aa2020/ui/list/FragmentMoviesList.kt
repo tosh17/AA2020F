@@ -7,18 +7,21 @@ import androidx.recyclerview.widget.RecyclerView
 import by.kirich1409.viewbindingdelegate.viewBinding
 import kotlinx.coroutines.*
 import ru.thstdio.aa2020.R
-import ru.thstdio.aa2020.data.loadMovies
+import ru.thstdio.aa2020.api.loadMovies
 import ru.thstdio.aa2020.databinding.FragmentMoviesListBinding
 import ru.thstdio.aa2020.ui.FragmentNavigation
 
 class FragmentMoviesList : FragmentNavigation(R.layout.fragment_movies_list) {
+    companion object {
+        fun newInstance(): FragmentMoviesList = FragmentMoviesList()
+    }
+
     private val binding: FragmentMoviesListBinding by viewBinding()
     private val exceptionHandler = CoroutineExceptionHandler { coroutineContext, exception ->
         println("CoroutineExceptionHandler got $exception in $coroutineContext")
     }
-    private var scope = CoroutineScope(
-        Job() +
-                Dispatchers.IO +
+    private val scope = CoroutineScope(
+        Dispatchers.Main.immediate +
                 exceptionHandler
     )
 
@@ -33,10 +36,13 @@ class FragmentMoviesList : FragmentNavigation(R.layout.fragment_movies_list) {
     private fun loadMoviesList() {
         scope.launch {
             val listMovies = loadMovies(requireContext())
-            withContext(Dispatchers.Main) {
-                binding.recyclerView.adapter =
-                    CinemaListAdapter(listMovies) { cinema -> router.openDetail(cinema.id) }
-            }
+            binding.recyclerView.adapter =
+                CinemaListAdapter(listMovies) { cinema -> router.openDetail(cinema.id) }
         }
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        scope.cancel()
     }
 }

@@ -10,43 +10,43 @@ import coil.load
 import coil.transform.BlurTransformation
 import kotlinx.coroutines.*
 import ru.thstdio.aa2020.R
+import ru.thstdio.aa2020.api.loadMovie
 import ru.thstdio.aa2020.data.Movie
-import ru.thstdio.aa2020.data.loadMovie
 import ru.thstdio.aa2020.databinding.FragmentMoviesDetailsBinding
 import ru.thstdio.aa2020.ui.FragmentNavigation
 
 
 class FragmentMoviesDetails : FragmentNavigation(R.layout.fragment_movies_details) {
-
-    private val binding: FragmentMoviesDetailsBinding by viewBinding()
-    private val exceptionHandler = CoroutineExceptionHandler { coroutineContext, exception ->
-        println("CoroutineExceptionHandler got $exception in $coroutineContext")
-    }
-    private var scope = CoroutineScope(
-        Job() +
-                Dispatchers.IO +
-                exceptionHandler
-    )
-
     companion object {
         private const val CinemaArg = "Cinema_ID"
-        fun newInstance(cinema: Int): FragmentMoviesDetails {
+        fun newInstance(cinema: Long): FragmentMoviesDetails {
             val fragment = FragmentMoviesDetails()
-            val bundle = Bundle()
-            bundle.putInt(CinemaArg, cinema)
+            val bundle = Bundle(1)
+            bundle.putLong(CinemaArg, cinema)
             fragment.arguments = bundle
             return fragment
         }
     }
 
+    private val binding: FragmentMoviesDetailsBinding by viewBinding()
+    private val exceptionHandler = CoroutineExceptionHandler { coroutineContext, exception ->
+        println("CoroutineExceptionHandler got $exception in $coroutineContext")
+    }
+    private val scope: CoroutineScope = CoroutineScope(
+        Dispatchers.Main.immediate +
+                exceptionHandler
+    )
+
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         binding.areaBack.setOnClickListener {
-            router?.back()
+            router.back()
         }
         arguments?.let { arg ->
-            val cinemaId = arg.getInt(CinemaArg)
+            val cinemaId = arg.getLong(CinemaArg)
             scope.launch {
+
                 val cinema = loadMovie(requireContext(), cinemaId)
                 withContext(Dispatchers.Main) { bindView(cinema) }
             }
@@ -59,11 +59,13 @@ class FragmentMoviesDetails : FragmentNavigation(R.layout.fragment_movies_detail
         binding.textTag.text = cinema.genres.joinToString { it.name }
         binding.textReviews.text = getString(R.string.review_string, cinema.numberOfRatings)
         binding.textStory.text = cinema.overview
-        setRating(cinema.ratings.toInt() / 2)
+        binding.rating.setRating(cinema.ratings)
         if (cinema.actors.isNotEmpty()) {
             binding.recyclerView.layoutManager =
                 LinearLayoutManager(requireContext(), RecyclerView.HORIZONTAL, false)
-            binding.recyclerView.adapter = ActorAdapter(cinema.actors)
+            val adapter = ActorAdapter()
+            adapter.setActors(cinema.actors)
+            binding.recyclerView.adapter = adapter
         } else {
             binding.textCast.isVisible = false
             binding.recyclerView.isVisible = false
@@ -83,7 +85,8 @@ class FragmentMoviesDetails : FragmentNavigation(R.layout.fragment_movies_detail
         }
     }
 
-    private fun setRating(rating: Int) {
-        binding.rating.setRating(rating)
+    override fun onDestroyView() {
+        super.onDestroyView()
+        scope.cancel()
     }
 }

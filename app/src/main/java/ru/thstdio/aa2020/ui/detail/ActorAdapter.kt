@@ -10,8 +10,11 @@ import ru.thstdio.aa2020.R
 import ru.thstdio.aa2020.data.Actor
 import ru.thstdio.aa2020.databinding.ViewHolderActorBinding
 
-class ActorAdapter(private val actors: List<Actor>) :
+class ActorAdapter() :
     RecyclerView.Adapter<ActorHolder>() {
+    private var actors: List<Actor> = emptyList()
+
+
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ActorHolder {
         val view =
             LayoutInflater.from(parent.context).inflate(R.layout.view_holder_actor, parent, false)
@@ -23,6 +26,9 @@ class ActorAdapter(private val actors: List<Actor>) :
     }
 
     override fun getItemCount() = actors.size
+    fun setActors(actors: List<Actor>) {
+        this.actors = actors
+    }
 }
 
 class ActorHolder(view: View) : RecyclerView.ViewHolder(view) {
@@ -36,7 +42,7 @@ class ActorHolder(view: View) : RecyclerView.ViewHolder(view) {
         binding.imageMovie.load(picture) {
             crossfade(true)
             transformations(
-                RoundedCornersTransformation(25f, 25f, 16f, 16f)
+                RoundedCornersTransformation(24f, 24f, 24f, 24f)
             )
         }
     }

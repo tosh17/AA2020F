@@ -1,5 +1,5 @@
 <resources>
     <declare-styleable name="RatingView">
-        <attr name="rating" format="integer" />
+        <attr name="rating" format="float" />
     </declare-styleable>
 </resources>
