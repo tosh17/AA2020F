@@ -2,6 +2,7 @@ package ru.thstdio.aa2020.ui.detail
 
 import android.os.Bundle
 import android.view.View
+import androidx.core.view.isVisible
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import by.kirich1409.viewbindingdelegate.viewBinding
@@ -59,9 +60,13 @@ class FragmentMoviesDetails : FragmentNavigation(R.layout.fragment_movies_detail
         binding.textReviews.text = getString(R.string.review_string, cinema.numberOfRatings)
         binding.textStory.text = cinema.overview
         setRating(cinema.ratings.toInt() / 2)
-        binding.recyclerView.layoutManager =
-            LinearLayoutManager(requireContext(), RecyclerView.HORIZONTAL, false)
-        binding.recyclerView.adapter = ActorAdapter(cinema.actors)
+        if (cinema.actors.isNotEmpty()) {
+            binding.recyclerView.layoutManager =
+                LinearLayoutManager(requireContext(), RecyclerView.HORIZONTAL, false)
+            binding.recyclerView.adapter = ActorAdapter(cinema.actors)
+        } else {
+            binding.textCast.isVisible = false
+        }
     }
 
     private fun setBg(poster: String) {
