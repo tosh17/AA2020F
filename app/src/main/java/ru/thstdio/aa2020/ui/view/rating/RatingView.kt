@@ -1,15 +1,15 @@
-package ru.thstdio.aa2020.view.rating
+package ru.thstdio.aa2020.ui.view.rating
 
 import android.content.Context
 import android.util.AttributeSet
-import android.widget.FrameLayout
 import android.widget.ImageView
+import android.widget.LinearLayout
 import androidx.annotation.ColorInt
 import androidx.core.content.ContextCompat
 import ru.thstdio.aa2020.R
 import ru.thstdio.aa2020.databinding.ViewRatingBinding
 
-class RatingView : FrameLayout {
+class RatingView : LinearLayout {
 
 
     constructor(context: Context) : super(context) {

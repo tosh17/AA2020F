@@ -1,9 +1,10 @@
-package ru.thstdio.aa2020
+package ru.thstdio.aa2020.ui
 
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
-import ru.thstdio.aa2020.detail.FragmentMoviesDetails
-import ru.thstdio.aa2020.list.FragmentMoviesList
+import ru.thstdio.aa2020.R
+import ru.thstdio.aa2020.ui.detail.FragmentMoviesDetails
+import ru.thstdio.aa2020.ui.list.FragmentMoviesList
 
 class MainActivity : AppCompatActivity(), Navigation {
 

@@ -46,11 +46,20 @@
             app:layout_constraintStart_toStartOf="parent"
             app:srcCompat="@drawable/mask" />
 
+        <View
+            android:id="@+id/area_back"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:background="#80474747"
+            app:layout_constraintBottom_toBottomOf="@+id/text_back"
+            app:layout_constraintEnd_toEndOf="@+id/text_back"
+            app:layout_constraintStart_toStartOf="@+id/image_back"
+            app:layout_constraintTop_toTopOf="@+id/text_back" />
+
         <ImageView
             android:id="@+id/image_back"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginEnd="8dp"
             app:layout_constraintBottom_toBottomOf="@+id/text_back"
             app:layout_constraintStart_toStartOf="@id/guideline_left"
             app:layout_constraintTop_toTopOf="@+id/text_back"
@@ -70,15 +79,6 @@
             app:layout_constraintStart_toEndOf="@+id/image_back"
             app:layout_constraintTop_toTopOf="parent" />
 
-
-        <View
-            android:id="@+id/area_back"
-            android:layout_width="0dp"
-            android:layout_height="0dp"
-            app:layout_constraintBottom_toBottomOf="@+id/text_back"
-            app:layout_constraintEnd_toEndOf="@+id/text_back"
-            app:layout_constraintStart_toStartOf="@+id/image_back"
-            app:layout_constraintTop_toTopOf="@+id/text_back" />
 
         <TextView
             android:id="@+id/text_title"
@@ -130,7 +130,7 @@
             app:layout_constraintStart_toStartOf="@+id/guideline_left"
             app:layout_constraintTop_toBottomOf="@+id/text_title" />
 
-        <ru.thstdio.aa2020.view.rating.RatingView
+        <ru.thstdio.aa2020.ui.view.rating.RatingView
             android:id="@+id/rating"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

@@ -1,17 +1,18 @@
-package ru.thstdio.aa2020.list
+package ru.thstdio.aa2020.ui.list
 
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.annotation.DrawableRes
 import androidx.recyclerview.widget.RecyclerView
+import coil.load
 import ru.thstdio.aa2020.R
+import ru.thstdio.aa2020.data.Genre
+import ru.thstdio.aa2020.data.Movie
 import ru.thstdio.aa2020.databinding.ViewHolderCinemaBinding
-import ru.thstdio.aa2020.dto.CinemaDto
 
 class CinemaListAdapter(
-    private val cinemas: List<CinemaDto>,
-    private val router: (CinemaDto) -> Unit
+    private val cinemas: List<Movie>,
+    private val router: (Movie) -> Unit
 ) :
     RecyclerView.Adapter<CinemaListHolder>() {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CinemaListHolder {
@@ -27,36 +28,38 @@ class CinemaListAdapter(
     override fun getItemCount() = cinemas.size
 }
 
-class CinemaListHolder(private val view: View, private val onClick: (CinemaDto) -> Unit) :
+class CinemaListHolder(private val view: View, private val onClick: (Movie) -> Unit) :
     RecyclerView.ViewHolder(view) {
     private val binding = ViewHolderCinemaBinding.bind(view)
 
-    fun onBindView(cinema: CinemaDto) {
-        setName(cinema.name)
-        setGenre(cinema.genre)
-        setPoster(cinema.posterId)
-        setLike(cinema.like)
-        setRating(cinema.rating)
-        setReviewCount(cinema.reviews)
-        setTime(cinema.time)
-        setAge(cinema.age)
+    fun onBindView(cinema: Movie) {
+        setName(cinema.title)
+        setGenre(cinema.genres)
+        setPoster(cinema.poster)
+        setLike((cinema.id + cinema.runtime) % 2 == 0)
+        setRating(cinema.ratings.toInt() / 2)
+        setReviewCount(cinema.numberOfRatings)
+        setTime(cinema.runtime)
+        setAge(cinema.minimumAge)
         setOnClick { onClick(cinema) }
     }
+
 
     private fun setName(name: String) {
         binding.textMovieName.text = name
     }
 
-    private fun setGenre(genre: String) {
-        binding.textMovieType.text = genre
+    private fun setGenre(genre: List<Genre>) {
+        binding.textMovieType.text = genre.joinToString { it.name }
     }
 
-    private fun setPoster(@DrawableRes resId: Int) {
-        binding.imageBg.setImageResource(resId)
+    private fun setPoster(poster: String) {
+        binding.imageBg.load(poster)
+
     }
 
-    private fun setAge(age: String) {
-        binding.textAge.text = age
+    private fun setAge(age: Int) {
+        binding.textAge.text = "$age+"
     }
 
     private fun setLike(isLike: Boolean) {

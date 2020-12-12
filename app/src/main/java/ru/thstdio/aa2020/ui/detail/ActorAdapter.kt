@@ -1,15 +1,16 @@
-package ru.thstdio.aa2020.detail
+package ru.thstdio.aa2020.ui.detail
 
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.annotation.DrawableRes
 import androidx.recyclerview.widget.RecyclerView
+import coil.load
+import coil.transform.RoundedCornersTransformation
 import ru.thstdio.aa2020.R
+import ru.thstdio.aa2020.data.Actor
 import ru.thstdio.aa2020.databinding.ViewHolderActorBinding
-import ru.thstdio.aa2020.dto.ActorDto
 
-class ActorAdapter(private val actors: List<ActorDto>) :
+class ActorAdapter(private val actors: List<Actor>) :
     RecyclerView.Adapter<ActorHolder>() {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ActorHolder {
         val view =
@@ -26,13 +27,18 @@ class ActorAdapter(private val actors: List<ActorDto>) :
 
 class ActorHolder(view: View) : RecyclerView.ViewHolder(view) {
     private val binding = ViewHolderActorBinding.bind(view)
-    fun onBindView(actor: ActorDto) {
+    fun onBindView(actor: Actor) {
         setName(actor.name)
-        setImg(actor.imgId)
+        setImg(actor.picture)
     }
 
-    private fun setImg(@DrawableRes resId: Int) {
-        binding.imageMovie.setImageResource(resId)
+    private fun setImg(picture: String) {
+        binding.imageMovie.load(picture) {
+            crossfade(true)
+            transformations(
+                RoundedCornersTransformation(25f, 25f, 16f, 16f)
+            )
+        }
     }
 
     private fun setName(name: String) {
