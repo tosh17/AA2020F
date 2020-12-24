@@ -29,19 +29,19 @@ class FragmentMoviesDetails : FragmentNavigation(R.layout.fragment_movies_detail
     }
 
     private val binding: FragmentMoviesDetailsBinding by viewBinding()
-    private var repository: Repository? = null
     private val exceptionHandler = CoroutineExceptionHandler { coroutineContext, exception ->
         println("CoroutineExceptionHandler got $exception in $coroutineContext")
     }
     private val scope: CoroutineScope = CoroutineScope(
-        Dispatchers.Main.immediate +
+        SupervisorJob() +
+                Dispatchers.Main.immediate +
                 exceptionHandler
     )
 
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        repository = Repository(requireActivity().applicationContext)
+        val repository = Repository(requireActivity().applicationContext)
         binding.areaBack.setOnClickListener {
             router.back()
         }
@@ -52,7 +52,7 @@ class FragmentMoviesDetails : FragmentNavigation(R.layout.fragment_movies_detail
         arguments?.let { arg ->
             val cinemaId = arg.getLong(CinemaArg)
             scope.launch {
-                repository?.downloadMovie(cinemaId)?.let { cinema ->
+                repository.downloadMovie(cinemaId)?.let { cinema ->
                     bindView(cinema)
                 }
 
