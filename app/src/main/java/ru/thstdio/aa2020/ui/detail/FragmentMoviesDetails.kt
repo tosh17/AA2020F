@@ -11,6 +11,7 @@ import by.kirich1409.viewbindingdelegate.viewBinding
 import coil.load
 import coil.transform.BlurTransformation
 import ru.thstdio.aa2020.R
+import ru.thstdio.aa2020.api.Repository
 import ru.thstdio.aa2020.data.Movie
 import ru.thstdio.aa2020.databinding.FragmentMoviesDetailsBinding
 import ru.thstdio.aa2020.ui.FragmentNavigation
@@ -41,6 +42,10 @@ class FragmentMoviesDetails : FragmentNavigation(R.layout.fragment_movies_detail
         binding.areaBack.setOnClickListener {
             viewModel.onRouteBack()
         }
+        binding.recyclerView.layoutManager =
+            LinearLayoutManager(requireContext(), RecyclerView.HORIZONTAL, false)
+        val adapter = ActorAdapter()
+        binding.recyclerView.adapter = adapter
         arguments?.let { arg ->
             val cinemaId = arg.getLong(CinemaArg)
             viewModel.loadCinemaDetail(cinemaId)
@@ -56,11 +61,8 @@ class FragmentMoviesDetails : FragmentNavigation(R.layout.fragment_movies_detail
         binding.textStory.text = cinema.overview
         binding.rating.setRating(cinema.ratings)
         if (cinema.actors.isNotEmpty()) {
-            binding.recyclerView.layoutManager =
-                LinearLayoutManager(requireContext(), RecyclerView.HORIZONTAL, false)
-            val adapter = ActorAdapter()
-            adapter.setActors(cinema.actors)
-            binding.recyclerView.adapter = adapter
+            val adapter = binding.recyclerView.adapter as ActorAdapter?
+            adapter?.setActors(cinema.actors)
         } else {
             binding.textCast.isVisible = false
             binding.recyclerView.isVisible = false

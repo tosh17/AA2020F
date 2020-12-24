@@ -28,6 +28,7 @@ class ActorAdapter() :
     override fun getItemCount() = actors.size
     fun setActors(actors: List<Actor>) {
         this.actors = actors
+        notifyDataSetChanged()
     }
 }
 
