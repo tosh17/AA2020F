@@ -18,16 +18,25 @@ class Repository(private val appContext: Context) {
 
     private val jsonFormat = Json { ignoreUnknownKeys = true }
 
-    private suspend fun loadGenres(context: Context): List<Genre> =
-        loadFromJson<JsonGenre>("genres.json").map { it.toGenre() }
+    private suspend fun loadGenres(): List<Genre> =
+        loadFromJson<List<JsonGenre>>(
+            "genres.json"
+        ) { jsonString: String ->
+            jsonFormat.decodeFromString(jsonString)
+        }
+            .map { it.toGenre() }
 
-    private suspend fun loadActors(context: Context): List<Actor> =
-        loadFromJson<JsonActor>("people.json").map { it.toActor() }
+    private suspend fun loadActors(): List<Actor> =
+        loadFromJson<List<JsonActor>>("people.json") { jsonString: String ->
+            jsonFormat.decodeFromString(jsonString)
+        }.map { it.toActor() }
 
     private suspend fun loadMovies(context: Context): List<Movie> {
-        val moviesJson = loadFromJson<JsonMovie>("data.json")
-        val actors = loadActors(context).associateBy { it.id }
-        val genres = loadGenres(context).associateBy { it.id }
+        val moviesJson = loadFromJson<List<JsonMovie>>("data.json") { jsonString: String ->
+            jsonFormat.decodeFromString(jsonString)
+        }
+        val actors = loadActors().associateBy { it.id }
+        val genres = loadGenres().associateBy { it.id }
         return moviesJson.map { it.toMovie(actors, genres) }
     }
 
@@ -42,6 +51,12 @@ class Repository(private val appContext: Context) {
         withContext(Dispatchers.IO) {
             val jsonString = readAssetFileToString(appContext, fileName)
             jsonFormat.decodeFromString<List<T>>(jsonString)
+        }
+
+    private suspend fun <T> loadFromJson(fileName: String, parse: Json.(String) -> T): T =
+        withContext(Dispatchers.IO) {
+            val jsonString = readAssetFileToString(appContext, fileName)
+            jsonFormat.parse(jsonString)
         }
 
     private fun readAssetFileToString(context: Context, fileName: String): String {
