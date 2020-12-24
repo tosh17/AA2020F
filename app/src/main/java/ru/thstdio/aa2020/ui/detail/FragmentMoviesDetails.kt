@@ -70,7 +70,6 @@ class FragmentMoviesDetails : FragmentNavigation(R.layout.fragment_movies_detail
         if (cinema.actors.isNotEmpty()) {
             val adapter = binding.recyclerView.adapter as ActorAdapter?
             adapter?.setActors(cinema.actors)
-            adapter?.notifyDataSetChanged()
         } else {
             binding.textCast.isVisible = false
             binding.recyclerView.isVisible = false
