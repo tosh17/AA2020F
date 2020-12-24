@@ -43,12 +43,15 @@ class FragmentMoviesDetails : FragmentNavigation(R.layout.fragment_movies_detail
         binding.areaBack.setOnClickListener {
             router.back()
         }
+        binding.recyclerView.layoutManager =
+            LinearLayoutManager(requireContext(), RecyclerView.HORIZONTAL, false)
+        val adapter = ActorAdapter()
+        binding.recyclerView.adapter = adapter
         arguments?.let { arg ->
             val cinemaId = arg.getLong(CinemaArg)
             scope.launch {
-
                 val cinema = loadMovie(requireContext(), cinemaId)
-                withContext(Dispatchers.Main) { bindView(cinema) }
+                bindView(cinema)
             }
         }
     }
@@ -61,11 +64,9 @@ class FragmentMoviesDetails : FragmentNavigation(R.layout.fragment_movies_detail
         binding.textStory.text = cinema.overview
         binding.rating.setRating(cinema.ratings)
         if (cinema.actors.isNotEmpty()) {
-            binding.recyclerView.layoutManager =
-                LinearLayoutManager(requireContext(), RecyclerView.HORIZONTAL, false)
-            val adapter = ActorAdapter()
-            adapter.setActors(cinema.actors)
-            binding.recyclerView.adapter = adapter
+            val adapter = binding.recyclerView.adapter as ActorAdapter?
+            adapter?.setActors(cinema.actors)
+            adapter?.notifyDataSetChanged()
         } else {
             binding.textCast.isVisible = false
             binding.recyclerView.isVisible = false
@@ -86,7 +87,8 @@ class FragmentMoviesDetails : FragmentNavigation(R.layout.fragment_movies_detail
     }
 
     override fun onDestroyView() {
-        super.onDestroyView()
         scope.cancel()
+        super.onDestroyView()
+
     }
 }

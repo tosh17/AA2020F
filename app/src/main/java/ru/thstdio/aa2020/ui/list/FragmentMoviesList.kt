@@ -20,13 +20,15 @@ class FragmentMoviesList : FragmentNavigation(R.layout.fragment_movies_list) {
     private val exceptionHandler = CoroutineExceptionHandler { coroutineContext, exception ->
         println("CoroutineExceptionHandler got $exception in $coroutineContext")
     }
-    private val scope = CoroutineScope(
-        Dispatchers.Main.immediate +
-                exceptionHandler
+    private var scope = CoroutineScope(
+        Dispatchers.Main.immediate + exceptionHandler
     )
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        scope = CoroutineScope(
+            Dispatchers.Main.immediate + exceptionHandler
+        )
         binding.recyclerView.layoutManager =
             GridLayoutManager(context, 2, RecyclerView.VERTICAL, false)
         loadMoviesList()
@@ -42,7 +44,7 @@ class FragmentMoviesList : FragmentNavigation(R.layout.fragment_movies_list) {
     }
 
     override fun onDestroyView() {
-        super.onDestroyView()
         scope.cancel()
+        super.onDestroyView()
     }
 }
