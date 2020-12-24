@@ -38,11 +38,11 @@ class FragmentMoviesList : FragmentNavigation(R.layout.fragment_movies_list) {
 
     private fun loadMoviesList() {
         scope.launch {
-            val repository: Repository = Repository(requireActivity().applicationContext)
-            repository.downloadMovies().let { listMovies ->
-                val adapter = binding.recyclerView.adapter as CinemaListAdapter?
-                adapter?.setCinemas(listMovies)
-            }
+            val appContext = requireActivity().applicationContext
+            val repository = Repository(appContext)
+            val listMovies = repository.downloadMovies()
+            val adapter = binding.recyclerView.adapter as CinemaListAdapter?
+            adapter?.setCinemas(listMovies)
         }
     }
 

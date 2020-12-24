@@ -50,12 +50,11 @@ class FragmentMoviesDetails : FragmentNavigation(R.layout.fragment_movies_detail
         binding.recyclerView.adapter = adapter
         arguments?.let { arg ->
             val cinemaId = arg.getLong(CinemaArg)
-            val repository = Repository(requireActivity().applicationContext)
+            val appContext = requireActivity().applicationContext
+            val repository = Repository(appContext)
             scope.launch {
-                repository.downloadMovie(cinemaId).let { cinema ->
-                    bindView(cinema)
-                }
-
+                val cinema = repository.downloadMovie(cinemaId)
+                bindView(cinema)
             }
         }
     }

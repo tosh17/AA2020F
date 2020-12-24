@@ -15,10 +15,8 @@ class Repository(private val appContext: Context) {
     private val jsonFormat = Json { ignoreUnknownKeys = true }
 
     suspend fun downloadMovies(): List<Movie> {
-        val moviesJson = loadFromJson<List<JsonMovie>>("data.json")
-        { jsonString: String ->
-            jsonFormat.decodeFromString(jsonString)
-        }
+        val moviesJson = loadFromJson<List<JsonMovie>>("data.json", Json::decodeFromString)
+
         val actors = loadActors().associateBy { it.id }
         val genres = loadGenres().associateBy { it.id }
         return moviesJson.map { it.toMovie(actors, genres) }
@@ -32,27 +30,22 @@ class Repository(private val appContext: Context) {
 
 
     private suspend fun loadGenres(): List<Genre> =
-        loadFromJson<List<JsonGenre>>(
-            "genres.json"
-        ) { jsonString: String ->
-            jsonFormat.decodeFromString(jsonString)
-        }
+        loadFromJson<List<JsonGenre>>("genres.json", Json::decodeFromString)
             .map { it.toGenre() }
 
     private suspend fun loadActors(): List<Actor> =
-        loadFromJson<List<JsonActor>>("people.json") { jsonString: String ->
-            jsonFormat.decodeFromString(jsonString)
-        }.map { it.toActor() }
+        loadFromJson<List<JsonActor>>("people.json", Json::decodeFromString)
+            .map { it.toActor() }
 
 
     private suspend fun <T> loadFromJson(fileName: String, parse: Json.(String) -> T): T =
         withContext(Dispatchers.IO) {
-            val jsonString = readAssetFileToString(appContext, fileName)
+            val jsonString = readAssetFileToString(fileName)
             jsonFormat.parse(jsonString)
         }
 
-    private fun readAssetFileToString(context: Context, fileName: String): String {
-        val stream = context.assets.open(fileName)
+    private fun readAssetFileToString(fileName: String): String {
+        val stream = appContext.assets.open(fileName)
         return stream.bufferedReader().readText()
     }
 }
