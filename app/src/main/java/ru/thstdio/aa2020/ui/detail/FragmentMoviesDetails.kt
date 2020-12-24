@@ -41,7 +41,6 @@ class FragmentMoviesDetails : FragmentNavigation(R.layout.fragment_movies_detail
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        val repository = Repository(requireActivity().applicationContext)
         binding.areaBack.setOnClickListener {
             router.back()
         }
@@ -51,6 +50,7 @@ class FragmentMoviesDetails : FragmentNavigation(R.layout.fragment_movies_detail
         binding.recyclerView.adapter = adapter
         arguments?.let { arg ->
             val cinemaId = arg.getLong(CinemaArg)
+            val repository = Repository(requireActivity().applicationContext)
             scope.launch {
                 repository.downloadMovie(cinemaId)?.let { cinema ->
                     bindView(cinema)

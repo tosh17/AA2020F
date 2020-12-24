@@ -30,16 +30,18 @@ class FragmentMoviesList : FragmentNavigation(R.layout.fragment_movies_list) {
         super.onViewCreated(view, savedInstanceState)
         binding.recyclerView.layoutManager =
             GridLayoutManager(context, 2, RecyclerView.VERTICAL, false)
+        binding.recyclerView.adapter =
+            CinemaListAdapter() { cinema -> router.openDetail(cinema.id) }
         loadMoviesList()
 
     }
 
     private fun loadMoviesList() {
-        val repository: Repository = Repository(requireActivity().applicationContext)
         scope.launch {
+            val repository: Repository = Repository(requireActivity().applicationContext)
             repository.downloadMovies().let { listMovies ->
-                binding.recyclerView.adapter =
-                    CinemaListAdapter(listMovies) { cinema -> router.openDetail(cinema.id) }
+                val adapter = binding.recyclerView.adapter as CinemaListAdapter?
+                adapter?.setCinemas(listMovies)
             }
         }
     }
