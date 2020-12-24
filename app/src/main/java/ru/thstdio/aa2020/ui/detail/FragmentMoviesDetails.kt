@@ -52,7 +52,7 @@ class FragmentMoviesDetails : FragmentNavigation(R.layout.fragment_movies_detail
             val cinemaId = arg.getLong(CinemaArg)
             val repository = Repository(requireActivity().applicationContext)
             scope.launch {
-                repository.downloadMovie(cinemaId)?.let { cinema ->
+                repository.downloadMovie(cinemaId).let { cinema ->
                     bindView(cinema)
                 }
 
