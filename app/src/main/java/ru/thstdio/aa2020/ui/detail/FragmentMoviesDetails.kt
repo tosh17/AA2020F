@@ -10,7 +10,7 @@ import coil.load
 import coil.transform.BlurTransformation
 import kotlinx.coroutines.*
 import ru.thstdio.aa2020.R
-import ru.thstdio.aa2020.api.loadMovie
+import ru.thstdio.aa2020.api.Repository
 import ru.thstdio.aa2020.data.Movie
 import ru.thstdio.aa2020.databinding.FragmentMoviesDetailsBinding
 import ru.thstdio.aa2020.ui.FragmentNavigation
@@ -29,6 +29,7 @@ class FragmentMoviesDetails : FragmentNavigation(R.layout.fragment_movies_detail
     }
 
     private val binding: FragmentMoviesDetailsBinding by viewBinding()
+    private var repository: Repository? = null
     private val exceptionHandler = CoroutineExceptionHandler { coroutineContext, exception ->
         println("CoroutineExceptionHandler got $exception in $coroutineContext")
     }
@@ -40,6 +41,7 @@ class FragmentMoviesDetails : FragmentNavigation(R.layout.fragment_movies_detail
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        repository = Repository(requireActivity().applicationContext)
         binding.areaBack.setOnClickListener {
             router.back()
         }
@@ -50,8 +52,10 @@ class FragmentMoviesDetails : FragmentNavigation(R.layout.fragment_movies_detail
         arguments?.let { arg ->
             val cinemaId = arg.getLong(CinemaArg)
             scope.launch {
-                val cinema = loadMovie(requireContext(), cinemaId)
-                bindView(cinema)
+                repository?.downloadMovie(cinemaId)?.let { cinema ->
+                    bindView(cinema)
+                }
+
             }
         }
     }

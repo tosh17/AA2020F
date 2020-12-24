@@ -7,7 +7,7 @@ import androidx.recyclerview.widget.RecyclerView
 import by.kirich1409.viewbindingdelegate.viewBinding
 import kotlinx.coroutines.*
 import ru.thstdio.aa2020.R
-import ru.thstdio.aa2020.api.loadMovies
+import ru.thstdio.aa2020.api.Repository
 import ru.thstdio.aa2020.databinding.FragmentMoviesListBinding
 import ru.thstdio.aa2020.ui.FragmentNavigation
 
@@ -17,6 +17,7 @@ class FragmentMoviesList : FragmentNavigation(R.layout.fragment_movies_list) {
     }
 
     private val binding: FragmentMoviesListBinding by viewBinding()
+    private var repository: Repository? = null
     private val exceptionHandler = CoroutineExceptionHandler { coroutineContext, exception ->
         println("CoroutineExceptionHandler got $exception in $coroutineContext")
     }
@@ -27,7 +28,8 @@ class FragmentMoviesList : FragmentNavigation(R.layout.fragment_movies_list) {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         scope = CoroutineScope(
-            Dispatchers.Main.immediate + exceptionHandler
+            SupervisorJob() +
+                    Dispatchers.Main.immediate + exceptionHandler
         )
         binding.recyclerView.layoutManager =
             GridLayoutManager(context, 2, RecyclerView.VERTICAL, false)
@@ -37,9 +39,10 @@ class FragmentMoviesList : FragmentNavigation(R.layout.fragment_movies_list) {
 
     private fun loadMoviesList() {
         scope.launch {
-            val listMovies = loadMovies(requireContext())
-            binding.recyclerView.adapter =
-                CinemaListAdapter(listMovies) { cinema -> router.openDetail(cinema.id) }
+            repository?.downloadMovies()?.let { listMovies ->
+                binding.recyclerView.adapter =
+                    CinemaListAdapter(listMovies) { cinema -> router.openDetail(cinema.id) }
+            }
         }
     }
 
