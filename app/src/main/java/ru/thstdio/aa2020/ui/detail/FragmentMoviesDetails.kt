@@ -1,16 +1,16 @@
 package ru.thstdio.aa2020.ui.detail
 
+import android.content.Context
 import android.os.Bundle
 import android.view.View
 import androidx.core.view.isVisible
+import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import by.kirich1409.viewbindingdelegate.viewBinding
 import coil.load
 import coil.transform.BlurTransformation
-import kotlinx.coroutines.*
 import ru.thstdio.aa2020.R
-import ru.thstdio.aa2020.api.loadMovie
 import ru.thstdio.aa2020.data.Movie
 import ru.thstdio.aa2020.databinding.FragmentMoviesDetailsBinding
 import ru.thstdio.aa2020.ui.FragmentNavigation
@@ -29,28 +29,23 @@ class FragmentMoviesDetails : FragmentNavigation(R.layout.fragment_movies_detail
     }
 
     private val binding: FragmentMoviesDetailsBinding by viewBinding()
-    private val exceptionHandler = CoroutineExceptionHandler { coroutineContext, exception ->
-        println("CoroutineExceptionHandler got $exception in $coroutineContext")
+    private val appContext: Context
+        get() = requireActivity().applicationContext
+    private val viewModel: MoviesDetailsViewModel by viewModels {
+        MoviesDetailsViewModelFactory(appContext, router)
     }
-    private val scope: CoroutineScope = CoroutineScope(
-        Dispatchers.Main.immediate +
-                exceptionHandler
-    )
 
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         binding.areaBack.setOnClickListener {
-            router.back()
+            viewModel.onRouteBack()
         }
         arguments?.let { arg ->
             val cinemaId = arg.getLong(CinemaArg)
-            scope.launch {
-
-                val cinema = loadMovie(requireContext(), cinemaId)
-                withContext(Dispatchers.Main) { bindView(cinema) }
-            }
+            viewModel.loadCinemaDetail(cinemaId)
         }
+        viewModel.movieState.observe(this.viewLifecycleOwner, this::bindView)
     }
 
     private fun bindView(cinema: Movie) {
@@ -83,10 +78,5 @@ class FragmentMoviesDetails : FragmentNavigation(R.layout.fragment_movies_detail
                 )
             )
         }
-    }
-
-    override fun onDestroyView() {
-        super.onDestroyView()
-        scope.cancel()
     }
 }
