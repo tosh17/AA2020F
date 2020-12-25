@@ -1,15 +1,15 @@
-package ru.thstdio.aa2020.view.rating
+package ru.thstdio.aa2020.ui.view.rating
 
 import android.content.Context
 import android.util.AttributeSet
-import android.widget.FrameLayout
 import android.widget.ImageView
+import android.widget.LinearLayout
 import androidx.annotation.ColorInt
 import androidx.core.content.ContextCompat
 import ru.thstdio.aa2020.R
 import ru.thstdio.aa2020.databinding.ViewRatingBinding
 
-class RatingView : FrameLayout {
+class RatingView : LinearLayout {
 
 
     constructor(context: Context) : super(context) {
@@ -35,7 +35,7 @@ class RatingView : FrameLayout {
         val a = context.obtainStyledAttributes(
             attrs, R.styleable.RatingView, defStyle, 0
         )
-        val rating = a.getInteger(R.styleable.RatingView_rating, 0)
+        val rating = a.getFloat(R.styleable.RatingView_rating, 0f)
         setRating(rating)
         a.recycle()
     }
@@ -50,11 +50,12 @@ class RatingView : FrameLayout {
         )
 
 
-    fun setRating(count: Int) {
+    fun setRating(rating: Float) {
+        val countStart = rating.toInt() / 2
         @ColorInt val activeColor: Int = ContextCompat.getColor(context, R.color.star_enable)
         @ColorInt val disableColor: Int = ContextCompat.getColor(context, R.color.star_disable)
         stars.forEachIndexed { index, starView ->
-            val color = if (index < count) activeColor else disableColor
+            val color = if (index < countStart) activeColor else disableColor
             starView.setColorFilter(color)
         }
     }

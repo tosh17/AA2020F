@@ -1,4 +1,4 @@
-package ru.thstdio.aa2020
+package ru.thstdio.aa2020.ui
 
 import androidx.annotation.ContentView
 import androidx.annotation.LayoutRes
