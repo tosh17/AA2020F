@@ -6,7 +6,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.CoroutineExceptionHandler
 import kotlinx.coroutines.launch
-import ru.thstdio.aa2020.api.util.Repository
+import ru.thstdio.aa2020.api.Repository
 import ru.thstdio.aa2020.data.Movie
 import ru.thstdio.aa2020.ui.Navigation
 

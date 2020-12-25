@@ -3,7 +3,7 @@ package ru.thstdio.aa2020.ui.detail
 import android.content.Context
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
-import ru.thstdio.aa2020.api.util.Repository
+import ru.thstdio.aa2020.api.Repository
 import ru.thstdio.aa2020.ui.Navigation
 
 

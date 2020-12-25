@@ -11,7 +11,7 @@ import by.kirich1409.viewbindingdelegate.viewBinding
 import coil.load
 import coil.transform.BlurTransformation
 import ru.thstdio.aa2020.R
-import ru.thstdio.aa2020.api.Repository
+import ru.thstdio.aa2020.data.Actor
 import ru.thstdio.aa2020.data.Movie
 import ru.thstdio.aa2020.databinding.FragmentMoviesDetailsBinding
 import ru.thstdio.aa2020.ui.FragmentNavigation
@@ -60,13 +60,8 @@ class FragmentMoviesDetails : FragmentNavigation(R.layout.fragment_movies_detail
         binding.textReviews.text = getString(R.string.review_string, cinema.numberOfRatings)
         binding.textStory.text = cinema.overview
         binding.rating.setRating(cinema.ratings)
-        if (cinema.actors.isNotEmpty()) {
-            val adapter = binding.recyclerView.adapter as ActorAdapter?
-            adapter?.setActors(cinema.actors)
-        } else {
-            binding.textCast.isVisible = false
-            binding.recyclerView.isVisible = false
-        }
+        binding.textAge.text = "${cinema.minimumAge}+"
+        showActorList(cinema.actors)
     }
 
     private fun setBg(poster: String) {
@@ -79,6 +74,16 @@ class FragmentMoviesDetails : FragmentNavigation(R.layout.fragment_movies_detail
                     BlurTransformation(requireContext(), 5f)
                 )
             )
+        }
+    }
+
+    private fun showActorList(actors: List<Actor>) {
+        if (actors.isNotEmpty()) {
+            val adapter = binding.recyclerView.adapter as ActorAdapter?
+            adapter?.setActors(actors)
+        } else {
+            binding.textCast.isVisible = false
+            binding.recyclerView.isVisible = false
         }
     }
 }
