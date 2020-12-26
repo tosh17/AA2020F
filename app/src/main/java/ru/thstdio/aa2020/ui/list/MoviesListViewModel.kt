@@ -8,9 +8,8 @@ import kotlinx.coroutines.CoroutineExceptionHandler
 import kotlinx.coroutines.launch
 import ru.thstdio.aa2020.api.Repository
 import ru.thstdio.aa2020.data.Movie
-import ru.thstdio.aa2020.ui.Navigation
 
-class MoviesListViewModel(private val repository: Repository, val router: Navigation) :
+class MoviesListViewModel(private val repository: Repository) :
     ViewModel() {
     private val _mutableMoviesState = MutableLiveData<List<Movie>>()
     val moviesState: LiveData<List<Movie>> get() = _mutableMoviesState
@@ -23,9 +22,5 @@ class MoviesListViewModel(private val repository: Repository, val router: Naviga
         viewModelScope.launch(exceptionHandler) {
             _mutableMoviesState.value = repository.downloadMovies()
         }
-    }
-
-    fun openDetail(id: Long) {
-        router.openDetail(id)
     }
 }

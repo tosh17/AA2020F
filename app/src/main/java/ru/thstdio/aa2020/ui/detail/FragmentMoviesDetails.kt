@@ -1,6 +1,5 @@
 package ru.thstdio.aa2020.ui.detail
 
-import android.content.Context
 import android.os.Bundle
 import android.view.View
 import androidx.core.view.isVisible
@@ -15,6 +14,7 @@ import ru.thstdio.aa2020.data.Actor
 import ru.thstdio.aa2020.data.Movie
 import ru.thstdio.aa2020.databinding.FragmentMoviesDetailsBinding
 import ru.thstdio.aa2020.ui.FragmentNavigation
+import ru.thstdio.aa2020.ui.view.extension.getAppContext
 
 
 class FragmentMoviesDetails : FragmentNavigation(R.layout.fragment_movies_details) {
@@ -30,17 +30,15 @@ class FragmentMoviesDetails : FragmentNavigation(R.layout.fragment_movies_detail
     }
 
     private val binding: FragmentMoviesDetailsBinding by viewBinding()
-    private val appContext: Context
-        get() = requireActivity().applicationContext
     private val viewModel: MoviesDetailsViewModel by viewModels {
-        MoviesDetailsViewModelFactory(appContext, router)
+        MoviesDetailsViewModelFactory(getAppContext())
     }
 
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         binding.areaBack.setOnClickListener {
-            viewModel.onRouteBack()
+            router.back()
         }
         binding.recyclerView.layoutManager =
             LinearLayoutManager(requireContext(), RecyclerView.HORIZONTAL, false)
@@ -79,7 +77,7 @@ class FragmentMoviesDetails : FragmentNavigation(R.layout.fragment_movies_detail
 
     private fun showActorList(actors: List<Actor>) {
         if (actors.isNotEmpty()) {
-            val adapter = binding.recyclerView.adapter as ActorAdapter?
+            val adapter = binding.recyclerView.adapter as? ActorAdapter
             adapter?.setActors(actors)
         } else {
             binding.textCast.isVisible = false

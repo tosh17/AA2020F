@@ -1,6 +1,5 @@
 package ru.thstdio.aa2020.ui.list
 
-import android.content.Context
 import android.os.Bundle
 import android.view.View
 import androidx.fragment.app.viewModels
@@ -11,6 +10,7 @@ import ru.thstdio.aa2020.R
 import ru.thstdio.aa2020.data.Movie
 import ru.thstdio.aa2020.databinding.FragmentMoviesListBinding
 import ru.thstdio.aa2020.ui.FragmentNavigation
+import ru.thstdio.aa2020.ui.view.extension.getAppContext
 
 class FragmentMoviesList : FragmentNavigation(R.layout.fragment_movies_list) {
     companion object {
@@ -18,10 +18,8 @@ class FragmentMoviesList : FragmentNavigation(R.layout.fragment_movies_list) {
     }
 
     private val binding: FragmentMoviesListBinding by viewBinding()
-    private val appContext: Context
-        get() = requireActivity().applicationContext
     private val viewModel: MoviesListViewModel by viewModels {
-        MoviesListViewModelFactory(appContext, router)
+        MoviesListViewModelFactory(getAppContext())
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -29,13 +27,13 @@ class FragmentMoviesList : FragmentNavigation(R.layout.fragment_movies_list) {
         binding.recyclerView.layoutManager =
             GridLayoutManager(context, 2, RecyclerView.VERTICAL, false)
         binding.recyclerView.adapter =
-            CinemaListAdapter() { cinema -> viewModel.openDetail(cinema.id) }
+            CinemaListAdapter() { cinema -> router.openDetail(cinema.id) }
         viewModel.loadMoviesList()
-        viewModel.moviesState.observe(this.viewLifecycleOwner, this::loadMoviesList)
+        viewModel.moviesState.observe(this.viewLifecycleOwner, this::bindListMovies)
     }
 
-    private fun loadMoviesList(listMovies: List<Movie>) {
-        val adapter = binding.recyclerView.adapter as CinemaListAdapter?
+    private fun bindListMovies(listMovies: List<Movie>) {
+        val adapter = binding.recyclerView.adapter as? CinemaListAdapter
         adapter?.setCinemas(listMovies)
     }
 }
