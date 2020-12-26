@@ -31,7 +31,8 @@ class FragmentMoviesDetails : FragmentNavigation(R.layout.fragment_movies_detail
 
     private val binding: FragmentMoviesDetailsBinding by viewBinding()
     private val viewModel: MoviesDetailsViewModel by viewModels {
-        MoviesDetailsViewModelFactory(getAppContext())
+        val cinemaId = arguments?.getLong(CinemaArg)
+        MoviesDetailsViewModelFactory(getAppContext(), cinemaId!!)
     }
 
 
@@ -44,10 +45,6 @@ class FragmentMoviesDetails : FragmentNavigation(R.layout.fragment_movies_detail
             LinearLayoutManager(requireContext(), RecyclerView.HORIZONTAL, false)
         val adapter = ActorAdapter()
         binding.recyclerView.adapter = adapter
-        arguments?.let { arg ->
-            val cinemaId = arg.getLong(CinemaArg)
-            viewModel.loadCinemaDetail(cinemaId)
-        }
         viewModel.movieState.observe(this.viewLifecycleOwner, this::bindView)
     }
 

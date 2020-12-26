@@ -28,7 +28,6 @@ class FragmentMoviesList : FragmentNavigation(R.layout.fragment_movies_list) {
             GridLayoutManager(context, 2, RecyclerView.VERTICAL, false)
         binding.recyclerView.adapter =
             CinemaListAdapter() { cinema -> router.openDetail(cinema.id) }
-        viewModel.loadMoviesList()
         viewModel.moviesState.observe(this.viewLifecycleOwner, this::bindListMovies)
     }
 

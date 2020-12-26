@@ -9,7 +9,7 @@ import kotlinx.coroutines.launch
 import ru.thstdio.aa2020.api.Repository
 import ru.thstdio.aa2020.data.Movie
 
-class MoviesDetailsViewModel(private val repository: Repository) :
+class MoviesDetailsViewModel(private val repository: Repository, private val cinemaId: Long) :
     ViewModel() {
     private val _mutableMovieState = MutableLiveData<Movie>()
     val movieState: LiveData<Movie> get() = _mutableMovieState
@@ -18,9 +18,10 @@ class MoviesDetailsViewModel(private val repository: Repository) :
         println("CoroutineExceptionHandler got $exception in $coroutineContext")
     }
 
-    fun loadCinemaDetail(idCinema: Long) {
+    init {
         viewModelScope.launch(exceptionHandler) {
-            _mutableMovieState.value = repository.downloadMovie(idCinema)
+            _mutableMovieState.value = repository.downloadMovie(cinemaId)
         }
     }
+
 }

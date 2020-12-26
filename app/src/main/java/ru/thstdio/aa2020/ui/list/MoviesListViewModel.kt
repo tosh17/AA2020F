@@ -13,12 +13,10 @@ class MoviesListViewModel(private val repository: Repository) :
     ViewModel() {
     private val _mutableMoviesState = MutableLiveData<List<Movie>>()
     val moviesState: LiveData<List<Movie>> get() = _mutableMoviesState
-
     private val exceptionHandler = CoroutineExceptionHandler { coroutineContext, exception ->
         println("CoroutineExceptionHandler got $exception in $coroutineContext")
     }
-
-    fun loadMoviesList() {
+    init {
         viewModelScope.launch(exceptionHandler) {
             _mutableMoviesState.value = repository.downloadMovies()
         }
