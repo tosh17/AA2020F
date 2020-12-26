@@ -35,7 +35,8 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:srcCompat="@drawable/orig" />
+            tools:ignore="ContentDescription"
+            tools:srcCompat="@drawable/orig" />
 
         <ImageView
             android:id="@+id/image_bg_mask"
@@ -44,7 +45,8 @@
             app:layout_constraintBottom_toBottomOf="@+id/image_bg_orig"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:srcCompat="@drawable/mask" />
+            app:srcCompat="@drawable/mask"
+            tools:ignore="ContentDescription" />
 
         <View
             android:id="@+id/area_back"
@@ -64,7 +66,8 @@
             app:layout_constraintStart_toStartOf="@id/guideline_left"
             app:layout_constraintTop_toTopOf="@+id/text_back"
             app:srcCompat="@drawable/ic_back"
-            app:tint="@color/text_back" />
+            app:tint="@color/text_back"
+            tools:ignore="ContentDescription" />
 
         <TextView
             android:id="@+id/text_back"
@@ -84,7 +87,7 @@
             android:id="@+id/text_title"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:text="@string/text_title"
+            tools:text="@string/text_title"
             android:textColor="@color/text_title"
             android:textSize="@dimen/text_title"
             android:textStyle="bold"
@@ -109,7 +112,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:elevation="5dp"
-            android:text="@string/text_age"
+            tools:text="@string/text_age"
             android:textColor="@color/white"
             android:textSize="12sp"
             android:textStyle="bold"
@@ -123,7 +126,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="4dp"
-            android:text="@string/text_tag"
+            tools:text="@string/text_tag"
             android:textColor="@color/text_tag"
             android:textSize="@dimen/text_subtitle"
             app:layout_constraintEnd_toStartOf="@+id/guideline_right"
@@ -146,7 +149,7 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
             android:layout_marginTop="4dp"
-            android:text="@string/text_reviews"
+            tools:text="@string/text_reviews"
             android:textColor="@color/text_reviews"
             android:textSize="14sp"
             android:textStyle="bold"
@@ -173,7 +176,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
             android:lineSpacingExtra="4sp"
-            android:text="@string/text_story"
+            tools:text="@string/text_story"
             android:textColor="@color/text_white"
             android:textSize="14sp"
             app:layout_constraintEnd_toEndOf="@id/guideline_right"

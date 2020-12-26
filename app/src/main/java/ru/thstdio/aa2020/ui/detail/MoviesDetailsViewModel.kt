@@ -1,0 +1,27 @@
+package ru.thstdio.aa2020.ui.detail
+
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
+import kotlinx.coroutines.CoroutineExceptionHandler
+import kotlinx.coroutines.launch
+import ru.thstdio.aa2020.api.Repository
+import ru.thstdio.aa2020.data.Movie
+
+class MoviesDetailsViewModel(private val repository: Repository, private val cinemaId: Long) :
+    ViewModel() {
+    private val _mutableMovieState = MutableLiveData<Movie>()
+    val movieState: LiveData<Movie> get() = _mutableMovieState
+
+    private val exceptionHandler = CoroutineExceptionHandler { coroutineContext, exception ->
+        println("CoroutineExceptionHandler got $exception in $coroutineContext")
+    }
+
+    init {
+        viewModelScope.launch(exceptionHandler) {
+            _mutableMovieState.value = repository.downloadMovie(cinemaId)
+        }
+    }
+
+}

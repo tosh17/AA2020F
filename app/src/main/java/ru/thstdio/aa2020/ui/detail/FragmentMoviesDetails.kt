@@ -3,17 +3,18 @@ package ru.thstdio.aa2020.ui.detail
 import android.os.Bundle
 import android.view.View
 import androidx.core.view.isVisible
+import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import by.kirich1409.viewbindingdelegate.viewBinding
 import coil.load
 import coil.transform.BlurTransformation
-import kotlinx.coroutines.*
 import ru.thstdio.aa2020.R
-import ru.thstdio.aa2020.api.Repository
+import ru.thstdio.aa2020.data.Actor
 import ru.thstdio.aa2020.data.Movie
 import ru.thstdio.aa2020.databinding.FragmentMoviesDetailsBinding
 import ru.thstdio.aa2020.ui.FragmentNavigation
+import ru.thstdio.aa2020.ui.view.extension.getAppContext
 
 
 class FragmentMoviesDetails : FragmentNavigation(R.layout.fragment_movies_details) {
@@ -29,14 +30,10 @@ class FragmentMoviesDetails : FragmentNavigation(R.layout.fragment_movies_detail
     }
 
     private val binding: FragmentMoviesDetailsBinding by viewBinding()
-    private val exceptionHandler = CoroutineExceptionHandler { coroutineContext, exception ->
-        println("CoroutineExceptionHandler got $exception in $coroutineContext")
+    private val viewModel: MoviesDetailsViewModel by viewModels {
+        val cinemaId = arguments?.getLong(CinemaArg)
+        MoviesDetailsViewModelFactory(getAppContext(), cinemaId!!)
     }
-    private val scope: CoroutineScope = CoroutineScope(
-        SupervisorJob() +
-                Dispatchers.Main.immediate +
-                exceptionHandler
-    )
 
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -48,15 +45,7 @@ class FragmentMoviesDetails : FragmentNavigation(R.layout.fragment_movies_detail
             LinearLayoutManager(requireContext(), RecyclerView.HORIZONTAL, false)
         val adapter = ActorAdapter()
         binding.recyclerView.adapter = adapter
-        arguments?.let { arg ->
-            val cinemaId = arg.getLong(CinemaArg)
-            val appContext = requireActivity().applicationContext
-            val repository = Repository(appContext)
-            scope.launch {
-                val cinema = repository.downloadMovie(cinemaId)
-                bindView(cinema)
-            }
-        }
+        viewModel.movieState.observe(this.viewLifecycleOwner, this::bindView)
     }
 
     private fun bindView(cinema: Movie) {
@@ -66,13 +55,8 @@ class FragmentMoviesDetails : FragmentNavigation(R.layout.fragment_movies_detail
         binding.textReviews.text = getString(R.string.review_string, cinema.numberOfRatings)
         binding.textStory.text = cinema.overview
         binding.rating.setRating(cinema.ratings)
-        if (cinema.actors.isNotEmpty()) {
-            val adapter = binding.recyclerView.adapter as ActorAdapter?
-            adapter?.setActors(cinema.actors)
-        } else {
-            binding.textCast.isVisible = false
-            binding.recyclerView.isVisible = false
-        }
+        binding.textAge.text = "${cinema.minimumAge}+"
+        showActorList(cinema.actors)
     }
 
     private fun setBg(poster: String) {
@@ -88,9 +72,13 @@ class FragmentMoviesDetails : FragmentNavigation(R.layout.fragment_movies_detail
         }
     }
 
-    override fun onDestroyView() {
-        scope.cancel()
-        super.onDestroyView()
-
+    private fun showActorList(actors: List<Actor>) {
+        if (actors.isNotEmpty()) {
+            val adapter = binding.recyclerView.adapter as? ActorAdapter
+            adapter?.setActors(actors)
+        } else {
+            binding.textCast.isVisible = false
+            binding.recyclerView.isVisible = false
+        }
     }
 }
