@@ -5,7 +5,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.paging.PagedListAdapter
-import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import coil.load
 import ru.thstdio.aa2020.R
@@ -16,21 +15,7 @@ import ru.thstdio.aa2020.databinding.ViewHolderCinemaBinding
 class CinemaListAdapter(
     private val router: (Cinema) -> Unit
 ) :
-    PagedListAdapter<Cinema, CinemaListHolder>(DIFF_CALLBACK) {
-    companion object {
-        private val DIFF_CALLBACK = object :
-            DiffUtil.ItemCallback<Cinema>() {
-            override fun areItemsTheSame(
-                oldCinema: Cinema,
-                newCinema: Cinema
-            ) = oldCinema.id == newCinema.id
-
-            override fun areContentsTheSame(
-                oldCinema: Cinema,
-                newCinema: Cinema
-            ) = oldCinema == newCinema
-        }
-    }
+    PagedListAdapter<Cinema, CinemaListHolder>(CinemaListAdapterDiffUtil()) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CinemaListHolder {
         val view =
