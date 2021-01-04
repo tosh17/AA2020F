@@ -22,7 +22,7 @@ class Repository() {
     private var genres: Map<Long, Genre>? = null
 
 
-    suspend fun downloadMovies(page: Int): CinemaListWithTotalPage = coroutineScope {
+    suspend fun getMoviesFromPage(page: Int): CinemaListWithTotalPage = coroutineScope {
         val configurationAndGenres = async { getConfigurationAndGenres() }
         val responseAsync = async { api.getNowPlaying(page) }
         val (configuration, genres) = configurationAndGenres.await()
@@ -51,7 +51,7 @@ class Repository() {
             configurationAsync.await() to genresAsync.await()
         }
 
-    suspend fun downloadMovie(id: Long): CinemaDetail = coroutineScope {
+    suspend fun getMoviesDetail(id: Long): CinemaDetail = coroutineScope {
         val configuration: ConfigurationResponse = getConfigurationAndGenres().first
         val actors = async {
             api.getMovieCredits(id).cast

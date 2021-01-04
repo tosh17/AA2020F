@@ -20,7 +20,7 @@ class MoviesDetailsViewModel(private val repository: Repository, private val cin
 
     init {
         viewModelScope.launch(exceptionHandler) {
-            _mutableMovieState.value = repository.downloadMovie(cinemaId)
+            _mutableMovieState.value = repository.getMoviesDetail(cinemaId)
         }
     }
 

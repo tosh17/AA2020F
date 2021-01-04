@@ -19,7 +19,7 @@ class CinemaDataSource(private val repository: Repository, private val scope: Co
         callback: LoadInitialCallback<Int, Cinema>
     ) {
         scope.launch(exceptionHandler) {
-            val result = repository.downloadMovies(1)
+            val result = repository.getMoviesFromPage(1)
             callback.onResult(result.list, null, if (result.totalPage == 1) null else 2)
         }
     }
@@ -30,7 +30,7 @@ class CinemaDataSource(private val repository: Repository, private val scope: Co
 
     override fun loadAfter(params: LoadParams<Int>, callback: LoadCallback<Int, Cinema>) {
         scope.launch(exceptionHandler) {
-            val result = repository.downloadMovies(params.key)
+            val result = repository.getMoviesFromPage(params.key)
             callback.onResult(
                 result.list,
                 if (result.totalPage == params.key) null else params.key + 1
