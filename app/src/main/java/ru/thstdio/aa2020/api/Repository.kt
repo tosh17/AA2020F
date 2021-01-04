@@ -23,7 +23,7 @@ class Repository() {
 
 
     suspend fun downloadMovies(page: Int): CinemaListWithTotalPage = coroutineScope {
-        val configurationAndGenres = async { loadConfigurationAndGenres() }
+        val configurationAndGenres = async { getConfigurationAndGenres() }
         val responseAsync = async { api.getNowPlaying(page) }
         val (configuration, genres) = configurationAndGenres.await()
         val response = responseAsync.await()
@@ -38,21 +38,21 @@ class Repository() {
         )
     }
 
-    private suspend fun loadConfigurationAndGenres(): Pair<ConfigurationResponse, Map<Long, Genre>> =
+    private suspend fun getConfigurationAndGenres(): Pair<ConfigurationResponse, Map<Long, Genre>> =
         coroutineScope {
             val configurationAsync = async {
-                configuration = configuration ?: api.getConfiguration()
-                configuration!!
+                configuration ?: api.getConfiguration()
             }
             val genresAsync = async {
-                genres = genres ?: api.getGenresList().genres.associateBy { it.id }
-                genres!!
+                genres ?: api.getGenresList().genres.associateBy { it.id }
             }
+            configuration = configurationAsync.await()
+            genres = genresAsync.await()
             configurationAsync.await() to genresAsync.await()
         }
 
     suspend fun downloadMovie(id: Long): CinemaDetail = coroutineScope {
-        val configuration: ConfigurationResponse = loadConfigurationAndGenres().first
+        val configuration: ConfigurationResponse = getConfigurationAndGenres().first
         val actors = async {
             api.getMovieCredits(id).cast
                 .asSequence()
