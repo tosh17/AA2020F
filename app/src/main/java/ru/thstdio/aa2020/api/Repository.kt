@@ -28,6 +28,9 @@ private const val Base_Url = "https://api.themoviedb.org/3/"
 class Repository() {
     private val api: TimeDbApi
 
+    var config: ConfigResponse? = null
+    var genres: Map<Long, Genre>? = null
+    
     init {
         val json = Json {
             ignoreUnknownKeys = true
@@ -44,8 +47,6 @@ class Repository() {
         api = retrofit.create(TimeDbApi::class.java)
     }
 
-    var config: ConfigResponse? = null
-    var genres: Map<Long, Genre>? = null
 
     suspend fun downloadMovies(page: Int): Pair<List<Cinema>, Int> {
         if (config == null) config = api.loadConfig()
