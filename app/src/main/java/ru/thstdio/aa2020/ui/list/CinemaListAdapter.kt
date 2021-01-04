@@ -4,20 +4,31 @@ import android.annotation.SuppressLint
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.paging.PagedListAdapter
+import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import coil.load
 import ru.thstdio.aa2020.R
-import ru.thstdio.aa2020.data.Movie
+import ru.thstdio.aa2020.data.Cinema
 import ru.thstdio.aa2020.databinding.ViewHolderCinemaBinding
 
 class CinemaListAdapter(
-    private val router: (Movie) -> Unit
+    private val router: (Cinema) -> Unit
 ) :
-    RecyclerView.Adapter<CinemaListHolder>() {
-    private var cinemas: List<Movie> = listOf()
-    fun setCinemas(cinemas: List<Movie>) {
-        this.cinemas = cinemas
-        notifyDataSetChanged()
+    PagedListAdapter<Cinema, CinemaListHolder>(DIFF_CALLBACK) {
+    companion object {
+        private val DIFF_CALLBACK = object :
+            DiffUtil.ItemCallback<Cinema>() {
+            override fun areItemsTheSame(
+                oldCinema: Cinema,
+                newCinema: Cinema
+            ) = oldCinema.id == newCinema.id
+
+            override fun areContentsTheSame(
+                oldCinema: Cinema,
+                newCinema: Cinema
+            ) = oldCinema == newCinema
+        }
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CinemaListHolder {
@@ -27,28 +38,26 @@ class CinemaListAdapter(
     }
 
     override fun onBindViewHolder(holder: CinemaListHolder, position: Int) {
-        holder.onBindView(cinemas[position])
+        getItem(position)?.let { cinema ->
+            holder.onBindView(cinema)
+        }
     }
-
-    override fun getItemCount() = cinemas.size
 }
 
-class CinemaListHolder(private val view: View, private val onClick: (Movie) -> Unit) :
+class CinemaListHolder(view: View, private val onClick: (Cinema) -> Unit) :
     RecyclerView.ViewHolder(view) {
     private val binding = ViewHolderCinemaBinding.bind(view)
 
     @SuppressLint("SetTextI18n")
-    fun onBindView(cinema: Movie) {
+    fun onBindView(cinema: Cinema) {
         binding.textMovieName.text = cinema.title
         binding.textMovieType.text = cinema.genres.joinToString { it.name }
         binding.imageBg.load(cinema.poster)
-        binding.textAge.text = "${cinema.minimumAge}+"
+        binding.textAge.text = "${if (cinema.adult) 18 else 6}+"
         setLike(cinema.ratings > 8)
         binding.rating.setRating(cinema.ratings)
         binding.textReviews.text =
             binding.textReviews.context.getString(R.string.review_string, cinema.numberOfRatings)
-        binding.textMovieTime.text =
-            binding.textMovieTime.context.getString(R.string.time_string, cinema.runtime)
         binding.root.setOnClickListener { onClick(cinema) }
     }
 

@@ -11,10 +11,9 @@ import coil.load
 import coil.transform.BlurTransformation
 import ru.thstdio.aa2020.R
 import ru.thstdio.aa2020.data.Actor
-import ru.thstdio.aa2020.data.Movie
+import ru.thstdio.aa2020.data.CinemaDetail
 import ru.thstdio.aa2020.databinding.FragmentMoviesDetailsBinding
 import ru.thstdio.aa2020.ui.FragmentNavigation
-import ru.thstdio.aa2020.ui.view.extension.getAppContext
 
 
 class FragmentMoviesDetails : FragmentNavigation(R.layout.fragment_movies_details) {
@@ -32,7 +31,7 @@ class FragmentMoviesDetails : FragmentNavigation(R.layout.fragment_movies_detail
     private val binding: FragmentMoviesDetailsBinding by viewBinding()
     private val viewModel: MoviesDetailsViewModel by viewModels {
         val cinemaId = arguments?.getLong(CinemaArg)
-        MoviesDetailsViewModelFactory(getAppContext(), cinemaId!!)
+        MoviesDetailsViewModelFactory(appRepository, cinemaId!!)
     }
 
 
@@ -48,7 +47,7 @@ class FragmentMoviesDetails : FragmentNavigation(R.layout.fragment_movies_detail
         viewModel.movieState.observe(this.viewLifecycleOwner, this::bindView)
     }
 
-    private fun bindView(cinema: Movie) {
+    private fun bindView(cinema: CinemaDetail) {
         binding.textTitle.text = cinema.title
         setBg(cinema.backdrop)
         binding.textTag.text = cinema.genres.joinToString { it.name }

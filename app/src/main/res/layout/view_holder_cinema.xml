@@ -21,6 +21,7 @@
         app:layout_constraintHorizontal_bias="0.6"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.43"
         app:srcCompat="@drawable/id1_preview"
         tools:ignore="ContentDescription" />
 
@@ -105,26 +106,15 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="2dp"
         android:layout_marginEnd="2dp"
-        tools:text="@string/movie_list_movie_name"
-        android:textColor="@color/text_movie"
-        android:textStyle="bold"
-        app:layout_constraintBottom_toTopOf="@+id/text_movie_time"
-        app:layout_constraintEnd_toStartOf="@+id/guideline_right"
-        app:layout_constraintStart_toStartOf="@+id/guideline_left" />
-
-    <TextView
-        android:id="@+id/text_movie_time"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
         android:layout_marginBottom="8dp"
-        tools:text="@string/movie_list_movie_time"
-        android:textAllCaps="true"
-        android:textColor="@color/text_time"
-        android:textSize="@dimen/mini_text"
+        android:textColor="@color/text_movie"
+
         android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/guideline_right"
-        app:layout_constraintStart_toStartOf="@+id/text_movie_name" />
+        app:layout_constraintStart_toStartOf="@+id/guideline_left"
+        tools:text="@string/movie_list_movie_name" />
+
 
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/guideline_left"
