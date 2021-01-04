@@ -9,9 +9,7 @@ private const val BEARER_PREFIX = "Bearer "
 class ApiHeaderInterceptor(private val apiKey: String) : Interceptor {
     override fun intercept(chain: Interceptor.Chain): Response {
         val originalRequest = chain.request()
-        val originalHttpUrl = originalRequest.url
         val request = originalRequest.newBuilder()
-            .url(originalHttpUrl)
             .addHeader(API_KEY_HEADER, BEARER_PREFIX + apiKey)
             .build()
         return chain.proceed(request)

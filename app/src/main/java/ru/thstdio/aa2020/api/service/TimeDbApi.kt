@@ -7,7 +7,7 @@ import ru.thstdio.aa2020.api.response.*
 
 interface TimeDbApi {
     @GET("configuration")
-    suspend fun loadConfig(): ConfigResponse
+    suspend fun loadCnfiguration(): ConfigurationResponse
 
     @GET("genre/movie/list")
     suspend fun loadGenres(): GenresResponse

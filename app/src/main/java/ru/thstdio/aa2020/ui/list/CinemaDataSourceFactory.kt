@@ -11,12 +11,11 @@ class CinemaDataSourceFactory(
     private val repository: Repository,
     private val scope: CoroutineScope
 ) : DataSource.Factory<Int, Cinema>() {
-    private var source: DataSource<Int, Cinema>? = null
-    var sourceLiveData: MutableLiveData<CinemaDataSource> = MutableLiveData()
+    private var sourceLiveData: MutableLiveData<CinemaDataSource> = MutableLiveData()
     override fun create(): DataSource<Int, Cinema> {
-        source = CinemaDataSource(repository, scope)
-        sourceLiveData.postValue(source as CinemaDataSource)
-        return source as CinemaDataSource
+        val source = CinemaDataSource(repository, scope)
+        sourceLiveData.postValue(source)
+        return source
     }
 
 }

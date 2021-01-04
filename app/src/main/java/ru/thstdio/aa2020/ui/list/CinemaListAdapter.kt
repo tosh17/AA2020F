@@ -9,6 +9,7 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import coil.load
 import ru.thstdio.aa2020.R
+import ru.thstdio.aa2020.api.converter.adultToAge
 import ru.thstdio.aa2020.data.Cinema
 import ru.thstdio.aa2020.databinding.ViewHolderCinemaBinding
 
@@ -53,7 +54,7 @@ class CinemaListHolder(view: View, private val onClick: (Cinema) -> Unit) :
         binding.textMovieName.text = cinema.title
         binding.textMovieType.text = cinema.genres.joinToString { it.name }
         binding.imageBg.load(cinema.poster)
-        binding.textAge.text = "${if (cinema.adult) 18 else 6}+"
+        binding.textAge.text = "${cinema.adult.adultToAge()}+"
         setLike(cinema.ratings > 8)
         binding.rating.setRating(cinema.ratings)
         binding.textReviews.text =

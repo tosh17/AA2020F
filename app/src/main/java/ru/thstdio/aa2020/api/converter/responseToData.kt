@@ -5,27 +5,34 @@ import ru.thstdio.aa2020.data.Actor
 import ru.thstdio.aa2020.data.Cinema
 import ru.thstdio.aa2020.data.CinemaDetail
 
-fun CinemaItemResponse.toCinema(config: ConfigResponse, genresMap: Map<Long, Genre>) = Cinema(
-    id = this.id,
-    title = this.title,
-    poster = createPreviewImgUrl(this.posterPath, this.backdropPath, config),
-    genres = this.genreIDS.mapNotNull { id -> genresMap[id] },
-    ratings = this.voteAverage.toFloat(),
-    numberOfRatings = this.voteCount,
-    adult = this.adult
-)
+fun CinemaItemResponse.toCinema(
+    configuration: ConfigurationResponse,
+    genresMap: Map<Long, Genre>
+): Cinema =
+    Cinema(
+        id = this.id,
+        title = this.title,
+        poster = createPreviewImgUrl(this.posterPath, this.backdropPath, configuration),
+        genres = this.genreIDS.mapNotNull { id -> genresMap[id] },
+        ratings = this.voteAverage.toFloat(),
+        numberOfRatings = this.voteCount,
+        adult = this.adult
+    )
 
 fun createPreviewImgUrl(
     posterPath: String?, backdropPath: String?,
-    config: ConfigResponse
+    configuration: ConfigurationResponse
 ): String =
     when {
-        backdropPath != null -> config.images.secureBaseURL + config.images.backdropSizes.first() + backdropPath
-        posterPath != null -> config.images.secureBaseURL + config.images.posterSizes.first() + posterPath
+        backdropPath != null -> configuration.images.secureBaseURL + configuration.images.backdropSizes.first() + backdropPath
+        posterPath != null -> configuration.images.secureBaseURL + configuration.images.posterSizes.first() + posterPath
         else -> ""
     }
 
-fun MovieDetailResponse.toCinemaDetail(config: ConfigResponse, actors: List<Actor>): CinemaDetail =
+fun MovieDetailResponse.toCinemaDetail(
+    configuration: ConfigurationResponse,
+    actors: List<Actor>
+): CinemaDetail =
     CinemaDetail(
         id = id,
         title = this.title,
@@ -34,25 +41,26 @@ fun MovieDetailResponse.toCinemaDetail(config: ConfigResponse, actors: List<Acto
         runtime = this.runtime,
         ratings = this.voteAverage.toFloat(),
         numberOfRatings = this.voteCount,
-        backdrop = createOriginalImgUrl(this.posterPath, this.backdropPath, config),
-        minimumAge = if (this.adult) 18 else 6,
+        backdrop = createOriginalImgUrl(this.posterPath, this.backdropPath, configuration),
+        minimumAge = this.adult.adultToAge(),
         overview = this.overview
     )
 
-fun Cast.toActor(config: ConfigResponse): Actor = Actor(
+fun Cast.toActor(configuration: ConfigurationResponse): Actor = Actor(
     id = this.id,
     name = this.name,
-    picture = config.images.secureBaseURL + config.images.backdropSizes.last()
+    picture = configuration.images.secureBaseURL + configuration.images.backdropSizes.last()
             + this.profilePath
 )
 
 fun createOriginalImgUrl(
     posterPath: String?, backdropPath: String?,
-    config: ConfigResponse
+    configuration: ConfigurationResponse
 ): String =
     when {
-        backdropPath != null -> config.images.secureBaseURL + config.images.backdropSizes.last() + backdropPath
-        posterPath != null -> config.images.secureBaseURL + config.images.posterSizes.last() + posterPath
+        backdropPath != null -> configuration.images.secureBaseURL + configuration.images.backdropSizes.last() + backdropPath
+        posterPath != null -> configuration.images.secureBaseURL + configuration.images.posterSizes.last() + posterPath
         else -> ""
     }
 
+fun Boolean.adultToAge(): Int = if (this) 18 else 6

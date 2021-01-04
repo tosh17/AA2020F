@@ -9,18 +9,16 @@ import ru.thstdio.aa2020.api.Repository
 import ru.thstdio.aa2020.data.Cinema
 
 
-class MoviesListViewModel(repository: Repository) :
+class MoviesListViewModel(private val repository: Repository) :
     ViewModel() {
-    var pagedListLiveData: LiveData<PagedList<Cinema>>
-    private val dataSourceFactory: CinemaDataSourceFactory = CinemaDataSourceFactory(
-        repository,
-        viewModelScope
-    )
-    private val getMutableLiveData = dataSourceFactory.sourceLiveData
+    var pagedListLiveData: LiveData<PagedList<Cinema>> = createPagedListLiveData()
 
-    init {
-        pagedListLiveData = dataSourceFactory.toLiveData(pageSize = 20)
+
+    private fun createPagedListLiveData(): LiveData<PagedList<Cinema>> {
+        val dataSourceFactory: CinemaDataSourceFactory = CinemaDataSourceFactory(
+            repository,
+            viewModelScope
+        )
+        return dataSourceFactory.toLiveData(pageSize = 20)
     }
-
-
 }
