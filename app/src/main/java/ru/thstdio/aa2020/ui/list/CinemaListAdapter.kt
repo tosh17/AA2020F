@@ -5,6 +5,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.paging.PagedListAdapter
+import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import coil.load
 import ru.thstdio.aa2020.R
@@ -52,4 +53,16 @@ class CinemaListHolder(view: View, private val onClick: (Cinema) -> Unit) :
     }
 
 
+}
+
+private class CinemaListAdapterDiffUtil : DiffUtil.ItemCallback<Cinema>() {
+    override fun areItemsTheSame(
+        oldCinema: Cinema,
+        newCinema: Cinema
+    ) = oldCinema.id == newCinema.id
+
+    override fun areContentsTheSame(
+        oldCinema: Cinema,
+        newCinema: Cinema
+    ) = oldCinema == newCinema
 }

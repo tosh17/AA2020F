@@ -7,26 +7,26 @@ import ru.thstdio.aa2020.api.response.*
 
 interface TimeDbApi {
     @GET("configuration")
-    suspend fun loadCnfiguration(): ConfigurationResponse
+    suspend fun getConfiguration(): ConfigurationResponse
 
     @GET("genre/movie/list")
-    suspend fun loadGenres(): GenresResponse
+    suspend fun getGenresList(): GenresResponse
 
     @GET("movie/now_playing")
-    suspend fun loadNowPlaying(
+    suspend fun getNowPlaying(
         @Query("page") page: Int,
         @Query("language") language: String = "ru"
     ): NowPlayingResponse
 
 
     @GET("movie/{movie_id}")
-    suspend fun loadDetailMovie(
+    suspend fun getDetailMovie(
         @Path("movie_id") movieId: Long,
         @Query("language") language: String = "ru"
     ): MovieDetailResponse
 
     @GET("movie/{movie_id}/credits")
-    suspend fun loadDMovieCredits(
+    suspend fun getMovieCredits(
         @Path("movie_id") movieId: Long,
         @Query("language") language: String = "ru"
     ): MovieCreditsResponse
