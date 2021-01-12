@@ -1,10 +1,11 @@
 package ru.thstdio.aa2020.data
 
-data class Movie(
+import ru.thstdio.aa2020.api.response.Genre
+
+data class CinemaDetail(
     val id: Long,
     val title: String,
     val overview: String,
-    val poster: String,
     val backdrop: String,
     val ratings: Float,
     val numberOfRatings: Int,
