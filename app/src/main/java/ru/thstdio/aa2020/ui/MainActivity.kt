@@ -6,10 +6,9 @@ import com.github.terrakok.cicerone.NavigatorHolder
 import com.github.terrakok.cicerone.Router
 import com.github.terrakok.cicerone.androidx.AppNavigator
 import ru.thstdio.aa2020.R
-import ru.thstdio.aa2020.navigation.Screen
+import ru.thstdio.aa2020.ui.list.MoviesListScreen
 
 class MainActivity : AppCompatActivity() {
-    private val navigator = AppNavigator(this, R.id.fragment_container_view)
     private val navigatorHolder: NavigatorHolder get() = CinemaApp.INSTANCE.navigatorHolder
     private val router: Router get() = CinemaApp.INSTANCE.router
 
@@ -17,13 +16,14 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         if (savedInstanceState == null) {
-            router.navigateTo(Screen.ListCinema())
+            router.navigateTo(MoviesListScreen.getScreen())
         }
     }
 
     override fun onResumeFragments() {
         super.onResumeFragments()
-        navigatorHolder.setNavigator(navigator)
+        navigatorHolder.setNavigator(AppNavigator(this, R.id.fragment_container_view))
+
     }
 
     override fun onPause() {

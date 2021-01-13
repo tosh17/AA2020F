@@ -13,7 +13,6 @@ import ru.thstdio.aa2020.R
 import ru.thstdio.aa2020.data.Actor
 import ru.thstdio.aa2020.data.CinemaDetail
 import ru.thstdio.aa2020.databinding.FragmentMoviesDetailsBinding
-import ru.thstdio.aa2020.navigation.Screen
 import ru.thstdio.aa2020.ui.FragmentNavigation
 
 
@@ -39,7 +38,7 @@ class FragmentMoviesDetails : FragmentNavigation(R.layout.fragment_movies_detail
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         binding.areaBack.setOnClickListener {
-            router.backTo(Screen.ListCinema())
+            router.exit()
         }
         binding.recyclerView.layoutManager =
             LinearLayoutManager(requireContext(), RecyclerView.HORIZONTAL, false)

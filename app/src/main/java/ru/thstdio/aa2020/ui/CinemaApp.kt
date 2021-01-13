@@ -10,7 +10,7 @@ class CinemaApp : Application() {
     val router get() = cicerone.router
     val navigatorHolder: NavigatorHolder
         get() = cicerone.getNavigatorHolder()
-    val repository: Repository = Repository()
+    val repository: Repository by lazy { Repository() }
 
     companion object {
         internal lateinit var INSTANCE: CinemaApp
