@@ -16,7 +16,7 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         if (savedInstanceState == null) {
-            router.navigateTo(MoviesListScreen.getScreen())
+            router.navigateTo(MoviesListScreen())
         }
     }
 

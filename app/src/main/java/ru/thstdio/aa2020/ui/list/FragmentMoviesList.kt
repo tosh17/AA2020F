@@ -26,7 +26,7 @@ class FragmentMoviesList : FragmentNavigation(R.layout.fragment_movies_list) {
         binding.recyclerView.layoutManager =
             GridLayoutManager(context, 2, RecyclerView.VERTICAL, false)
         val adapter =
-            CinemaListAdapter { cinema -> router.navigateTo(MoviesDetailsScreen.getScreen(cinema.id)) }
+            CinemaListAdapter { cinema -> router.navigateTo(MoviesDetailsScreen(cinema.id)) }
         viewModel.pagedListLiveData.observe(this.viewLifecycleOwner, adapter::submitList)
         binding.recyclerView.adapter = adapter
     }
