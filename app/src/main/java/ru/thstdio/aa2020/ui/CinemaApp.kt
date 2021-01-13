@@ -12,13 +12,4 @@ class CinemaApp : Application() {
         get() = cicerone.getNavigatorHolder()
     val repository: Repository by lazy { Repository() }
 
-    companion object {
-        internal lateinit var INSTANCE: CinemaApp
-            private set
-    }
-
-    override fun onCreate() {
-        super.onCreate()
-        INSTANCE = this
-    }
 }
