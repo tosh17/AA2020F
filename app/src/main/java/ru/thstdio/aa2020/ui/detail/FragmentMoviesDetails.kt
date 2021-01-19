@@ -38,7 +38,7 @@ class FragmentMoviesDetails : FragmentNavigation(R.layout.fragment_movies_detail
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         binding.areaBack.setOnClickListener {
-            router.back()
+            router.exit()
         }
         binding.recyclerView.layoutManager =
             LinearLayoutManager(requireContext(), RecyclerView.HORIZONTAL, false)

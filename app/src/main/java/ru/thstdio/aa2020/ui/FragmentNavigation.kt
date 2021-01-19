@@ -3,13 +3,15 @@ package ru.thstdio.aa2020.ui
 import androidx.annotation.ContentView
 import androidx.annotation.LayoutRes
 import androidx.fragment.app.Fragment
+import com.github.terrakok.cicerone.Router
 import ru.thstdio.aa2020.api.Repository
+import ru.thstdio.aa2020.ui.view.extension.getAppContext
 
 abstract class FragmentNavigation @ContentView constructor(@LayoutRes contentLayoutId: Int) :
     Fragment(contentLayoutId) {
-    protected val router: Navigation
-        get() = (requireActivity() as Navigation)
+    private val cinemaApp: CinemaApp get() = getAppContext() as CinemaApp
+    protected val router: Router get() = cinemaApp.router
     protected val appRepository: Repository
-        get() = CinemaApp.repository
+        get() = cinemaApp.repository
 
 }

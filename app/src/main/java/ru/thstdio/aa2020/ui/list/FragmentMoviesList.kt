@@ -9,6 +9,7 @@ import by.kirich1409.viewbindingdelegate.viewBinding
 import ru.thstdio.aa2020.R
 import ru.thstdio.aa2020.databinding.FragmentMoviesListBinding
 import ru.thstdio.aa2020.ui.FragmentNavigation
+import ru.thstdio.aa2020.ui.detail.MoviesDetailsScreen
 
 class FragmentMoviesList : FragmentNavigation(R.layout.fragment_movies_list) {
     companion object {
@@ -25,7 +26,7 @@ class FragmentMoviesList : FragmentNavigation(R.layout.fragment_movies_list) {
         binding.recyclerView.layoutManager =
             GridLayoutManager(context, 2, RecyclerView.VERTICAL, false)
         val adapter =
-            CinemaListAdapter { cinema -> router.openDetail(cinema.id) }
+            CinemaListAdapter { cinema -> router.navigateTo(MoviesDetailsScreen(cinema.id)) }
         viewModel.pagedListLiveData.observe(this.viewLifecycleOwner, adapter::submitList)
         binding.recyclerView.adapter = adapter
     }
