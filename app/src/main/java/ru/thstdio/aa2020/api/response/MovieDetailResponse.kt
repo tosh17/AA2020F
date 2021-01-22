@@ -12,7 +12,7 @@ data class MovieDetailResponse(
     @SerialName("budget")
     val budget: Long,
     @SerialName("genres")
-    val genres: List<Genre>,
+    val genres: List<GenreJson>,
     @SerialName("homepage")
     val homepage: String,
     @SerialName("id")

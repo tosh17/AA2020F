@@ -4,6 +4,7 @@ import ru.thstdio.aa2020.api.response.*
 import ru.thstdio.aa2020.data.Actor
 import ru.thstdio.aa2020.data.Cinema
 import ru.thstdio.aa2020.data.CinemaDetail
+import ru.thstdio.aa2020.data.Genre
 
 fun CinemaItemResponse.toCinema(
     configuration: ConfigurationResponse,
@@ -36,7 +37,7 @@ fun MovieDetailResponse.toCinemaDetail(
     CinemaDetail(
         id = id,
         title = this.title,
-        genres = this.genres,
+        genres = this.genres.map { it.toGenre() },
         actors = actors,
         runtime = this.runtime,
         ratings = this.voteAverage.toFloat(),
@@ -64,3 +65,7 @@ fun createOriginalImgUrl(
     }
 
 fun Boolean.adultToAge(): Int = if (this) 18 else 6
+
+fun GenreJson.toGenre(): Genre {
+    return Genre(this.id, this.name)
+}

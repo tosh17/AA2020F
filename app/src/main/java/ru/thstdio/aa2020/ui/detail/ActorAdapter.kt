@@ -41,6 +41,7 @@ class ActorHolder(view: View) : RecyclerView.ViewHolder(view) {
 
     private fun setImg(picture: String) {
         binding.imageMovie.load(picture) {
+            placeholder(R.drawable.ic_actor)
             crossfade(true)
             transformations(
                 RoundedCornersTransformation(24f, 24f, 24f, 24f)

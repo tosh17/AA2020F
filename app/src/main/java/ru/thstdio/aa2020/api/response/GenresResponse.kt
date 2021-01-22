@@ -6,11 +6,11 @@ import kotlinx.serialization.Serializable
 @Serializable
 data class GenresResponse(
     @SerialName("genres")
-    val genres: List<Genre>
+    val genres: List<GenreJson>
 )
 
 @Serializable
-data class Genre(
+data class GenreJson(
     @SerialName("id")
     val id: Long,
     @SerialName("name")

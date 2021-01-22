@@ -4,7 +4,6 @@ import android.annotation.SuppressLint
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.paging.PagedListAdapter
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import coil.load
@@ -16,7 +15,9 @@ import ru.thstdio.aa2020.databinding.ViewHolderCinemaBinding
 class CinemaListAdapter(
     private val router: (Cinema) -> Unit
 ) :
-    PagedListAdapter<Cinema, CinemaListHolder>(CinemaListAdapterDiffUtil()) {
+    RecyclerView.Adapter<CinemaListHolder>() {
+
+    private var list: List<Cinema> = emptyList()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CinemaListHolder {
         val view =
@@ -25,9 +26,17 @@ class CinemaListAdapter(
     }
 
     override fun onBindViewHolder(holder: CinemaListHolder, position: Int) {
-        getItem(position)?.let { cinema ->
+        list[position].let { cinema ->
             holder.onBindView(cinema)
         }
+    }
+
+    override fun getItemCount(): Int = list.size
+
+    fun notifyData(newList: List<Cinema>) {
+        val calculateDiff = DiffUtil.calculateDiff(CinemaListAdapterDiffUtil(list, newList))
+        list = newList
+        calculateDiff.dispatchUpdatesTo(this)
     }
 }
 
@@ -39,7 +48,10 @@ class CinemaListHolder(view: View, private val onClick: (Cinema) -> Unit) :
     fun onBindView(cinema: Cinema) {
         binding.textMovieName.text = cinema.title
         binding.textMovieType.text = cinema.genres.joinToString { it.name }
-        binding.imageBg.load(cinema.poster)
+        binding.imageBg.load(cinema.poster) {
+            placeholder(R.drawable.ic_film)
+            error(R.drawable.ic_film)
+        }
         binding.textAge.text = "${cinema.adult.adultToAge()}+"
         setLike(cinema.ratings > 8)
         binding.rating.setRating(cinema.ratings)
@@ -55,14 +67,15 @@ class CinemaListHolder(view: View, private val onClick: (Cinema) -> Unit) :
 
 }
 
-private class CinemaListAdapterDiffUtil : DiffUtil.ItemCallback<Cinema>() {
-    override fun areItemsTheSame(
-        oldCinema: Cinema,
-        newCinema: Cinema
-    ) = oldCinema.id == newCinema.id
+private class CinemaListAdapterDiffUtil(val oldList: List<Cinema>, val newList: List<Cinema>) :
+    DiffUtil.Callback() {
+    override fun getOldListSize(): Int = oldList.size
 
-    override fun areContentsTheSame(
-        oldCinema: Cinema,
-        newCinema: Cinema
-    ) = oldCinema == newCinema
+    override fun getNewListSize(): Int = newList.size
+
+    override fun areItemsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean =
+        oldList[oldItemPosition].id == newList[newItemPosition].id
+
+    override fun areContentsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean =
+        oldList[oldItemPosition] == newList[newItemPosition]
 }

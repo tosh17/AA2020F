@@ -2,7 +2,7 @@ package ru.thstdio.aa2020.ui.list
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
-import ru.thstdio.aa2020.api.Repository
+import ru.thstdio.aa2020.cache.Repository
 
 class MoviesListViewModelFactory(private val repository: Repository) :
     ViewModelProvider.Factory {
