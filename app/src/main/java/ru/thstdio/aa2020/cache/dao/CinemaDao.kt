@@ -30,7 +30,6 @@ interface CinemaDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertGenresAll(cinemas: List<GenreEntity>)
 
-
     @Transaction
     @Query("SELECT * FROM cinema")
     suspend fun getCinemaAll(): List<CinemaRelation>

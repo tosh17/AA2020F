@@ -2,7 +2,7 @@ package ru.thstdio.aa2020.cache.convertors
 
 import androidx.room.TypeConverter
 
-const val LIST_SEPARATOR = ","
+private const val LIST_SEPARATOR = ","
 
 class CinemaIndexListTypeConverter {
     @TypeConverter
