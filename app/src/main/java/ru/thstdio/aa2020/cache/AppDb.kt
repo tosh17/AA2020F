@@ -19,7 +19,7 @@ import ru.thstdio.aa2020.cache.entity.*
 @TypeConverters(CinemaIndexListTypeConverter::class)
 abstract class AppDb : RoomDatabase() {
     abstract val cinemaDao: CinemaDao
-    abstract val cinemaDetailDto: CinemaDetailDao
+    abstract val cinemaDetailDao: CinemaDetailDao
 
     companion object {
         fun create(applicationContext: Context): AppDb = Room.databaseBuilder(

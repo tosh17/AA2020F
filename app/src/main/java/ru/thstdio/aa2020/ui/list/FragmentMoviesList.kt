@@ -24,9 +24,11 @@ class FragmentMoviesList : FragmentNavigation(R.layout.fragment_movies_list) {
 
     private val scrollListener = object : RecyclerView.OnScrollListener() {
         override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
-            val position =
-                (recyclerView.layoutManager as LinearLayoutManager).findLastVisibleItemPosition()
-            if (dy > 0) viewModel.updateCurrentItemPosition(position)
+            if (dy > 0) {
+                val position =
+                    (recyclerView.layoutManager as LinearLayoutManager).findLastVisibleItemPosition()
+                viewModel.updateCurrentItemPosition(position)
+            }
             super.onScrolled(recyclerView, dx, dy)
 
         }

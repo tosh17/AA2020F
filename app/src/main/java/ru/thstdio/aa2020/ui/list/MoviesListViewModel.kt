@@ -6,10 +6,9 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.CoroutineExceptionHandler
+import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.sync.Mutex
-import kotlinx.coroutines.sync.withLock
 import ru.thstdio.aa2020.cache.Repository
 import ru.thstdio.aa2020.data.Cinema
 
@@ -19,6 +18,7 @@ class MoviesListViewModel(private val repository: Repository) :
     ViewModel() {
 
 
+    private var loadNewPageJob: Job? = null
     private val _cinema: MutableLiveData<List<Cinema>> = MutableLiveData()
     val cinemas: LiveData<List<Cinema>> = _cinema
     private val _scrollListenerStatus: MutableLiveData<Boolean> = MutableLiveData()
@@ -26,7 +26,6 @@ class MoviesListViewModel(private val repository: Repository) :
 
     private var isCurrentModeCache = true
     private var currentPage = 1
-    private val mutex = Mutex()
     private val exceptionHandler = CoroutineExceptionHandler { coroutineContext, exception ->
         println("CoroutineExceptionHandler got $exception in $coroutineContext")
     }
@@ -46,18 +45,16 @@ class MoviesListViewModel(private val repository: Repository) :
     }
 
     fun updateCurrentItemPosition(position: Int) {
-        if ((_cinema.value?.size ?: 0) - position < DIFF_ITEM_TO_LOAD)
-            viewModelScope.launch(exceptionHandler) {
-                if (!mutex.isLocked) {
-                    mutex.withLock {
-                        Log.e("Scroll", "Start new page $currentPage")
-                        _scrollListenerStatus.value = false
-                        currentPage++
-                        val result = repository.getMoviesFromPage(currentPage)
-                        _cinema.value = _cinema.value?.plus(result.list)
-                        if (result.totalPage > currentPage) _scrollListenerStatus.value = true
-                    }
-                }
+        if ((_cinema.value?.size ?: 0) - position < DIFF_ITEM_TO_LOAD
+            && loadNewPageJob?.isActive != true
+        )
+            loadNewPageJob = viewModelScope.launch(exceptionHandler) {
+                Log.e("Scroll", "Start new page $currentPage")
+                _scrollListenerStatus.value = false
+                currentPage++
+                val result = repository.getMoviesFromPage(currentPage)
+                _cinema.value = _cinema.value?.plus(result.list)
+                if (result.totalPage > currentPage) _scrollListenerStatus.value = true
             }
     }
 }

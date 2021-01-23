@@ -112,19 +112,19 @@ class Repository(applicationContext: Context) {
                 .map { it.toActor(configuration) }
                 .toList()
 
-            db.cinemaDetailDto.insertCinemaActorAll(actors.map { it.toCinemaActorEntity(id) })
-            db.cinemaDetailDto.insertActorAll(actors.map { it.toActorEntity() })
+            db.cinemaDetailDao.insertCinemaActorAll(actors.map { it.toCinemaActorEntity(id) })
+            db.cinemaDetailDao.insertActorAll(actors.map { it.toActorEntity() })
             actors
         }
         val cinemaResponse = async { api.getDetailMovie(id) }
 
         val cinema = cinemaResponse.await().toCinemaDetail(configuration, actors.await())
-        async { db.cinemaDetailDto.insert(cinema.toCinemaDetailEntity()) }
+        async { db.cinemaDetailDao.insert(cinema.toCinemaDetailEntity()) }
         cinema
     }
 
     suspend fun getMoviesDetailFromCache(id: Long): CinemaDetail = coroutineScope {
-        db.cinemaDetailDto.getMovieDetail(id).toCinemaDetail()
+        db.cinemaDetailDao.getMovieDetail(id).toCinemaDetail()
     }
 }
 
