@@ -20,9 +20,10 @@ class MoviesListViewModel(private val repository: Repository) :
 
     private var loadNewPageJob: Job? = null
     private val _cinema: MutableLiveData<List<Cinema>> = MutableLiveData()
-    val cinemas: LiveData<List<Cinema>> = _cinema
+    val cinemas: LiveData<List<Cinema>> get() = _cinema
     private val _scrollListenerStatus: MutableLiveData<Boolean> = MutableLiveData()
-    val scrollListenerStatus: LiveData<Boolean> = _scrollListenerStatus
+    val scrollListenerStatus: LiveData<Boolean>
+        get() = _scrollListenerStatus
 
     private var isCurrentModeCache = true
     private var currentPage = 1
