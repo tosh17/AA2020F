@@ -2,6 +2,7 @@ package ru.thstdio.aa2020.api.response
 
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
+import ru.thstdio.aa2020.data.Actor
 
 @Serializable
 data class MovieCreditsResponse(
@@ -35,3 +36,9 @@ data class Cast(
     val creditID: String
 )
 
+fun Cast.toActor(configuration: ConfigurationResponse): Actor = Actor(
+    id = this.id,
+    name = this.name,
+    picture = configuration.images.secureBaseURL + configuration.images.backdropSizes.last()
+            + this.profilePath
+)

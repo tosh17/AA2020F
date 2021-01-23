@@ -2,6 +2,7 @@ package ru.thstdio.aa2020.api.response
 
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
+import ru.thstdio.aa2020.data.Genre
 
 @Serializable
 data class GenresResponse(
@@ -16,3 +17,7 @@ data class GenreJson(
     @SerialName("name")
     val name: String
 )
+
+fun GenreJson.toGenre(): Genre {
+    return Genre(this.id, this.name)
+}

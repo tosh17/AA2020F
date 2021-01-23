@@ -39,6 +39,9 @@ android {
     }
 }
 
+ext {
+    roomVersion = "2.2.6"
+}
 dependencies {
 
     implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
@@ -66,9 +69,9 @@ dependencies {
     implementation("io.coil-kt:coil:1.1.0")
     implementation 'androidx.paging:paging-runtime-ktx:2.1.2'
 
-    implementation "androidx.room:room-runtime:2.2.6"
-    kapt "androidx.room:room-compiler:2.2.6"
-    implementation "androidx.room:room-ktx:2.2.6"
+    implementation "androidx.room:room-runtime:$roomVersion"
+    kapt "androidx.room:room-compiler:$roomVersion"
+    implementation "androidx.room:room-ktx:$roomVersion"
 
     implementation("com.github.terrakok:cicerone:6.6")
 

@@ -1,24 +1,38 @@
 package ru.thstdio.aa2020.cache.dao
 
-import androidx.room.Dao
-import androidx.room.Insert
-import androidx.room.OnConflictStrategy
-import androidx.room.Query
-import ru.thstdio.aa2020.cache.entity.CinemaDto
+import androidx.room.*
+import ru.thstdio.aa2020.cache.entity.CinemaEntity
+import ru.thstdio.aa2020.cache.entity.CinemasGenreEntity
+import ru.thstdio.aa2020.cache.entity.GenreEntity
+import ru.thstdio.aa2020.cache.entity.toCinemaGenre
+import ru.thstdio.aa2020.cache.relation.CinemaRelation
 
 @Dao
 interface CinemaDao {
-    @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun insert(cinema: CinemaDto)
+    @Transaction
+    suspend fun insertAll(list: List<CinemaRelation>) {
+        insertCinemaAll(list.map { it.cinema })
+        insertCinemaGenresAll(
+            list.map { cinema ->
+                cinema.genres.map { genre ->
+                    genre.toCinemaGenre(cinema.cinema.id)
+                }
+            }.flatten()
+        )
+    }
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun insertAll(listCinemaDto: List<CinemaDto>)
+    suspend fun insertCinemaAll(cinemas: List<CinemaEntity>)
 
-    @Query("SELECT * FROM cinema WHERE id = :id")
-    suspend fun getCinema(id: Long): CinemaDto
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    suspend fun insertCinemaGenresAll(cinemas: List<CinemasGenreEntity>)
+
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    suspend fun insertGenresAll(cinemas: List<GenreEntity>)
 
 
+    @Transaction
     @Query("SELECT * FROM cinema")
-    suspend fun getAll(): List<CinemaDto>
+    suspend fun getCinemaAll(): List<CinemaRelation>
 
 }

@@ -2,6 +2,9 @@ package ru.thstdio.aa2020.api.response
 
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
+import ru.thstdio.aa2020.api.converter.createPreviewImgUrl
+import ru.thstdio.aa2020.data.Cinema
+import ru.thstdio.aa2020.data.Genre
 
 @Serializable
 data class NowPlayingResponse(
@@ -61,5 +64,19 @@ data class CinemaItemResponse(
     @SerialName("vote_count")
     val voteCount: Int
 )
+
+fun CinemaItemResponse.toCinema(
+    configuration: ConfigurationResponse,
+    genresMap: Map<Long, Genre>
+): Cinema =
+    Cinema(
+        id = this.id,
+        title = this.title,
+        poster = createPreviewImgUrl(this.posterPath, this.backdropPath, configuration),
+        genres = this.genreIDS.mapNotNull { id -> genresMap[id] },
+        ratings = this.voteAverage.toFloat(),
+        numberOfRatings = this.voteCount,
+        adult = this.adult
+    )
 
 

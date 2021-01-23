@@ -2,6 +2,10 @@ package ru.thstdio.aa2020.api.response
 
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
+import ru.thstdio.aa2020.api.converter.adultToAge
+import ru.thstdio.aa2020.api.converter.createOriginalImgUrl
+import ru.thstdio.aa2020.data.Actor
+import ru.thstdio.aa2020.data.CinemaDetail
 
 @Serializable
 data class MovieDetailResponse(
@@ -58,5 +62,21 @@ data class MovieDetailResponse(
     val voteCount: Int
 )
 
+fun MovieDetailResponse.toCinemaDetail(
+    configuration: ConfigurationResponse,
+    actors: List<Actor>
+): CinemaDetail =
+    CinemaDetail(
+        id = id,
+        title = this.title,
+        genres = this.genres.map { it.toGenre() },
+        actors = actors,
+        runtime = this.runtime,
+        ratings = this.voteAverage.toFloat(),
+        numberOfRatings = this.voteCount,
+        backdrop = createOriginalImgUrl(this.posterPath, this.backdropPath, configuration),
+        minimumAge = this.adult.adultToAge(),
+        overview = this.overview
+    )
 
 

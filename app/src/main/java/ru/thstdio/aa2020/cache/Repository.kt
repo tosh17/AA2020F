@@ -10,16 +10,16 @@ import okhttp3.MediaType.Companion.toMediaType
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
-import ru.thstdio.aa2020.api.converter.*
 import ru.thstdio.aa2020.api.interceptor.ApiHeaderInterceptor
-import ru.thstdio.aa2020.api.response.ConfigurationResponse
+import ru.thstdio.aa2020.api.response.*
 import ru.thstdio.aa2020.api.service.TimeDbApi
-import ru.thstdio.aa2020.cache.convertors.*
+import ru.thstdio.aa2020.cache.entity.*
+import ru.thstdio.aa2020.cache.relation.toCinema
+import ru.thstdio.aa2020.cache.relation.toCinemaDetail
 import ru.thstdio.aa2020.data.Cinema
 import ru.thstdio.aa2020.data.CinemaDetail
 import ru.thstdio.aa2020.data.CinemaListWithTotalPage
 import ru.thstdio.aa2020.data.Genre
-import ru.thstdio.aa2020.error.DataBaseIsEmpty
 import java.util.concurrent.atomic.AtomicReference
 
 
@@ -42,7 +42,11 @@ class Repository(applicationContext: Context) {
             val response = responseAsync.await()
             async {
                 val listCinemaDto = response.results.mapIndexed { index, cinemaItemResponse ->
-                    cinemaItemResponse.toCinemaDto(configuration, 20L * (page - 1) + index)
+                    cinemaItemResponse.toCinemaEntity(
+                        configuration,
+                        genres,
+                        20L * (page - 1) + index
+                    )
                 }
                 db.cinemaDao.insertAll(listCinemaDto)
             }
@@ -61,24 +65,7 @@ class Repository(applicationContext: Context) {
 
     suspend fun getMoviesFromCache(): List<Cinema> =
         coroutineScope {
-            val cacheGenreAsync = async {
-                val fromCacheGenres = db.genreDao.getAll()
-                if (fromCacheGenres.isEmpty()) throw DataBaseIsEmpty()
-                fromCacheGenres.associate { roomGenre -> roomGenre.id to roomGenre.toGenre() }
-            }
-            val cacheCinemaAsync = async {
-                val roomCinema = db.cinemaDao.getAll()
-                if (roomCinema.isEmpty()) throw DataBaseIsEmpty()
-                roomCinema
-            }
-
-            val cacheCinema = cacheCinemaAsync.await()
-            val localGenres: Map<Long, Genre> = cacheGenreAsync.await()
-
-            val cinema = cacheCinema.sortedBy { it.position }
-                .map { cinemaDto -> cinemaDto.toCinema(localGenres) }
-            if (cinema.isEmpty()) throw DataBaseIsEmpty()
-            cinema
+            db.cinemaDao.getCinemaAll().sortedBy { it.cinema.position }.map { it.toCinema() }
         }
 
 
@@ -110,7 +97,7 @@ class Repository(applicationContext: Context) {
             val justLoadedGenres: Map<Long, Genre> = genres.associateBy { it.id }
             genresAtomic.set(justLoadedGenres)
             async {
-                db.genreDao.insertAll(genres.map { genre -> genre.toGenreDto() })
+                db.cinemaDao.insertGenresAll(genres.map { genre -> genre.toGenreEntity() })
             }
             justLoadedGenres
         }
@@ -124,23 +111,20 @@ class Repository(applicationContext: Context) {
                 .filter { castItem -> castItem.profilePath != null }
                 .map { it.toActor(configuration) }
                 .toList()
-            db.actorDao.insertAll(actors.map { it.toActorDto() })
+
+            db.cinemaDetailDto.insertCinemaActorAll(actors.map { it.toCinemaActorEntity(id) })
+            db.cinemaDetailDto.insertActorAll(actors.map { it.toActorEntity() })
             actors
         }
         val cinemaResponse = async { api.getDetailMovie(id) }
 
         val cinema = cinemaResponse.await().toCinemaDetail(configuration, actors.await())
-        async { db.cinemaDetailDto.insert(cinema.toCinemaDetailDto()) }
+        async { db.cinemaDetailDto.insert(cinema.toCinemaDetailEntity()) }
         cinema
     }
 
     suspend fun getMoviesDetailFromCache(id: Long): CinemaDetail = coroutineScope {
-        try {
-            db.cinemaDetailDto.getMovieDetail(id)
-        } catch (e: Exception) {
-            throw DataBaseIsEmpty()
-        }
-
+        db.cinemaDetailDto.getMovieDetail(id).toCinemaDetail()
     }
 }
 
