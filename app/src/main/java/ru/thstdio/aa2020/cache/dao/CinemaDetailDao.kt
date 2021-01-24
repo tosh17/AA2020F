@@ -14,7 +14,7 @@ interface CinemaDetailDao {
 
     @Transaction
     @Query("SELECT * FROM ${AppDbContract.CinemaEntity.TABLE_NAME} Where ${AppDbContract.CinemaEntity.COLUMN_NAME_ID} = :id")
-    suspend fun getMovieDetail(id: Long): CinemaDetailRelation
+    suspend fun getCinemaDetailRelation(id: Long): CinemaDetailRelation
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertActors(listActorDto: List<ActorEntity>)

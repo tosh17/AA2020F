@@ -24,5 +24,4 @@ fun CinemaDetail.toCinemaDetailEntity(): CinemaDetailEntity = CinemaDetailEntity
     backdrop = this.backdrop,
     overview = this.overview,
     runtime = this.runtime,
-
     )

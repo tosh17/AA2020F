@@ -2,6 +2,8 @@ package ru.thstdio.aa2020.cache
 
 import android.content.Context
 import com.jakewharton.retrofit2.converter.kotlinx.serialization.asConverterFactory
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.async
 import kotlinx.coroutines.coroutineScope
 import kotlinx.serialization.ExperimentalSerializationApi
@@ -31,6 +33,7 @@ class Repository(applicationContext: Context) {
         AtomicReference<ConfigurationResponse>()
     private val genresAtomic: AtomicReference<Map<Long, Genre>> =
         AtomicReference<Map<Long, Genre>>()
+    private val scope: CoroutineScope = CoroutineScope(SupervisorJob())
 
 
     suspend fun getCinemasFromPage(page: Int): CinemaListWithTotalPage =
@@ -51,30 +54,44 @@ class Repository(applicationContext: Context) {
             )
         }
 
+    suspend fun getCinemasFromCache(): List<Cinema> =
+        db.cinemaDao.getCinemas()
+            .map { item -> item.toCinema() }
+
+    suspend fun getCinemaDetail(id: Long): CinemaDetail {
+        val configuration: ConfigurationResponse = getConfigurationAndGenres().first
+        val actors = api.getMovieCredits(id).cast
+            .asSequence()
+            .filter { castItem -> castItem.profilePath != null }
+            .map { castItem -> castItem.toActor(configuration) }
+            .toList()
+        val cinemaResponse = api.getDetailMovie(id)
+        val cinema = cinemaResponse.toCinemaDetail(configuration, actors)
+        saveDetailCinemaAsync(id, cinema, actors)
+        return cinema
+    }
+
+    suspend fun getCinemasDetailFromCache(id: Long): CinemaDetail =
+        db.cinemaDetailDao.getCinemaDetailRelation(id).toCinemaDetail()
+
     private suspend fun saveCinemaListToDbAsync(
         cinemas: List<CinemaItemResponse>,
         page: Int,
         configuration: ConfigurationResponse,
         genres: Map<Long, Genre>
-    ) = coroutineScope {
-        async {
-            try {
-                val listCinemaDto = cinemas.mapIndexed { index, cinemaItemResponse ->
-                    cinemaItemResponse.toCinemaEntity(
-                        configuration = configuration,
-                        genres = genres,
-                        position = (ITEMS_SIZE_IN_PAGE * (page - 1) + index).toLong()
-                    )
-                }
-                db.cinemaDao.insertAll(listCinemaDto)
-            } catch (e: Exception) {
+    ) = scope.async {
+        try {
+            val listCinemaDto = cinemas.mapIndexed { index, cinemaItemResponse ->
+                cinemaItemResponse.toCinemaEntity(
+                    configuration = configuration,
+                    genres = genres,
+                    position = (ITEMS_SIZE_IN_PAGE * (page - 1) + index).toLong()
+                )
             }
+            db.cinemaDao.insertAll(listCinemaDto)
+        } catch (e: Exception) {
         }
     }
-
-    suspend fun getCinemasFromCache(): List<Cinema> =
-        db.cinemaDao.getCinemas()
-            .map { item -> item.toCinema() }
 
     private suspend fun getConfigurationAndGenres(): Pair<ConfigurationResponse, Map<Long, Genre>> =
         coroutineScope {
@@ -107,44 +124,23 @@ class Repository(applicationContext: Context) {
         }
     }
 
-    private suspend fun saveGenreAsync(genres: List<Genre>) = coroutineScope {
-        async {
-            try {
-                db.cinemaDao.insertGenres(genres.map { genre -> genre.toGenreEntity() })
-            } catch (e: Exception) {
-            }
+    private suspend fun saveGenreAsync(genres: List<Genre>) = scope.async {
+        try {
+            db.cinemaDao.insertGenres(genres.map { genre -> genre.toGenreEntity() })
+        } catch (e: Exception) {
         }
-    }
-
-    suspend fun getCinemaDetail(id: Long): CinemaDetail {
-        val configuration: ConfigurationResponse = getConfigurationAndGenres().first
-        val actors = api.getMovieCredits(id).cast
-            .asSequence()
-            .filter { castItem -> castItem.profilePath != null }
-            .map { castItem -> castItem.toActor(configuration) }
-            .toList()
-        val cinemaResponse = api.getDetailMovie(id)
-        val cinema = cinemaResponse.toCinemaDetail(configuration, actors)
-        saveDetailCinemaAsync(id, cinema, actors)
-        return cinema
     }
 
     private suspend fun saveDetailCinemaAsync(id: Long, cinema: CinemaDetail, actors: List<Actor>) =
-        coroutineScope {
-            async {
-                try {
-                    db.cinemaDetailDao.insertCinemaActors(actors
-                        .map { actor -> actor.toCinemaActorEntity(id) })
-                    db.cinemaDetailDao.insertActors(actors.map { actor -> actor.toActorEntity() })
-                    db.cinemaDetailDao.insert(cinema.toCinemaDetailEntity())
-                } catch (e: Exception) {
-                }
+        scope.async {
+            try {
+                db.cinemaDetailDao.insertCinemaActors(actors
+                    .map { actor -> actor.toCinemaActorEntity(id) })
+                db.cinemaDetailDao.insertActors(actors.map { actor -> actor.toActorEntity() })
+                db.cinemaDetailDao.insert(cinema.toCinemaDetailEntity())
+            } catch (e: Exception) {
             }
         }
-
-    suspend fun getCinemasDetailFromCache(id: Long): CinemaDetail =
-        db.cinemaDetailDao.getMovieDetail(id).toCinemaDetail()
-
 }
 
 private const val API_KEY =

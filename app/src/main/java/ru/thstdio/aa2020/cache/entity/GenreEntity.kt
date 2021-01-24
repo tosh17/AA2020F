@@ -8,7 +8,7 @@ import ru.thstdio.aa2020.data.Genre
 
 @Entity(tableName = AppDbContract.GenreEntity.TABLE_NAME)
 data class GenreEntity(
-    @PrimaryKey()
+    @PrimaryKey
     @ColumnInfo(name = AppDbContract.GenreEntity.COLUMN_NAME_ID)
     val id: Long,
     @ColumnInfo(name = AppDbContract.GenreEntity.COLUMN_NAME_NAME)

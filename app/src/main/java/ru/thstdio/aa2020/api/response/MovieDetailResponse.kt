@@ -69,7 +69,7 @@ fun MovieDetailResponse.toCinemaDetail(
     CinemaDetail(
         id = id,
         title = this.title,
-        genres = this.genres.map { it.toGenre() },
+        genres = this.genres.map { genreJson -> genreJson.toGenre() },
         actors = actors,
         runtime = this.runtime,
         ratings = this.voteAverage.toFloat(),

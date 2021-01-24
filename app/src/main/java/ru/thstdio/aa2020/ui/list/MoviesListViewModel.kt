@@ -21,7 +21,7 @@ class MoviesListViewModel(private val repository: Repository) :
     private var loadNewPageJob: Job? = null
     private val _cinemas: MutableLiveData<List<Cinema>> = MutableLiveData()
     val cinemas: LiveData<List<Cinema>> get() = _cinemas
-    private val _scrollListenerStatus: MutableLiveData<Boolean> = MutableLiveData()
+    private val _scrollListenerStatus: MutableLiveData<Boolean> = MutableLiveData(false)
     val scrollListenerStatus: LiveData<Boolean>
         get() = _scrollListenerStatus
 
@@ -32,14 +32,13 @@ class MoviesListViewModel(private val repository: Repository) :
 
     init {
         loadNewPageJob = viewModelScope.launch(exceptionHandler) {
-            _scrollListenerStatus.value = false
             try {
                 _cinemas.value = repository.getCinemasFromCache()
             } catch (e: Exception) {
                 Log.e("ListCinema", e.message ?: "")
             }
             delay(2000)
-            getMovies(newPage = currentPage, isFirstPage = true)
+            getMovies(isFirstPage = true)
         }
     }
 
@@ -47,16 +46,19 @@ class MoviesListViewModel(private val repository: Repository) :
         if ((_cinemas.value?.size ?: 0) - visibleItemPosition < ITEMS_SIZE_IN_PAGE / 2
             && loadNewPageJob?.isActive != true
         ) {
-            getMovies(++currentPage)
+            getMovies()
         }
     }
 
-    private fun getMovies(newPage: Int, isFirstPage: Boolean = false) {
-        Log.e("addRemoveScrollListener", newPage.toString())
+    private fun getMovies(isFirstPage: Boolean = false) {
         loadNewPageJob = viewModelScope.launch(exceptionHandler) {
             _scrollListenerStatus.value = false
-            val result = repository.getCinemasFromPage(newPage)
-            _cinemas.value = if (isFirstPage) result.list else _cinemas.value?.plus(result.list)
+            val result = repository.getCinemasFromPage(currentPage++)
+            _cinemas.value = if (isFirstPage) {
+                result.list
+            } else {
+                _cinemas.value?.plus(result.list)
+            }
             _scrollListenerStatus.value = (result.totalPage > currentPage)
         }
     }
