@@ -9,18 +9,18 @@ import kotlinx.coroutines.CoroutineExceptionHandler
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
+import ru.thstdio.aa2020.cache.ITEMS_SIZE_IN_PAGE
 import ru.thstdio.aa2020.cache.Repository
 import ru.thstdio.aa2020.data.Cinema
 
-const val DIFF_ITEM_TO_LOAD = 10
 
 class MoviesListViewModel(private val repository: Repository) :
     ViewModel() {
 
 
     private var loadNewPageJob: Job? = null
-    private val _cinema: MutableLiveData<List<Cinema>> = MutableLiveData()
-    val cinemas: LiveData<List<Cinema>> get() = _cinema
+    private val _cinemas: MutableLiveData<List<Cinema>> = MutableLiveData()
+    val cinemas: LiveData<List<Cinema>> get() = _cinemas
     private val _scrollListenerStatus: MutableLiveData<Boolean> = MutableLiveData()
     val scrollListenerStatus: LiveData<Boolean>
         get() = _scrollListenerStatus
@@ -35,27 +35,30 @@ class MoviesListViewModel(private val repository: Repository) :
         viewModelScope.launch(exceptionHandler) {
             _scrollListenerStatus.value = false
             try {
-                _cinema.value = repository.getMoviesFromCache()
+                _cinemas.value = repository.getMoviesFromCache()
             } catch (e: Exception) {
                 Log.e("ListCinema", e.message ?: "")
             }
             delay(2000)
-            _cinema.value = repository.getMoviesFromPage(1).list
+            _cinemas.value = repository.getMoviesFromPage(1).list
             _scrollListenerStatus.value = true
         }
     }
 
-    fun updateCurrentItemPosition(position: Int) {
-        if ((_cinema.value?.size ?: 0) - position < DIFF_ITEM_TO_LOAD
+    fun findLastVisibleItemPosition(visibleItemPosition: Int) {
+        if ((_cinemas.value?.size ?: 0) - visibleItemPosition < ITEMS_SIZE_IN_PAGE / 2
             && loadNewPageJob?.isActive != true
-        )
-            loadNewPageJob = viewModelScope.launch(exceptionHandler) {
-                Log.e("Scroll", "Start new page $currentPage")
-                _scrollListenerStatus.value = false
-                currentPage++
-                val result = repository.getMoviesFromPage(currentPage)
-                _cinema.value = _cinema.value?.plus(result.list)
-                if (result.totalPage > currentPage) _scrollListenerStatus.value = true
-            }
+        ) {
+            getMovies(++currentPage)
+        }
+    }
+
+    private fun getMovies(newPage: Int) {
+        loadNewPageJob = viewModelScope.launch(exceptionHandler) {
+            _scrollListenerStatus.value = false
+            val result = repository.getMoviesFromPage(newPage)
+            _cinemas.value = _cinemas.value?.plus(result.list)
+            if (result.totalPage > currentPage) _scrollListenerStatus.value = true
+        }
     }
 }

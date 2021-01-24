@@ -1,6 +1,7 @@
 package ru.thstdio.aa2020.cache.dao
 
 import androidx.room.*
+import ru.thstdio.aa2020.cache.AppDbContract
 import ru.thstdio.aa2020.cache.entity.ActorEntity
 import ru.thstdio.aa2020.cache.entity.CinemaDetailEntity
 import ru.thstdio.aa2020.cache.entity.CinemasActorEntity
@@ -12,7 +13,7 @@ interface CinemaDetailDao {
     suspend fun insert(cinema: CinemaDetailEntity)
 
     @Transaction
-    @Query("SELECT * FROM cinema Where cinema_id = :id")
+    @Query("SELECT * FROM ${AppDbContract.CinemaEntity.TABLE_NAME} Where ${AppDbContract.CinemaEntity.COLUMN_NAME_ID} = :id")
     suspend fun getMovieDetail(id: Long): CinemaDetailRelation
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)

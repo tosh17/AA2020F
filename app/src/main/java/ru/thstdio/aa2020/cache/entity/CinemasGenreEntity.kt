@@ -3,21 +3,23 @@ package ru.thstdio.aa2020.cache.entity
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.ForeignKey
+import ru.thstdio.aa2020.cache.AppDbContract
 
 @Entity(
-    tableName = "cinema_genre",
-    primaryKeys = ["cinema_id", "genre_id"],
+    tableName = AppDbContract.CinemasGenreEntity.TABLE_NAME,
+    primaryKeys = [AppDbContract.CinemasGenreEntity.COLUMN_NAME_CINEMA_ID,
+        AppDbContract.CinemasGenreEntity.COLUMN_NAME_GENRE_NAME],
     foreignKeys = [ForeignKey(
         entity = CinemaEntity::class,
-        parentColumns = arrayOf("cinema_id"),
-        childColumns = arrayOf("cinema_id"),
+        parentColumns = arrayOf(AppDbContract.CinemaEntity.COLUMN_NAME_ID),
+        childColumns = arrayOf(AppDbContract.CinemasGenreEntity.COLUMN_NAME_CINEMA_ID),
         onDelete = ForeignKey.CASCADE
     )]
 )
 class CinemasGenreEntity(
-    @ColumnInfo(name = "cinema_id")
+    @ColumnInfo(name = AppDbContract.CinemasGenreEntity.COLUMN_NAME_CINEMA_ID)
     val idCinema: Long,
-    @ColumnInfo(name = "genre_id")
+    @ColumnInfo(name = AppDbContract.CinemasGenreEntity.COLUMN_NAME_GENRE_NAME)
     val idGenre: Long
 )
 

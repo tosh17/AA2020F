@@ -27,7 +27,7 @@ class FragmentMoviesList : FragmentNavigation(R.layout.fragment_movies_list) {
             if (dy > 0) {
                 val position =
                     (recyclerView.layoutManager as LinearLayoutManager).findLastVisibleItemPosition()
-                viewModel.updateCurrentItemPosition(position)
+                viewModel.findLastVisibleItemPosition(position)
             }
             super.onScrolled(recyclerView, dx, dy)
 
@@ -40,7 +40,7 @@ class FragmentMoviesList : FragmentNavigation(R.layout.fragment_movies_list) {
             GridLayoutManager(context, 2, RecyclerView.VERTICAL, false)
         val adapter =
             CinemaListAdapter { cinema -> router.navigateTo(MoviesDetailsScreen(cinema.id)) }
-        viewModel.cinemas.observe(this.viewLifecycleOwner, adapter::notifyData)
+        viewModel.cinemas.observe(this.viewLifecycleOwner, adapter::submitList)
         viewModel.scrollListenerStatus.observe(
             this.viewLifecycleOwner,
             this::addRemoveScrollListener

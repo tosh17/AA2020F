@@ -25,7 +25,8 @@ data class CinemaDetailRelation(
     val genres: List<GenreEntity>,
     @Relation(
         parentColumn = "cinema_id",
-        entityColumn = "actor_id", associateBy = Junction(CinemasActorEntity::class)
+        entityColumn = "actor_id",
+        associateBy = Junction(CinemasActorEntity::class)
     )
     val actors: List<ActorEntity>
 )
@@ -34,7 +35,7 @@ fun CinemaDetailRelation.toCinemaDetail(): CinemaDetail = CinemaDetail(
     id = this.cinema.id,
     title = this.cinema.title,
     genres = this.genres.map { it.toGenre() },
-    actors = this.actors.map { it.toActors() },
+    actors = this.actors.map { it.toActor() },
     runtime = this.cinemaDetail.runtime,
     ratings = this.cinema.ratings.toFloat(),
     numberOfRatings = this.cinema.numberOfRatings,

@@ -3,14 +3,15 @@ package ru.thstdio.aa2020.cache.entity
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
+import ru.thstdio.aa2020.cache.AppDbContract
 import ru.thstdio.aa2020.data.Genre
 
-@Entity(tableName = "genre")
+@Entity(tableName = AppDbContract.GenreEntity.TABLE_NAME)
 data class GenreEntity(
     @PrimaryKey()
-    @ColumnInfo(name = "genre_id")
+    @ColumnInfo(name = AppDbContract.GenreEntity.COLUMN_NAME_ID)
     val id: Long,
-    @ColumnInfo(name = "name")
+    @ColumnInfo(name = AppDbContract.GenreEntity.COLUMN_NAME_NAME)
     val name: String
 )
 

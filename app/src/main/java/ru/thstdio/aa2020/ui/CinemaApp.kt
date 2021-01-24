@@ -10,6 +10,6 @@ class CinemaApp : Application() {
     val router get() = cicerone.router
     val navigatorHolder: NavigatorHolder
         get() = cicerone.getNavigatorHolder()
-    val repository: Repository by lazy { Repository(applicationContext) }
+    val repository: Repository by lazy { Repository(this) }
 
 }

@@ -18,6 +18,4 @@ data class GenreJson(
     val name: String
 )
 
-fun GenreJson.toGenre(): Genre {
-    return Genre(this.id, this.name)
-}
+fun GenreJson.toGenre(): Genre = Genre(this.id, this.name)

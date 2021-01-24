@@ -3,21 +3,20 @@ package ru.thstdio.aa2020.cache.entity
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
+import ru.thstdio.aa2020.cache.AppDbContract
 import ru.thstdio.aa2020.data.CinemaDetail
 
-@Entity(tableName = "cinema_detail")
+@Entity(tableName = AppDbContract.CinemaDetailEntity.TABLE_NAME)
 data class CinemaDetailEntity(
     @PrimaryKey()
-    @ColumnInfo(name = "cinema_id")
+    @ColumnInfo(name = AppDbContract.CinemaDetailEntity.COLUMN_NAME_ID)
     val id: Long,
-    @ColumnInfo(name = "backdrop")
+    @ColumnInfo(name = AppDbContract.CinemaDetailEntity.COLUMN_NAME_BACKDROP)
     val backdrop: String,
-    @ColumnInfo(name = "overview")
+    @ColumnInfo(name = AppDbContract.CinemaDetailEntity.COLUMN_NAME_OVERVIEW)
     val overview: String,
-    @ColumnInfo(name = "runtime")
-    val runtime: Int,
-    @ColumnInfo(name = "actors")
-    val actors: List<Long>
+    @ColumnInfo(name = AppDbContract.CinemaDetailEntity.COLUMN_NAME_RUNTIME)
+    val runtime: Int
 )
 
 fun CinemaDetail.toCinemaDetailEntity(): CinemaDetailEntity = CinemaDetailEntity(
@@ -25,5 +24,5 @@ fun CinemaDetail.toCinemaDetailEntity(): CinemaDetailEntity = CinemaDetailEntity
     backdrop = this.backdrop,
     overview = this.overview,
     runtime = this.runtime,
-    actors = this.actors.map { it.id },
-)
+
+    )
