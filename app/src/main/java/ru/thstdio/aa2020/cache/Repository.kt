@@ -94,9 +94,9 @@ class Repository(applicationContext: Context) {
         }
     }
 
-    private suspend fun getGenres(): Map<Long, Genre> = coroutineScope {
+    private suspend fun getGenres(): Map<Long, Genre> {
         val alreadyLoadedGenres = genresAtomic.get()
-        if (alreadyLoadedGenres != null) {
+        return if (alreadyLoadedGenres != null) {
             alreadyLoadedGenres
         } else {
             val genres = api.getGenresList().genres.map { genreJson -> genreJson.toGenre() }
@@ -116,7 +116,7 @@ class Repository(applicationContext: Context) {
         }
     }
 
-    suspend fun getCinemaDetail(id: Long): CinemaDetail = coroutineScope {
+    suspend fun getCinemaDetail(id: Long): CinemaDetail {
         val configuration: ConfigurationResponse = getConfigurationAndGenres().first
         val actors = api.getMovieCredits(id).cast
             .asSequence()
@@ -126,7 +126,7 @@ class Repository(applicationContext: Context) {
         val cinemaResponse = api.getDetailMovie(id)
         val cinema = cinemaResponse.toCinemaDetail(configuration, actors)
         saveDetailCinemaAsync(id, cinema, actors)
-        cinema
+        return cinema
     }
 
     private suspend fun saveDetailCinemaAsync(id: Long, cinema: CinemaDetail, actors: List<Actor>) =
