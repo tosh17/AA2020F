@@ -16,7 +16,7 @@ data class GenreEntity(
 )
 
 fun GenreEntity.toCinemaGenre(idCinema: Long): CinemasGenreEntity =
-    CinemasGenreEntity(idCinema = idCinema, idGenre = this.id)
+    CinemasGenreEntity(cinemaId = idCinema, genreId = this.id)
 
 fun Genre.toGenreEntity(): GenreEntity = GenreEntity(this.id, this.name)
 fun GenreEntity.toGenre(): Genre = Genre(this.id, this.name)

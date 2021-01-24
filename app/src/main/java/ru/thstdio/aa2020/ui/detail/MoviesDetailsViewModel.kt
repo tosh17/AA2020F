@@ -22,11 +22,11 @@ class MoviesDetailsViewModel(private val repository: Repository, private val cin
     init {
         viewModelScope.launch(exceptionHandler) {
             try {
-                _mutableMovieState.value = repository.getMoviesDetailFromCache(cinemaId)
+                _mutableMovieState.value = repository.getCinemasDetailFromCache(cinemaId)
                 delay(5000)
             } catch (e: Exception) {
             }
-            _mutableMovieState.value = repository.getMoviesDetail(cinemaId)
+            _mutableMovieState.value = repository.getCinemaDetail(cinemaId)
         }
     }
 

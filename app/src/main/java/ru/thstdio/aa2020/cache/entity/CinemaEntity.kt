@@ -12,7 +12,7 @@ import ru.thstdio.aa2020.data.Genre
 
 @Entity(tableName = AppDbContract.CinemaEntity.TABLE_NAME)
 data class CinemaEntity(
-    @PrimaryKey()
+    @PrimaryKey
     @ColumnInfo(name = AppDbContract.CinemaEntity.COLUMN_NAME_ID)
     val id: Long,
     @ColumnInfo(name = AppDbContract.CinemaEntity.COLUMN_NAME_TITLE)
@@ -44,5 +44,5 @@ fun CinemaItemResponse.toCinemaEntity(
         adult = this.adult,
         position = position
     ),
-    genres = genreIDS.mapNotNull { genres[it]?.toGenreEntity() }
+    genres = genreIDS.mapNotNull { genreId -> genres[genreId]?.toGenreEntity() }
 )

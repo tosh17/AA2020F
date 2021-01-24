@@ -17,8 +17,8 @@ interface CinemaDetailDao {
     suspend fun getMovieDetail(id: Long): CinemaDetailRelation
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun insertActorAll(listActorDto: List<ActorEntity>)
+    suspend fun insertActors(listActorDto: List<ActorEntity>)
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun insertCinemaActorAll(map: List<CinemasActorEntity>)
+    suspend fun insertCinemaActors(map: List<CinemasActorEntity>)
 }

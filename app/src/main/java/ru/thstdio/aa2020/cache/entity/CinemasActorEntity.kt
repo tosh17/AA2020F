@@ -19,11 +19,11 @@ import ru.thstdio.aa2020.data.Actor
 )
 class CinemasActorEntity(
     @ColumnInfo(name = AppDbContract.CinemasActorEntity.COLUMN_NAME_CINEMA_ID)
-    val idCinema: Long,
+    val cinemaId: Long,
     @ColumnInfo(name = AppDbContract.CinemasActorEntity.COLUMN_NAME_ACTOR_ID)
-    val idActor: Long
+    val actorId: Long
 )
 
 fun Actor.toCinemaActorEntity(id: Long): CinemasActorEntity =
-    CinemasActorEntity(idCinema = id, idActor = this.id)
+    CinemasActorEntity(cinemaId = id, actorId = this.id)
 

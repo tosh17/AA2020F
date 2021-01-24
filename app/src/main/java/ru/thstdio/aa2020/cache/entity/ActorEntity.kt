@@ -8,7 +8,7 @@ import ru.thstdio.aa2020.data.Actor
 
 @Entity(tableName = AppDbContract.ActorEntity.TABLE_NAME)
 data class ActorEntity(
-    @PrimaryKey()
+    @PrimaryKey
     @ColumnInfo(name = AppDbContract.ActorEntity.COLUMN_NAME_ID)
     val id: Long,
     @ColumnInfo(name = AppDbContract.ActorEntity.COLUMN_NAME_NAME)

@@ -35,8 +35,8 @@ data class CinemaDetailRelation(
 fun CinemaDetailRelation.toCinemaDetail(): CinemaDetail = CinemaDetail(
     id = this.cinema.id,
     title = this.cinema.title,
-    genres = this.genres.map { it.toGenre() },
-    actors = this.actors.map { it.toActor() },
+    genres = this.genres.map { genre -> genre.toGenre() },
+    actors = this.actors.map { actor -> actor.toActor() },
     runtime = this.cinemaDetail.runtime,
     ratings = this.cinema.ratings.toFloat(),
     numberOfRatings = this.cinema.numberOfRatings,

@@ -8,7 +8,7 @@ import ru.thstdio.aa2020.data.CinemaDetail
 
 @Entity(tableName = AppDbContract.CinemaDetailEntity.TABLE_NAME)
 data class CinemaDetailEntity(
-    @PrimaryKey()
+    @PrimaryKey
     @ColumnInfo(name = AppDbContract.CinemaDetailEntity.COLUMN_NAME_ID)
     val id: Long,
     @ColumnInfo(name = AppDbContract.CinemaDetailEntity.COLUMN_NAME_BACKDROP)

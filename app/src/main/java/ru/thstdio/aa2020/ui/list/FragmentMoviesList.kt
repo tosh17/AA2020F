@@ -1,6 +1,7 @@
 package ru.thstdio.aa2020.ui.list
 
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.GridLayoutManager
@@ -49,6 +50,7 @@ class FragmentMoviesList : FragmentNavigation(R.layout.fragment_movies_list) {
     }
 
     private fun addRemoveScrollListener(isAdd: Boolean) {
+        Log.e("addRemoveScrollListener", isAdd.toString())
         if (isAdd) {
             binding.recyclerView.addOnScrollListener(scrollListener)
         } else {

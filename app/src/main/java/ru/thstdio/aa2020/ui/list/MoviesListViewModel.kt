@@ -25,23 +25,21 @@ class MoviesListViewModel(private val repository: Repository) :
     val scrollListenerStatus: LiveData<Boolean>
         get() = _scrollListenerStatus
 
-    private var isCurrentModeCache = true
     private var currentPage = 1
     private val exceptionHandler = CoroutineExceptionHandler { coroutineContext, exception ->
         println("CoroutineExceptionHandler got $exception in $coroutineContext")
     }
 
     init {
-        viewModelScope.launch(exceptionHandler) {
+        loadNewPageJob = viewModelScope.launch(exceptionHandler) {
             _scrollListenerStatus.value = false
             try {
-                _cinemas.value = repository.getMoviesFromCache()
+                _cinemas.value = repository.getCinemasFromCache()
             } catch (e: Exception) {
                 Log.e("ListCinema", e.message ?: "")
             }
             delay(2000)
-            _cinemas.value = repository.getMoviesFromPage(1).list
-            _scrollListenerStatus.value = true
+            getMovies(newPage = currentPage, isFirstPage = true)
         }
     }
 
@@ -53,12 +51,13 @@ class MoviesListViewModel(private val repository: Repository) :
         }
     }
 
-    private fun getMovies(newPage: Int) {
+    private fun getMovies(newPage: Int, isFirstPage: Boolean = false) {
+        Log.e("addRemoveScrollListener", newPage.toString())
         loadNewPageJob = viewModelScope.launch(exceptionHandler) {
             _scrollListenerStatus.value = false
-            val result = repository.getMoviesFromPage(newPage)
-            _cinemas.value = _cinemas.value?.plus(result.list)
-            if (result.totalPage > currentPage) _scrollListenerStatus.value = true
+            val result = repository.getCinemasFromPage(newPage)
+            _cinemas.value = if (isFirstPage) result.list else _cinemas.value?.plus(result.list)
+            _scrollListenerStatus.value = (result.totalPage > currentPage)
         }
     }
 }
