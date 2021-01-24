@@ -2,6 +2,7 @@ package ru.thstdio.aa2020.cache
 
 object AppDbContract {
     const val DATABASE_NAME = "app_db.db"
+    const val DATABASE_VERSION = 1
 
     object ActorEntity {
         const val TABLE_NAME = "actor"
@@ -40,16 +41,16 @@ object AppDbContract {
     }
 
     object CinemasActorEntity {
-        const val TABLE_NAME = "genre"
+        const val TABLE_NAME = "cinema_actor"
 
         const val COLUMN_NAME_CINEMA_ID = "cinema_id"
-        const val COLUMN_NAME_ACTOR_NAME = "actor_id"
+        const val COLUMN_NAME_ACTOR_ID = "actor_id"
     }
 
     object CinemasGenreEntity {
         const val TABLE_NAME = "cinema_genre"
 
         const val COLUMN_NAME_CINEMA_ID = "cinema_id"
-        const val COLUMN_NAME_GENRE_NAME = "genre_id"
+        const val COLUMN_NAME_GENRE_ID = "genre_id"
     }
 }

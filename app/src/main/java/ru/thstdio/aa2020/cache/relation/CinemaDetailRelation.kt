@@ -4,6 +4,7 @@ import androidx.room.Embedded
 import androidx.room.Junction
 import androidx.room.Relation
 import ru.thstdio.aa2020.api.converter.adultToAge
+import ru.thstdio.aa2020.cache.AppDbContract
 import ru.thstdio.aa2020.cache.entity.*
 import ru.thstdio.aa2020.data.CinemaDetail
 
@@ -11,21 +12,21 @@ data class CinemaDetailRelation(
     @Embedded
     val cinema: CinemaEntity,
     @Relation(
-        parentColumn = "cinema_id",
-        entityColumn = "cinema_id",
+        parentColumn = AppDbContract.CinemaEntity.COLUMN_NAME_ID,
+        entityColumn = AppDbContract.CinemaDetailEntity.COLUMN_NAME_ID,
         entity = CinemaDetailEntity::class
     )
     val cinemaDetail: CinemaDetailEntity,
 
     @Relation(
-        parentColumn = "cinema_id",
-        entityColumn = "genre_id",
+        parentColumn = AppDbContract.CinemaEntity.COLUMN_NAME_ID,
+        entityColumn = AppDbContract.GenreEntity.COLUMN_NAME_ID,
         associateBy = Junction(CinemasGenreEntity::class)
     )
     val genres: List<GenreEntity>,
     @Relation(
-        parentColumn = "cinema_id",
-        entityColumn = "actor_id",
+        parentColumn = AppDbContract.CinemaEntity.COLUMN_NAME_ID,
+        entityColumn = AppDbContract.ActorEntity.COLUMN_NAME_ID,
         associateBy = Junction(CinemasActorEntity::class)
     )
     val actors: List<ActorEntity>

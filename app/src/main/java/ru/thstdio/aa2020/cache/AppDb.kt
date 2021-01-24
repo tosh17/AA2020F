@@ -14,7 +14,7 @@ import ru.thstdio.aa2020.cache.entity.*
 @Database(
     entities = [CinemaEntity::class, CinemaDetailEntity::class,
         CinemasGenreEntity::class, GenreEntity::class, CinemasActorEntity::class, ActorEntity::class],
-    version = 1
+    version = AppDbContract.DATABASE_VERSION
 )
 @TypeConverters(CinemaIndexListTypeConverter::class)
 abstract class AppDb : RoomDatabase() {
@@ -25,7 +25,7 @@ abstract class AppDb : RoomDatabase() {
         fun create(applicationContext: Context): AppDb = Room.databaseBuilder(
             applicationContext,
             AppDb::class.java,
-            "AppDb"
+            AppDbContract.DATABASE_NAME
         )
             .fallbackToDestructiveMigration()
             .build()

@@ -8,7 +8,7 @@ import ru.thstdio.aa2020.cache.AppDbContract
 @Entity(
     tableName = AppDbContract.CinemasGenreEntity.TABLE_NAME,
     primaryKeys = [AppDbContract.CinemasGenreEntity.COLUMN_NAME_CINEMA_ID,
-        AppDbContract.CinemasGenreEntity.COLUMN_NAME_GENRE_NAME],
+        AppDbContract.CinemasGenreEntity.COLUMN_NAME_GENRE_ID],
     foreignKeys = [ForeignKey(
         entity = CinemaEntity::class,
         parentColumns = arrayOf(AppDbContract.CinemaEntity.COLUMN_NAME_ID),
@@ -19,7 +19,7 @@ import ru.thstdio.aa2020.cache.AppDbContract
 class CinemasGenreEntity(
     @ColumnInfo(name = AppDbContract.CinemasGenreEntity.COLUMN_NAME_CINEMA_ID)
     val idCinema: Long,
-    @ColumnInfo(name = AppDbContract.CinemasGenreEntity.COLUMN_NAME_GENRE_NAME)
+    @ColumnInfo(name = AppDbContract.CinemasGenreEntity.COLUMN_NAME_GENRE_ID)
     val idGenre: Long
 )
 

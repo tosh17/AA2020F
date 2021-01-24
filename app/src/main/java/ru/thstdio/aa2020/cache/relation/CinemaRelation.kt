@@ -3,6 +3,7 @@ package ru.thstdio.aa2020.cache.relation
 import androidx.room.Embedded
 import androidx.room.Junction
 import androidx.room.Relation
+import ru.thstdio.aa2020.cache.AppDbContract
 import ru.thstdio.aa2020.cache.entity.CinemaEntity
 import ru.thstdio.aa2020.cache.entity.CinemasGenreEntity
 import ru.thstdio.aa2020.cache.entity.GenreEntity
@@ -13,8 +14,8 @@ data class CinemaRelation(
     @Embedded
     val cinema: CinemaEntity,
     @Relation(
-        parentColumn = "cinema_id",
-        entityColumn = "genre_id",
+        parentColumn = AppDbContract.CinemaEntity.COLUMN_NAME_ID,
+        entityColumn = AppDbContract.GenreEntity.COLUMN_NAME_ID,
         associateBy = Junction(CinemasGenreEntity::class)
     )
     val genres: List<GenreEntity>

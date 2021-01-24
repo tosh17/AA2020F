@@ -9,7 +9,7 @@ import ru.thstdio.aa2020.data.Actor
 @Entity(
     tableName = AppDbContract.CinemasActorEntity.TABLE_NAME,
     primaryKeys = [AppDbContract.CinemasActorEntity.COLUMN_NAME_CINEMA_ID,
-        AppDbContract.CinemasActorEntity.COLUMN_NAME_ACTOR_NAME],
+        AppDbContract.CinemasActorEntity.COLUMN_NAME_ACTOR_ID],
     foreignKeys = [ForeignKey(
         entity = CinemaEntity::class,
         parentColumns = arrayOf(AppDbContract.CinemaEntity.COLUMN_NAME_ID),
@@ -20,7 +20,7 @@ import ru.thstdio.aa2020.data.Actor
 class CinemasActorEntity(
     @ColumnInfo(name = AppDbContract.CinemasActorEntity.COLUMN_NAME_CINEMA_ID)
     val idCinema: Long,
-    @ColumnInfo(name = AppDbContract.CinemasActorEntity.COLUMN_NAME_ACTOR_NAME)
+    @ColumnInfo(name = AppDbContract.CinemasActorEntity.COLUMN_NAME_ACTOR_ID)
     val idActor: Long
 )
 
