@@ -5,8 +5,9 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.CoroutineExceptionHandler
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
-import ru.thstdio.aa2020.api.Repository
+import ru.thstdio.aa2020.cache.Repository
 import ru.thstdio.aa2020.data.CinemaDetail
 
 class MoviesDetailsViewModel(private val repository: Repository, private val cinemaId: Long) :
@@ -20,7 +21,12 @@ class MoviesDetailsViewModel(private val repository: Repository, private val cin
 
     init {
         viewModelScope.launch(exceptionHandler) {
-            _mutableMovieState.value = repository.getMoviesDetail(cinemaId)
+            try {
+                _mutableMovieState.value = repository.getCinemasDetailFromCache(cinemaId)
+                delay(5000)
+            } catch (e: Exception) {
+            }
+            _mutableMovieState.value = repository.getCinemaDetail(cinemaId)
         }
     }
 

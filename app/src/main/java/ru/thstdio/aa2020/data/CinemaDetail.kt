@@ -1,7 +1,5 @@
 package ru.thstdio.aa2020.data
 
-import ru.thstdio.aa2020.api.response.Genre
-
 data class CinemaDetail(
     val id: Long,
     val title: String,
