@@ -8,6 +8,7 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import coil.load
+import coil.transform.RoundedCornersTransformation
 import ru.thstdio.aa2020.R
 import ru.thstdio.aa2020.api.converter.adultToAge
 import ru.thstdio.aa2020.data.Cinema
@@ -41,6 +42,7 @@ class CinemaListHolder(view: View, private val onClick: (Cinema) -> Unit) :
         binding.imageBg.load(cinema.poster) {
             placeholder(R.drawable.ic_film)
             error(R.drawable.ic_film)
+            transformations(RoundedCornersTransformation(topLeft = 6f, topRight = 6f))
         }
         binding.textAge.text = "${cinema.adult.adultToAge()}+"
         setLike(cinema.ratings > 8)
