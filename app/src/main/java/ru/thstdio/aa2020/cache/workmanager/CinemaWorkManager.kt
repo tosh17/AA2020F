@@ -10,7 +10,7 @@ import java.util.concurrent.TimeUnit
 class CinemaWorkManager {
     private val constraints = Constraints.Builder()
         .setRequiresCharging(true)
-        .setRequiredNetworkType(NetworkType.CONNECTED)
+        .setRequiredNetworkType(NetworkType.UNMETERED)
         .build()
     private val work = PeriodicWorkRequest.Builder(CinemaWorker::class.java, 8, TimeUnit.HOURS)
         .setConstraints(constraints)
