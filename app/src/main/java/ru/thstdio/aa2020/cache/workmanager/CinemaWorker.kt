@@ -4,6 +4,7 @@ import android.content.Context
 import android.util.Log
 import androidx.work.CoroutineWorker
 import androidx.work.WorkerParameters
+import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.async
 import kotlinx.coroutines.coroutineScope
 import ru.thstdio.aa2020.cache.Repository
@@ -20,7 +21,7 @@ class CinemaWorker(context: Context, params: WorkerParameters) :
         val ids = repository.getCinemaDetailIDsInCache()
         coroutineScope {
             for (id in ids) {
-                async { repository.getCinemaDetail(id) }
+                async(SupervisorJob()) { repository.getCinemaDetail(id) }
             }
         }
         return Result.success()

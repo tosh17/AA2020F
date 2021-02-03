@@ -19,5 +19,4 @@ class CinemaWorkManager {
     fun start(context: Context) {
         WorkManager.getInstance(context).enqueue(work)
     }
-
 }
