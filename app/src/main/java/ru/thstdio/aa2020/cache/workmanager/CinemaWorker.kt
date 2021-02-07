@@ -4,7 +4,6 @@ import android.content.Context
 import android.util.Log
 import androidx.work.CoroutineWorker
 import androidx.work.WorkerParameters
-import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.async
 import kotlinx.coroutines.coroutineScope
 import ru.thstdio.aa2020.cache.Repository
@@ -17,11 +16,16 @@ class CinemaWorker(context: Context, params: WorkerParameters) :
         get() = (applicationContext as CinemaApp).repository
 
     override suspend fun doWork(): Result {
-        Log.e("Worker", "StartWork")
+        Log.d("Worker", "StartWork")
         val ids = repository.getCinemaDetailIDsInCache()
         coroutineScope {
             for (id in ids) {
-                async(SupervisorJob()) { repository.getCinemaDetail(id) }
+                async {
+                    try {
+                        repository.getCinemaDetail(id)
+                    } catch (e: Exception) {
+                    }
+                }
             }
         }
         return Result.success()

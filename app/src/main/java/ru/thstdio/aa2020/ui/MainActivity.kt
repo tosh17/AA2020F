@@ -19,7 +19,7 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
         if (savedInstanceState == null) {
             router.navigateTo(MoviesListScreen())
-            CinemaWorkManager().start(applicationContext)
+            CinemaWorkManager.start(applicationContext)
         }
     }
 
