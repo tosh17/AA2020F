@@ -11,14 +11,7 @@ import java.util.concurrent.TimeUnit
 
 object CinemaWorkManager {
     private const val WORK_TAG = "CinemaWorkManager_Tag"
-    private val constraints = Constraints.Builder()
-        .setRequiresCharging(true)
-        .setRequiredNetworkType(NetworkType.UNMETERED)
-        .build()
-    private val work = PeriodicWorkRequest.Builder(CinemaWorker::class.java, 8, TimeUnit.HOURS)
-        .setConstraints(constraints)
-        .addTag(WORK_TAG)
-        .build()
+
 
     fun start(context: Context) {
         val currentWork = WorkManager.getInstance(context)
@@ -26,6 +19,14 @@ object CinemaWorkManager {
         if (currentWork != null) {
             Log.d("Worker", "CurrentWork ${currentWork.id}   ${currentWork.state}")
         } else {
+            val constraints = Constraints.Builder()
+                .setRequiresCharging(true)
+                .setRequiredNetworkType(NetworkType.UNMETERED)
+                .build()
+            val work = PeriodicWorkRequest.Builder(CinemaWorker::class.java, 8, TimeUnit.HOURS)
+                .setConstraints(constraints)
+                .addTag(WORK_TAG)
+                .build()
             WorkManager.getInstance(context).enqueue(work)
             Log.d("Worker", "Start ${work.id}")
         }
