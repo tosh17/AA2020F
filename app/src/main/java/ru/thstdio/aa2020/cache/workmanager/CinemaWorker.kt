@@ -17,36 +17,29 @@ class CinemaWorker(context: Context, params: WorkerParameters) :
     private val repository: Repository
         get() = (applicationContext as CinemaApp).repository
 
-    override suspend fun doWork(): Result {
-        Log.d("Worker", "StartWork")
-        val ids = repository.getCinemaDetailIDsInCache()
-
+    override suspend fun doWork(): Result =
         coroutineScope {
+            Log.d("Worker", "StartWork")
+            val ids = repository.getCinemaDetailIDsInCache()
             val positive = 1
-            val negative = 0
-            var attempt = 3
-            while (attempt > 0) {
-                val deferreds: List<Deferred<Int>> = ids.map { id ->
-                    async {
-                        try {
-                            repository.getCinemaDetail(id)
-                            positive
-                        } catch (e: Exception) {
-                            negative
-                        }
+            val negative = -1
+
+            val deferreds: List<Deferred<Int>> = ids.map { id ->
+                async {
+                    try {
+                        repository.getCinemaDetail(id)
+                        positive
+                    } catch (e: Exception) {
+                        negative
                     }
                 }
-                val sum = deferreds.awaitAll().sum()
-                if (sum >= (ids.size / 2)) {
-                    attempt = 0
-                } else {
-                    attempt--
-                }
             }
-
-
+            val sum = deferreds.awaitAll().sum()
+            if ((sum < 0) && (runAttemptCount <= 3)) {
+                Result.retry()
+            } else {
+                Result.success()
+            }
         }
-        return Result.success()
-    }
 
 }
