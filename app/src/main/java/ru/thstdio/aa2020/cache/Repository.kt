@@ -141,6 +141,9 @@ class Repository(applicationContext: Context) {
             } catch (e: Exception) {
             }
         }
+
+    suspend fun getCinemaDetailIDsInCache(): List<Long> = db.cinemaDetailDao.getCinemaDetailIDs()
+
 }
 
 private const val API_KEY =

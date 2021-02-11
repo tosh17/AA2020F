@@ -21,4 +21,7 @@ interface CinemaDetailDao {
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertCinemaActors(map: List<CinemasActorEntity>)
+
+    @Query("SELECT ${AppDbContract.CinemaDetailEntity.COLUMN_NAME_ID} FROM ${AppDbContract.CinemaDetailEntity.TABLE_NAME}")
+    suspend fun getCinemaDetailIDs(): List<Long>
 }
