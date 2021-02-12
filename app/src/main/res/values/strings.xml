@@ -20,4 +20,6 @@
     <string name="movie_list_age">13+</string>
     <string name="review_string">%d reviews</string>
     <string name="time_string">%d min</string>
+    <string name="channel_name">academy_cinema_app</string>
+    <string name="channel_description">notification for cinema with big raiting</string>
 </resources>

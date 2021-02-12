@@ -14,6 +14,7 @@ object CinemaWorkManager {
 
 
     fun start(context: Context) {
+
         val currentWork = WorkManager.getInstance(context)
             .getWorkInfosByTag(WORK_TAG).get().firstOrNull()
         if (currentWork != null) {
@@ -27,6 +28,7 @@ object CinemaWorkManager {
                 .setConstraints(constraints)
                 .addTag(WORK_TAG)
                 .build()
+
             WorkManager.getInstance(context).enqueue(work)
             Log.d("Worker", "Start ${work.id}")
         }

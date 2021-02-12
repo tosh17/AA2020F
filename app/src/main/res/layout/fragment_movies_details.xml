@@ -210,5 +210,12 @@
             tools:listitem="@layout/view_holder_actor"
             tools:orientation="horizontal" />
 
+        <Button
+            android:id="@+id/add_to_calendar_button"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:text="Добавить к просмотру"
+            app:layout_constraintTop_toBottomOf="@id/recycler_view" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 </ScrollView>
