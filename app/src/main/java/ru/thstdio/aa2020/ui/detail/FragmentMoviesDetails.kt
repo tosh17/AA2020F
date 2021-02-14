@@ -114,8 +114,6 @@ class FragmentMoviesDetails : FragmentNavigation(R.layout.fragment_movies_detail
     private fun sendEventToCalendar(time: Long) {
         viewModel.movieState.value?.let { cinema ->
             val calID: Long = 1
-            val title = cinema.title
-            val description = cinema.overview
             requireActivity().sendCalendarEvent(cinema, time, calID)
         }
     }

@@ -28,13 +28,19 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun openDeepLinkIfContain(intent: Intent?): Boolean {
-        val id = intent?.data!!.pathSegments.last().toLongOrNull()
-        return if (id == null) {
-            false
-        } else {
-            router.newChain(MoviesListScreen())
-            router.navigateTo(MoviesDetailsScreen(id))
-            true
+        val id = intent?.data?.pathSegments?.last()?.toLongOrNull()
+        return when {
+            id == null -> {
+                false
+            }
+            supportFragmentManager.fragments.isEmpty() -> {
+                router.newChain(MoviesListScreen(), MoviesDetailsScreen(id))
+                true
+            }
+            else -> {
+                router.navigateTo(MoviesDetailsScreen(id))
+                true
+            }
         }
     }
 
