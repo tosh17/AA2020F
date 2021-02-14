@@ -8,7 +8,7 @@ import ru.thstdio.aa2020.ui.MainActivity
 
 private const val BASE_DEEP_LINK_URL = "https://www.themoviedb.org/movie/"
 private const val REQUEST_CODE = 1
-fun Context.createIntentWithDeepLink(cinemaId: Long): PendingIntent {
+fun Context.createIntentWithCinemaDeepLink(cinemaId: Long): PendingIntent {
     val intent = Intent(this, MainActivity::class.java)
     intent.data = Uri.parse(BASE_DEEP_LINK_URL + cinemaId)
     return PendingIntent.getActivity(

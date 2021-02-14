@@ -16,22 +16,22 @@ import kotlinx.coroutines.Deferred
 import kotlinx.coroutines.async
 import kotlinx.coroutines.awaitAll
 import kotlinx.coroutines.coroutineScope
-import kotlinx.coroutines.sync.Mutex
 import ru.thstdio.aa2020.R
 import ru.thstdio.aa2020.cache.Repository
 import ru.thstdio.aa2020.data.CinemaDetail
 import ru.thstdio.aa2020.ui.CinemaApp
-import ru.thstdio.aa2020.ui.view.extension.createIntentWithDeepLink
+import ru.thstdio.aa2020.ui.view.extension.createIntentWithCinemaDeepLink
 import java.util.concurrent.atomic.AtomicReference
+
+private const val NOTIFICATION_ID: Int = 1
+private const val CHANNEL_ID: String = "CINEMA_CHANNEL_ID"
 
 class CinemaWorker(private val context: Context, params: WorkerParameters) :
     CoroutineWorker(context, params) {
 
-    private val NOTIFICATION_ID: Int = 1
-    private val CHANNEL_ID: String = "CINEMA_CHANNEL_ID"
+
     private val repository: Repository
         get() = (applicationContext as CinemaApp).repository
-    private val mutex: Mutex = Mutex()
 
     override suspend fun doWork(): Result =
         coroutineScope {
@@ -39,7 +39,7 @@ class CinemaWorker(private val context: Context, params: WorkerParameters) :
             val ids = repository.getCinemaDetailIDsInCache()
             val positive = 1
             val negative = -1
-            var cinemaWithBestRating: AtomicReference<CinemaDetail> = AtomicReference()
+            val cinemaWithBestRating: AtomicReference<CinemaDetail?> = AtomicReference()
             val deferreds: List<Deferred<Int>> = ids.map { id ->
                 async {
                     try {
@@ -64,18 +64,24 @@ class CinemaWorker(private val context: Context, params: WorkerParameters) :
 
     private fun updateIfCinemaRatingBetter(
         cinema: CinemaDetail,
-        atomicCinema: AtomicReference<CinemaDetail>
+        atomicCinema: AtomicReference<CinemaDetail?>
     ) {
         var isDone = false
         while (!isDone) {
             val currentReference = atomicCinema.get()
             isDone = when {
-                currentReference == null -> atomicCinema.compareAndSet(currentReference, cinema)
-                currentReference.ratings < cinema.ratings -> atomicCinema.compareAndSet(
-                    currentReference,
-                    cinema
-                )
-                else -> true
+                currentReference == null -> {
+                    atomicCinema.compareAndSet(currentReference, cinema)
+                }
+                currentReference.ratings < cinema.ratings -> {
+                    atomicCinema.compareAndSet(
+                        currentReference,
+                        cinema
+                    )
+                }
+                else -> {
+                    true
+                }
             }
         }
     }
@@ -84,7 +90,7 @@ class CinemaWorker(private val context: Context, params: WorkerParameters) :
     private suspend fun createNotification(cinema: CinemaDetail) {
         createNotificationChannel(context, CHANNEL_ID)
         Log.d("Worker", "Best Movie ${cinema.title}")
-        val resultPendingIntent = context.createIntentWithDeepLink(cinema.id)
+        val resultPendingIntent = context.createIntentWithCinemaDeepLink(cinema.id)
 
         var builder = NotificationCompat.Builder(context, CHANNEL_ID)
             .setSmallIcon(R.drawable.cinema_holder)

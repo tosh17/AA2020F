@@ -20,19 +20,21 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         if (savedInstanceState == null) {
-            if (!openDeepLinkIfContain(intent)) router.navigateTo(MoviesListScreen())
+            if (!openDeepLinkIfContain(intent)) {
+                router.navigateTo(MoviesListScreen())
+            }
             CinemaWorkManager.start(applicationContext)
         }
     }
 
     private fun openDeepLinkIfContain(intent: Intent?): Boolean {
-        return try {
-            val id = intent?.data!!.pathSegments.last().toLong()
+        val id = intent?.data!!.pathSegments.last().toLongOrNull()
+        return if (id == null) {
+            false
+        } else {
             router.newChain(MoviesListScreen())
             router.navigateTo(MoviesDetailsScreen(id))
             true
-        } catch (e: java.lang.Exception) {
-            false
         }
     }
 

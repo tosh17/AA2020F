@@ -20,6 +20,8 @@ import ru.thstdio.aa2020.databinding.FragmentMoviesDetailsBinding
 import ru.thstdio.aa2020.ui.FragmentNavigation
 import ru.thstdio.aa2020.ui.view.extension.sendCalendarEvent
 
+private const val REQUEST_CODE: Int = 1002
+private const val CALENDAR_PERMISSION = Manifest.permission.WRITE_CALENDAR
 
 class FragmentMoviesDetails : FragmentNavigation(R.layout.fragment_movies_details) {
     companion object {
@@ -33,8 +35,7 @@ class FragmentMoviesDetails : FragmentNavigation(R.layout.fragment_movies_detail
         }
     }
 
-    private val REQUEST_CODE: Int = 1002
-    private val CALENDAR_PERMISSION = Manifest.permission.WRITE_CALENDAR
+
     private val binding: FragmentMoviesDetailsBinding by viewBinding()
     private val viewModel: MoviesDetailsViewModel by viewModels {
         val cinemaId = arguments?.getLong(CinemaArg)
@@ -115,7 +116,7 @@ class FragmentMoviesDetails : FragmentNavigation(R.layout.fragment_movies_detail
             val calID: Long = 1
             val title = cinema.title
             val description = cinema.overview
-            requireActivity().sendCalendarEvent(title, description, time, calID)
+            requireActivity().sendCalendarEvent(cinema, time, calID)
         }
     }
 
