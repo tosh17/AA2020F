@@ -20,27 +20,25 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         if (savedInstanceState == null) {
-            try {
-                parseDeeplink()
-            } catch (e: Exception) {
-                router.navigateTo(MoviesListScreen())
-            }
+            if (!openDeepLinkIfContain(intent)) router.navigateTo(MoviesListScreen())
             CinemaWorkManager.start(applicationContext)
         }
     }
 
-    private fun parseDeeplink() {
-        val id = intent?.data!!.pathSegments.last().toLong()
-        router.newChain(MoviesListScreen())
-        router.navigateTo(MoviesDetailsScreen(id))
+    private fun openDeepLinkIfContain(intent: Intent?): Boolean {
+        return try {
+            val id = intent?.data!!.pathSegments.last().toLong()
+            router.newChain(MoviesListScreen())
+            router.navigateTo(MoviesDetailsScreen(id))
+            true
+        } catch (e: java.lang.Exception) {
+            false
+        }
     }
 
-    override fun onNewIntent(intent: Intent?) {
+    override fun onNewIntent(newIntent: Intent) {
         super.onNewIntent(intent)
-        try {
-            parseDeeplink()
-        } catch (e: Exception) {
-        }
+        openDeepLinkIfContain(newIntent)
     }
 
     override fun onResumeFragments() {

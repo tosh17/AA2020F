@@ -1,10 +1,8 @@
 package ru.thstdio.aa2020.ui.detail
 
 import android.Manifest
-import android.content.ContentValues
 import android.content.pm.PackageManager
 import android.os.Bundle
-import android.provider.CalendarContract
 import android.view.View
 import androidx.core.app.ActivityCompat
 import androidx.core.view.isVisible
@@ -20,7 +18,7 @@ import ru.thstdio.aa2020.data.Actor
 import ru.thstdio.aa2020.data.CinemaDetail
 import ru.thstdio.aa2020.databinding.FragmentMoviesDetailsBinding
 import ru.thstdio.aa2020.ui.FragmentNavigation
-import java.util.*
+import ru.thstdio.aa2020.ui.view.extension.sendCalendarEvent
 
 
 class FragmentMoviesDetails : FragmentNavigation(R.layout.fragment_movies_details) {
@@ -113,20 +111,12 @@ class FragmentMoviesDetails : FragmentNavigation(R.layout.fragment_movies_detail
     }
 
     private fun sendEventToCalendar(time: Long) {
-        val calID: Long = 1
-        val title = viewModel.movieState.value!!.title
-        val description = viewModel.movieState.value!!.overview
-
-
-        val values = ContentValues().apply {
-            put(CalendarContract.Events.DTSTART, time)
-            put(CalendarContract.Events.DTEND, time)
-            put(CalendarContract.Events.TITLE, title)
-            put(CalendarContract.Events.DESCRIPTION, description)
-            put(CalendarContract.Events.CALENDAR_ID, calID)
-            put(CalendarContract.Events.EVENT_TIMEZONE, TimeZone.getDefault().displayName)
+        viewModel.movieState.value?.let { cinema ->
+            val calID: Long = 1
+            val title = cinema.title
+            val description = cinema.overview
+            requireActivity().sendCalendarEvent(title, description, time, calID)
         }
-        requireActivity().contentResolver.insert(CalendarContract.Events.CONTENT_URI, values)
     }
 
     override fun onRequestPermissionsResult(

@@ -2,11 +2,8 @@ package ru.thstdio.aa2020.cache.workmanager
 
 import android.app.NotificationChannel
 import android.app.NotificationManager
-import android.app.PendingIntent
 import android.content.Context
-import android.content.Intent
 import android.graphics.drawable.BitmapDrawable
-import android.net.Uri
 import android.os.Build
 import android.util.Log
 import androidx.core.app.NotificationCompat
@@ -20,16 +17,16 @@ import kotlinx.coroutines.async
 import kotlinx.coroutines.awaitAll
 import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.sync.Mutex
-import kotlinx.coroutines.sync.withLock
 import ru.thstdio.aa2020.R
 import ru.thstdio.aa2020.cache.Repository
 import ru.thstdio.aa2020.data.CinemaDetail
 import ru.thstdio.aa2020.ui.CinemaApp
-import ru.thstdio.aa2020.ui.MainActivity
+import ru.thstdio.aa2020.ui.view.extension.createIntentWithDeepLink
+import java.util.concurrent.atomic.AtomicReference
 
-class CinemaWorker(val context: Context, params: WorkerParameters) :
+class CinemaWorker(private val context: Context, params: WorkerParameters) :
     CoroutineWorker(context, params) {
-    private val BASE_DEEP_LINK_URL = "https://www.themoviedb.org/movie/"
+
     private val NOTIFICATION_ID: Int = 1
     private val CHANNEL_ID: String = "CINEMA_CHANNEL_ID"
     private val repository: Repository
@@ -42,21 +39,12 @@ class CinemaWorker(val context: Context, params: WorkerParameters) :
             val ids = repository.getCinemaDetailIDsInCache()
             val positive = 1
             val negative = -1
-            var cinemaWithBestRating: CinemaDetail? = null
-            val compareCinema: suspend (CinemaDetail) -> Unit = { cinema ->
-                mutex.withLock {
-                    if (cinemaWithBestRating == null) {
-                        cinemaWithBestRating = cinema
-                    } else if (cinemaWithBestRating!!.ratings < cinema.ratings) {
-                        cinemaWithBestRating = cinema
-                    }
-                }
-            }
+            var cinemaWithBestRating: AtomicReference<CinemaDetail> = AtomicReference()
             val deferreds: List<Deferred<Int>> = ids.map { id ->
                 async {
                     try {
                         val cinema = repository.getCinemaDetail(id)
-                        compareCinema(cinema)
+                        updateIfCinemaRatingBetter(cinema, cinemaWithBestRating)
                         positive
                     } catch (e: Exception) {
                         negative
@@ -64,7 +52,7 @@ class CinemaWorker(val context: Context, params: WorkerParameters) :
                 }
             }
             val sum = deferreds.awaitAll().sum()
-            cinemaWithBestRating?.let { cinema ->
+            cinemaWithBestRating.get()?.let { cinema ->
                 createNotificationChannel()
                 createNotification(cinema)
             }
@@ -75,6 +63,23 @@ class CinemaWorker(val context: Context, params: WorkerParameters) :
             }
         }
 
+    private fun updateIfCinemaRatingBetter(
+        cinema: CinemaDetail,
+        atomicCinema: AtomicReference<CinemaDetail>
+    ) {
+        var isDone = false
+        while (!isDone) {
+            val currentReference = atomicCinema.get()
+            isDone = when {
+                currentReference == null -> atomicCinema.compareAndSet(currentReference, cinema)
+                currentReference.ratings < cinema.ratings -> atomicCinema.compareAndSet(
+                    currentReference,
+                    cinema
+                )
+                else -> true
+            }
+        }
+    }
 
     private fun createNotificationChannel() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
@@ -85,20 +90,13 @@ class CinemaWorker(val context: Context, params: WorkerParameters) :
                 description = descriptionText
             }
             // Register the channel with the system
-            val notificationManager: NotificationManager =
-                context.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
-            notificationManager.createNotificationChannel(channel)
+            NotificationManagerCompat.from(context).createNotificationChannel(channel)
         }
     }
 
     private suspend fun createNotification(cinema: CinemaDetail) {
         Log.d("Worker", "Best Movie ${cinema.title}")
-        val resultIntent = Intent(context, MainActivity::class.java)
-        resultIntent.data = Uri.parse(BASE_DEEP_LINK_URL + cinema.id)
-        val resultPendingIntent = PendingIntent.getActivity(
-            context, 0,
-            resultIntent, PendingIntent.FLAG_UPDATE_CURRENT
-        )
+        val resultPendingIntent = context.createIntentWithDeepLink(cinema.id)
 
         var builder = NotificationCompat.Builder(context, CHANNEL_ID)
             .setSmallIcon(R.drawable.cinema_holder)
@@ -120,9 +118,8 @@ class CinemaWorker(val context: Context, params: WorkerParameters) :
                 .bigPicture(bitmap)
                 .bigLargeIcon(null)
         )
-        with(NotificationManagerCompat.from(context)) {
-            notify(NOTIFICATION_ID, builder.build())
-        }
+
+        NotificationManagerCompat.from(context).notify(NOTIFICATION_ID, builder.build())
     }
 
 }

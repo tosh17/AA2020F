@@ -14,7 +14,6 @@ object CinemaWorkManager {
 
 
     fun start(context: Context) {
-
         val currentWork = WorkManager.getInstance(context)
             .getWorkInfosByTag(WORK_TAG).get().firstOrNull()
         if (currentWork != null) {
