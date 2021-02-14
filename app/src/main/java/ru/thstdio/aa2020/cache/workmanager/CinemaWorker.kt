@@ -53,7 +53,6 @@ class CinemaWorker(private val context: Context, params: WorkerParameters) :
             }
             val sum = deferreds.awaitAll().sum()
             cinemaWithBestRating.get()?.let { cinema ->
-                createNotificationChannel()
                 createNotification(cinema)
             }
             if ((sum < 0) && (runAttemptCount <= 3)) {
@@ -81,20 +80,9 @@ class CinemaWorker(private val context: Context, params: WorkerParameters) :
         }
     }
 
-    private fun createNotificationChannel() {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            val name = context.getString(R.string.channel_name)
-            val descriptionText = context.getString(R.string.channel_description)
-            val importance = NotificationManager.IMPORTANCE_DEFAULT
-            val channel = NotificationChannel(CHANNEL_ID, name, importance).apply {
-                description = descriptionText
-            }
-            // Register the channel with the system
-            NotificationManagerCompat.from(context).createNotificationChannel(channel)
-        }
-    }
 
     private suspend fun createNotification(cinema: CinemaDetail) {
+        createNotificationChannel(context, CHANNEL_ID)
         Log.d("Worker", "Best Movie ${cinema.title}")
         val resultPendingIntent = context.createIntentWithDeepLink(cinema.id)
 
@@ -122,4 +110,17 @@ class CinemaWorker(private val context: Context, params: WorkerParameters) :
         NotificationManagerCompat.from(context).notify(NOTIFICATION_ID, builder.build())
     }
 
+}
+
+private fun createNotificationChannel(context: Context, channelId: String) {
+    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+        val name = context.getString(R.string.channel_name)
+        val descriptionText = context.getString(R.string.channel_description)
+        val importance = NotificationManager.IMPORTANCE_DEFAULT
+        val channel = NotificationChannel(channelId, name, importance).apply {
+            description = descriptionText
+        }
+        // Register the channel with the system
+        NotificationManagerCompat.from(context).createNotificationChannel(channel)
+    }
 }
