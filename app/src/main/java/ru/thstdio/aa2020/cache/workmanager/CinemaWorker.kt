@@ -9,10 +9,15 @@ import kotlinx.coroutines.async
 import kotlinx.coroutines.awaitAll
 import kotlinx.coroutines.coroutineScope
 import ru.thstdio.aa2020.cache.Repository
+import ru.thstdio.aa2020.data.CinemaDetail
 import ru.thstdio.aa2020.ui.CinemaApp
+import ru.thstdio.aa2020.ui.view.extension.createNotificationBestCinema
+import java.util.concurrent.atomic.AtomicReference
 
-class CinemaWorker(context: Context, params: WorkerParameters) :
+
+class CinemaWorker(private val context: Context, params: WorkerParameters) :
     CoroutineWorker(context, params) {
+
 
     private val repository: Repository
         get() = (applicationContext as CinemaApp).repository
@@ -23,11 +28,12 @@ class CinemaWorker(context: Context, params: WorkerParameters) :
             val ids = repository.getCinemaDetailIDsInCache()
             val positive = 1
             val negative = -1
-
+            val cinemaWithBestRating: AtomicReference<CinemaDetail?> = AtomicReference()
             val deferreds: List<Deferred<Int>> = ids.map { id ->
                 async {
                     try {
-                        repository.getCinemaDetail(id)
+                        val cinema = repository.getCinemaDetail(id)
+                        updateIfCinemaRatingBetter(cinema, cinemaWithBestRating)
                         positive
                     } catch (e: Exception) {
                         negative
@@ -35,6 +41,9 @@ class CinemaWorker(context: Context, params: WorkerParameters) :
                 }
             }
             val sum = deferreds.awaitAll().sum()
+            cinemaWithBestRating.get()?.let { cinema ->
+                context.createNotificationBestCinema(cinema)
+            }
             if ((sum < 0) && (runAttemptCount <= 3)) {
                 Result.retry()
             } else {
@@ -42,4 +51,21 @@ class CinemaWorker(context: Context, params: WorkerParameters) :
             }
         }
 
+    private fun updateIfCinemaRatingBetter(
+        cinema: CinemaDetail,
+        atomicCinema: AtomicReference<CinemaDetail?>
+    ) {
+        var isDone = false
+        while (!isDone) {
+            val currentReference = atomicCinema.get()
+            isDone =
+                if ((currentReference == null) || (currentReference.ratings < cinema.ratings)) {
+                    atomicCinema.compareAndSet(currentReference, cinema)
+                } else {
+                    true
+                }
+        }
+    }
+
 }
+

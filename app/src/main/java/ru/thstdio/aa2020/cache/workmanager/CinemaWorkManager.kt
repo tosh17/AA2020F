@@ -27,6 +27,7 @@ object CinemaWorkManager {
                 .setConstraints(constraints)
                 .addTag(WORK_TAG)
                 .build()
+
             WorkManager.getInstance(context).enqueue(work)
             Log.d("Worker", "Start ${work.id}")
         }

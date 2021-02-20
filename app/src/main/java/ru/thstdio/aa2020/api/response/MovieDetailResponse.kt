@@ -12,18 +12,18 @@ data class MovieDetailResponse(
     val adult: Boolean,
 
     @SerialName("backdrop_path")
-    val backdropPath: String,
+    val backdropPath: String?,
     @SerialName("budget")
     val budget: Long,
     @SerialName("genres")
     val genres: List<GenreJson>,
     @SerialName("homepage")
-    val homepage: String,
+    val homepage: String?,
     @SerialName("id")
     val id: Long,
 
     @SerialName("imdb_id")
-    val imdbID: String,
+    val imdbID: String?,
 
     @SerialName("original_language")
     val originalLanguage: String,
