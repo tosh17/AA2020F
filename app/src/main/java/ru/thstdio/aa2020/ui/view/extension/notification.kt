@@ -22,7 +22,7 @@ suspend fun Context.createNotificationBestCinema(cinema: CinemaDetail) {
     Log.d("Worker", "Best Movie ${cinema.title}")
     val resultPendingIntent = this.createIntentWithCinemaDeepLink(cinema.id)
 
-    var builder = NotificationCompat.Builder(this, CHANNEL_ID)
+    val builder = NotificationCompat.Builder(this, CHANNEL_ID)
         .setSmallIcon(R.drawable.cinema_holder)
         .setContentTitle(cinema.title)
         .setContentText(cinema.overview)
