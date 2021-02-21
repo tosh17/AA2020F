@@ -13,11 +13,12 @@ import by.kirich1409.viewbindingdelegate.viewBinding
 import coil.load
 import coil.transform.BlurTransformation
 import com.google.android.material.datepicker.MaterialDatePicker
+import com.google.android.material.transition.MaterialContainerTransform
 import ru.thstdio.aa2020.R
 import ru.thstdio.aa2020.data.Actor
 import ru.thstdio.aa2020.data.CinemaDetail
 import ru.thstdio.aa2020.databinding.FragmentMoviesDetailsBinding
-import ru.thstdio.aa2020.ui.FragmentNavigation
+import ru.thstdio.aa2020.ui.navigation.FragmentNavigation
 import ru.thstdio.aa2020.ui.view.extension.sendCalendarEvent
 
 private const val REQUEST_CODE: Int = 1002
@@ -42,6 +43,11 @@ class FragmentMoviesDetails : FragmentNavigation(R.layout.fragment_movies_detail
         MoviesDetailsViewModelFactory(appRepository, cinemaId!!)
     }
 
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        sharedElementEnterTransition = MaterialContainerTransform()
+        sharedElementReturnTransition = MaterialContainerTransform()
+    }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -54,6 +60,10 @@ class FragmentMoviesDetails : FragmentNavigation(R.layout.fragment_movies_detail
         binding.recyclerView.adapter = adapter
         viewModel.movieState.observe(this.viewLifecycleOwner, this::bindView)
         binding.addToCalendarButton.setOnClickListener { onClickCalendarBtn() }
+    }
+
+    override fun getSharedView(): View? {
+        TODO("Not yet implemented")
     }
 
     private fun bindView(cinema: CinemaDetail) {

@@ -11,7 +11,8 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:paddingBottom="32dp">
+        android:paddingBottom="32dp"
+        android:transitionName="shared_cinema_container">
 
         <androidx.constraintlayout.widget.Guideline
             android:id="@+id/guideline_left"

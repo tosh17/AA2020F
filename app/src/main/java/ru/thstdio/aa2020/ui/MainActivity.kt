@@ -5,11 +5,11 @@ import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import com.github.terrakok.cicerone.NavigatorHolder
 import com.github.terrakok.cicerone.Router
-import com.github.terrakok.cicerone.androidx.AppNavigator
 import ru.thstdio.aa2020.R
 import ru.thstdio.aa2020.cache.workmanager.CinemaWorkManager
 import ru.thstdio.aa2020.ui.detail.MoviesDetailsScreen
 import ru.thstdio.aa2020.ui.list.MoviesListScreen
+import ru.thstdio.aa2020.ui.navigation.CinemaAppNavigator
 
 class MainActivity : AppCompatActivity() {
     private val cinemaApp: CinemaApp get() = application as CinemaApp
@@ -51,7 +51,7 @@ class MainActivity : AppCompatActivity() {
 
     override fun onResumeFragments() {
         super.onResumeFragments()
-        navigatorHolder.setNavigator(AppNavigator(this, R.id.fragment_container_view))
+        navigatorHolder.setNavigator(CinemaAppNavigator(this, R.id.fragment_container_view))
     }
 
     override fun onPause() {

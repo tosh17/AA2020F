@@ -8,10 +8,12 @@ import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import by.kirich1409.viewbindingdelegate.viewBinding
+import com.google.android.material.transition.MaterialContainerTransform
 import ru.thstdio.aa2020.R
 import ru.thstdio.aa2020.databinding.FragmentMoviesListBinding
-import ru.thstdio.aa2020.ui.FragmentNavigation
 import ru.thstdio.aa2020.ui.detail.MoviesDetailsScreen
+import ru.thstdio.aa2020.ui.navigation.FragmentNavigation
+import java.lang.ref.WeakReference
 
 class FragmentMoviesList : FragmentNavigation(R.layout.fragment_movies_list) {
     companion object {
@@ -22,7 +24,7 @@ class FragmentMoviesList : FragmentNavigation(R.layout.fragment_movies_list) {
     private val viewModel: MoviesListViewModel by viewModels {
         MoviesListViewModelFactory(appRepository)
     }
-
+    var sharedView: WeakReference<View?> = WeakReference(null)
     private val scrollListener = object : RecyclerView.OnScrollListener() {
         override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
             if (dy > 0) {
@@ -35,12 +37,21 @@ class FragmentMoviesList : FragmentNavigation(R.layout.fragment_movies_list) {
         }
     }
 
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        sharedElementEnterTransition = MaterialContainerTransform()
+        sharedElementReturnTransition = MaterialContainerTransform()
+    }
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         binding.recyclerView.layoutManager =
             GridLayoutManager(context, 2, RecyclerView.VERTICAL, false)
         val adapter =
-            CinemaListAdapter { cinema -> router.navigateTo(MoviesDetailsScreen(cinema.id)) }
+            CinemaListAdapter { cinema, view ->
+                sharedView = WeakReference(view)
+                router.navigateTo(MoviesDetailsScreen(cinema.id))
+            }
         viewModel.cinemas.observe(this.viewLifecycleOwner, adapter::submitList)
         viewModel.scrollListenerStatus.observe(
             this.viewLifecycleOwner,
@@ -61,5 +72,9 @@ class FragmentMoviesList : FragmentNavigation(R.layout.fragment_movies_list) {
     override fun onDestroyView() {
         binding.recyclerView.removeOnScrollListener(scrollListener)
         super.onDestroyView()
+    }
+
+    override fun getSharedView(): View? {
+        return sharedView.get()
     }
 }

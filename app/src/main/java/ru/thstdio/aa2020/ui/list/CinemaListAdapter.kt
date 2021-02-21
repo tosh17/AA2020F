@@ -15,7 +15,7 @@ import ru.thstdio.aa2020.data.Cinema
 import ru.thstdio.aa2020.databinding.ViewHolderCinemaBinding
 
 class CinemaListAdapter(
-    private val router: (Cinema) -> Unit
+    private val router: (Cinema, View) -> Unit
 ) : ListAdapter<Cinema, CinemaListHolder>(CinemaListAdapterDiffUtil()) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CinemaListHolder {
@@ -31,7 +31,7 @@ class CinemaListAdapter(
     }
 }
 
-class CinemaListHolder(view: View, private val onClick: (Cinema) -> Unit) :
+class CinemaListHolder(view: View, private val onClick: (Cinema, View) -> Unit) :
     RecyclerView.ViewHolder(view) {
     private val binding = ViewHolderCinemaBinding.bind(view)
 
@@ -49,7 +49,7 @@ class CinemaListHolder(view: View, private val onClick: (Cinema) -> Unit) :
         binding.rating.setRating(cinema.ratings)
         binding.textReviews.text =
             binding.textReviews.context.getString(R.string.review_string, cinema.numberOfRatings)
-        binding.root.setOnClickListener { onClick(cinema) }
+        binding.root.setOnClickListener { onClick(cinema, binding.root) }
     }
 
     private fun setLike(isLike: Boolean) {

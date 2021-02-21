@@ -7,8 +7,8 @@
     android:layout_height="296dp"
     android:layout_margin="6dp"
     android:background="@drawable/bg_small_item"
-    android:padding="1dp">
-
+    android:padding="1dp"
+    android:transitionName="shared_cinema_container">
 
     <ImageView
         android:id="@+id/image_bg"
