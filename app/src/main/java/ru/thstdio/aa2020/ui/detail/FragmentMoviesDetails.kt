@@ -5,6 +5,7 @@ import android.content.pm.PackageManager
 import android.os.Bundle
 import android.view.View
 import androidx.core.app.ActivityCompat
+import androidx.core.view.ViewCompat
 import androidx.core.view.isVisible
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -19,6 +20,7 @@ import ru.thstdio.aa2020.data.Actor
 import ru.thstdio.aa2020.data.CinemaDetail
 import ru.thstdio.aa2020.databinding.FragmentMoviesDetailsBinding
 import ru.thstdio.aa2020.ui.navigation.FragmentNavigation
+import ru.thstdio.aa2020.ui.navigation.SHARED_VIEW_CINEMA_DETAIL
 import ru.thstdio.aa2020.ui.view.extension.sendCalendarEvent
 
 private const val REQUEST_CODE: Int = 1002
@@ -60,6 +62,7 @@ class FragmentMoviesDetails : FragmentNavigation(R.layout.fragment_movies_detail
         binding.recyclerView.adapter = adapter
         viewModel.movieState.observe(this.viewLifecycleOwner, this::bindView)
         binding.addToCalendarButton.setOnClickListener { onClickCalendarBtn() }
+        ViewCompat.setTransitionName(binding.detailContainer, SHARED_VIEW_CINEMA_DETAIL)
     }
 
     override fun getSharedView(): View? {
